@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs'); // Agregada la importación de bcrypt
 
 // Ruta para obtener todos los usuarios
 router.get('/', async (req, res) => {
@@ -15,13 +16,16 @@ router.get('/', async (req, res) => {
 
 // Ruta para crear un nuevo usuario
 router.post('/', async (req, res) => {
+    const { rut, nombre, apellido, edad, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10); // Hash de la contraseña
+
     const user = new User({
-        rut: req.body.rut,
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        edad: req.body.edad,
-        email: req.body.email,
-        contraseña: req.body.contraseña
+        rut: rut,
+        nombre: nombre,
+        apellido: apellido,
+        edad: edad,
+        email: email,
+        password: hashedPassword // Guardar la contraseña cifrada
     });
 
     try {
@@ -41,16 +45,31 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        console.log('Inicio de sesión solicitado para el usuario con correo electrónico:', email);
+
         // Buscar al usuario por su correo electrónico
         const user = await User.findOne({ email });
 
-        // Verificar si el usuario existe y la contraseña es válida
-        if (!user || user.password !== password) {
+        // Verificar si el usuario existe
+        if (!user) {
+            console.log('Usuario no encontrado.');
             return res.status(401).json({ message: 'Credenciales inválidas' });
         }
 
+        console.log('Usuario encontrado:', user);
+
+        // Verificar si la contraseña es válida utilizando bcrypt
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            console.log('Contraseña incorrecta.');
+            return res.status(401).json({ message: 'Credenciales inválidas' });
+        }
+
+        console.log('Contraseña válida.');
+
         // Generar un token de autenticación
         const token = generateAuthToken(user);
+        console.log('Token de autenticación generado:', token);
 
         // Enviar el token como respuesta
         res.status(200).json({ token });

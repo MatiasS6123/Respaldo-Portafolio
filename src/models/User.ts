@@ -4,5 +4,5 @@ export interface User {
     apellido: string;
     edad: number;
     email: string;
-    contraseña: string;
+    password: string; // Cambiado de "contrasena" a "password"
 }

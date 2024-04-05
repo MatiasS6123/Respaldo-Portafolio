@@ -2,19 +2,26 @@
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
       <!-- Contenido del menú (opcional) -->
-      <ion-menu-toggle autoHide="false">
-        <ion-item detail="true" [routerLink]="['/registro']" routerLinkActive="router-link">
+      <ion-menu-toggle autoHide="false"  >
+        <ion-item  detail="true" [routerLink]="['/registro']" routerLinkActive="router-link">
           <ion-label>
             Registro
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>
-        <ion-item detail="true" [routerLink]="['/login']" routerLinkActive="router-link">
+        <ion-item  detail="true" [routerLink]="['/login']" routerLinkActive="router-link">
           <ion-label>
             Login
           </ion-label>
           <ion-icon name="people-circle"></ion-icon>
         </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle>
+        <div *ngIf="isLoggedIn">
+          <!-- Mostrar opciones de perfil, cerrar sesión, etc. -->
+          <button >Cerrar sesión</button>
+        </div>
       </ion-menu-toggle>
       
     </ion-menu>
