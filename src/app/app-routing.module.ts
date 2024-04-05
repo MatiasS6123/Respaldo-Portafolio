@@ -14,7 +14,12 @@ const routes: Routes = [
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
   },
   { path: 'registro', component: RegistroComponent },
-  { path: 'login', component: LoginComponent }, 
+  { path: 'login', component: LoginComponent },   
+  {
+    path: 'estudiantes',
+    loadChildren: () => import('./Page/estudiantes/estudiantes.module').then( m => m.EstudiantesPageModule)
+  },
+
 ];
 
 @NgModule({

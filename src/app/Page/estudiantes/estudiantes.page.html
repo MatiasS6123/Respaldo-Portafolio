@@ -1,0 +1,98 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Estudiantes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Estudiantes</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Formulario para ingresar, buscar, eliminar y modificar estudiante -->
+  <form [formGroup]="estudianteForm" (ngSubmit)="guardarEstudiante()" *ngIf="mostrarFormulario">
+    <!-- Campo RUT -->
+    <ion-item>
+      <ion-label position="floating">RUT:</ion-label>
+      <ion-input type="text" formControlName="rut" required></ion-input>
+    </ion-item>
+
+    <!-- Campo Nombre -->
+    <ion-item>
+      <ion-label position="floating">Nombre:</ion-label>
+      <ion-input type="text" formControlName="nombre" required></ion-input>
+    </ion-item>
+
+    <!-- Campo Apellido -->
+    <ion-item>
+      <ion-label position="floating">Apellido:</ion-label>
+      <ion-input type="text" formControlName="apellido" required></ion-input>
+    </ion-item>
+
+    <!-- Campo Edad -->
+    <ion-item>
+      <ion-label position="floating">Edad:</ion-label>
+      <ion-input type="number" formControlName="edad" required></ion-input>
+    </ion-item>
+
+    <!-- Campo Sexo -->
+    <ion-item>
+      <ion-label position="floating">Sexo:</ion-label>
+      <ion-select formControlName="sexo" required>
+        <ion-select-option value="masculino">Masculino</ion-select-option>
+        <ion-select-option value="femenino">Femenino</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Campo Nacionalidad -->
+    <ion-item>
+      <ion-label position="floating">Nacionalidad:</ion-label>
+      <ion-select formControlName="nacionalidad" required>
+        <ion-select-option value="chilena">Chilena</ion-select-option>
+        <ion-select-option value="argentina">Argentina</ion-select-option>
+        <ion-select-option value="peruana">Peruana</ion-select-option>
+        <ion-select-option value="boliviana">Boliviana</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Fecha de Nacimiento:</ion-label>
+      <ion-datetime 
+        display-format="DD/MM/YYYY" 
+        name="fecha_nac" 
+        formControlName="fecha_nac" 
+        [(ngModel)]="estudiante.fecha_nac"
+        required>
+      </ion-datetime>
+    </ion-item>
+    <!-- Botón de Guardar -->
+    <ion-button type="submit" expand="block">Guardar</ion-button>
+  </form>
+
+  <!-- Campo de entrada para buscar estudiante por RUT -->
+  <ion-item class="ion-margin-top">
+    <ion-label position="stacked">Buscar Estudiante por RUT:</ion-label>
+    <ion-input type="text" name="buscarRut" [(ngModel)]="rutBuscar"></ion-input>
+    <ion-button (click)="buscarEstudiante()" expand="block">Buscar</ion-button>
+  </ion-item>
+
+  <!-- Detalles del estudiante encontrado -->
+  <ion-card *ngIf="estudianteEncontrado && mostrarInformacionEstudiante" class="ion-margin-top">
+    <ion-card-header>
+      <ion-card-title>Estudiante Encontrado:</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>RUT:</strong> {{ estudianteEncontrado.rut }}</p>
+      <p><strong>Nombre:</strong> {{ estudianteEncontrado.nombre }}</p>
+      <p><strong>Apellido:</strong> {{ estudianteEncontrado.apellido }}</p>
+      <p><strong>Edad:</strong> {{ estudianteEncontrado.edad }}</p>
+      <p><strong>Sexo:</strong> {{ estudianteEncontrado.sexo }}</p>
+      <p><strong>Nacionalidad:</strong> {{ estudianteEncontrado.nacionalidad }}</p>
+      <p><strong>Fecha de Nacimiento:</strong> {{ estudianteEncontrado.fecha_nac }}</p>
+      <ion-button color="danger" (click)="eliminarEstudiante(estudianteEncontrado.rut)">Eliminar</ion-button>
+      <ion-button color="secondary" (click)="editarEstudiante(estudianteEncontrado)">Editar</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

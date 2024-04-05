@@ -6,7 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular'; 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistroModule } from './Component/registro.module';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -17,7 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
       AppRoutingModule,
       RegistroModule,
       HttpClientModule,
-      IonicStorageModule.forRoot() // Añade // Añade IonicStorageModule a la lista de imports
+      IonicStorageModule.forRoot(),
+      FormsModule // Añade // Añade IonicStorageModule a la lista de imports
 
      ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

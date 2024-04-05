@@ -9,14 +9,12 @@ export class AppComponent {
   isLoggedIn: boolean = false;
   
   constructor(private authService: UserService) { 
-   
+   this.isLoggedIn=true;
     
   }
 
-  ngOnInit(): void {
-    this.authService.isLoggedIn.subscribe(isLoggedIn => {
-      this.isLoggedIn = isLoggedIn;
-    });
+  ionViewWillEnter() {
+    this.isLoggedIn = this.authService.isAuthenticated();
+  }
 }
 
-}

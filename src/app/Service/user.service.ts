@@ -10,8 +10,7 @@ import { Storage } from '@ionic/storage-angular'; // Importa Storage desde '@ion
 export class UserService {
   private baseUrl = 'http://localhost:3000/api/users';
 
-  isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
+  
   constructor(private http: HttpClient) { 
     
   }
@@ -24,5 +23,8 @@ export class UserService {
     return this.http.post<any>(`${this.baseUrl}/login`, { email, password });
   }
 
+  isAuthenticated(): boolean {
+    return localStorage.getItem('token') !== null;
+  }
  
 }
