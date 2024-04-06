@@ -1,20 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from './Service/user.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   isLoggedIn: boolean = false;
   
-  constructor(private authService: UserService) { 
-   this.isLoggedIn=true;
-    
+  constructor(public authService: UserService) { 
   }
 
-  ionViewWillEnter() {
+  ngOnInit() {
+    // Verificar el estado de autenticación al inicializar el componente
     this.isLoggedIn = this.authService.isAuthenticated();
   }
 }
-

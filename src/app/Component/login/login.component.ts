@@ -25,10 +25,6 @@ export class LoginComponent implements OnInit {
       return;
     }
   
-    // Depurar: Imprimir los valores de correo electrónico y contraseña
-    console.log('Email:', this.email);
-    console.log('Contraseña:', this.password);
-  
     // Enviar solicitud de inicio de sesión al servicio
     this.userService.login(this.email, this.password).subscribe(
       (response) => {
@@ -37,13 +33,17 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', token);
         
         // Redirigir a la página principal o a la página deseada
-        this.router.navigate(['']);
+        this.router.navigate(['']); // Modifica la ruta según la configuración de tu aplicación
       },
       (error) => {
         // Manejar error de inicio de sesión (por ejemplo, mostrar mensaje de error)
         console.error('Error en el inicio de sesión:', error);
         // Mostrar mensaje de error
-        this.presentToast('Error en el inicio de sesión. Por favor, verifica tus credenciales.');
+        if (error.status === 401) {
+          this.presentToast('Credenciales incorrectas. Por favor, verifica tu correo electrónico y contraseña.');
+        } else {
+          this.presentToast('Error en el inicio de sesión. Por favor, inténtalo de nuevo más tarde.');
+        }
       }
     );
   }

@@ -104,10 +104,6 @@ export class EstudiantesPage implements OnInit {
   }
   
   
-  
-    
-  
-   
 
   eliminarEstudiante(rut: string) {
     this.estudianteService.deleteEstudiante(rut).subscribe(

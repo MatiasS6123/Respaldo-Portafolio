@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { RegistroComponent } from './Component/registro/registro.component';
 import { LoginComponent } from './Component/login/login.component';
+import { ListaEstudianteComponent } from './Component/lista-estudiante/lista-estudiante.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     path: 'estudiantes',
     loadChildren: () => import('./Page/estudiantes/estudiantes.module').then( m => m.EstudiantesPageModule)
   },
+  {path: 'lista-estudiante',component:ListaEstudianteComponent}
 
 ];
 
