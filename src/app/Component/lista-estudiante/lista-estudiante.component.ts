@@ -7,13 +7,14 @@ import { Estudiante } from 'src/models/Estudiante';
   templateUrl: './lista-estudiante.component.html',
   styleUrls: ['./lista-estudiante.component.scss'],
 })
-export class ListaEstudianteComponent  implements OnInit {
+export class ListaEstudianteComponent implements OnInit {
 
-  rutBuscar!: string;
+  rutBuscar: string = '';
   estudianteEncontrado: Estudiante | null = null;
   mostrarFormulario: boolean = true;
   mostrarInformacionEstudiante: boolean = false;
 
+  
   constructor(private estudianteService: EstudianteService) { }
 
   ngOnInit() {}
@@ -52,8 +53,6 @@ export class ListaEstudianteComponent  implements OnInit {
       }
     );
   }
-  
-  
 
   eliminarEstudiante(rut: string) {
     this.estudianteService.deleteEstudiante(rut).subscribe(
@@ -67,9 +66,35 @@ export class ListaEstudianteComponent  implements OnInit {
     );
   }
 
-  editarEstudiante(estudiante: Estudiante) {
-    // Lógica para editar un estudiante
+  actualizarEstudiante(estudiante: Estudiante) {
+    this.estudianteService.updateEstudiante(estudiante.rut, estudiante).subscribe(
+      (estudianteActualizado: Estudiante) => {
+        console.log('Estudiante actualizado correctamente:', estudianteActualizado);
+        // Aquí puedes realizar alguna acción adicional después de actualizar el estudiante, si es necesario
+      },
+      (error) => {
+        console.error('Error al actualizar estudiante:', error);
+      }
+    );
   }
 
+  
+  formatFecha(fecha: Date): string {
+    // Verificar si la fecha es válida
+    if (fecha instanceof Date && !isNaN(fecha.getTime())) {
+      // Formatear la fecha al formato 'YYYY-MM-DD'
+      const year = fecha.getFullYear();
+      const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
+      const day = fecha.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    } else {
+      return '';
+    }
+  }
+   
+  
+  
 
+  
 }
+ 

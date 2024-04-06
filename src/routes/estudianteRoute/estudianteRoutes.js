@@ -70,19 +70,27 @@ router.post('/', async (req, res) => {
 // Ruta para actualizar un estudiante por su ID
 router.put('/:rut', async (req, res) => {
     try {
+        // Validar que la solicitud tenga datos para actualizar
+        if (!req.body) {
+            return res.status(400).json({ message: 'No se proporcionaron datos para actualizar' });
+        }
+
+        // Buscar el estudiante por su RUT
         const estudiante = await Estudiante.findOne({ rut: req.params.rut });
         if (!estudiante) {
             return res.status(404).json({ message: 'Estudiante no encontrado' });
         }
         
+        // Actualizar los datos del estudiante con los datos proporcionados en la solicitud
         Object.assign(estudiante, req.body);
-        console.log('Estudiante actualizado:', estudiante); // Agregar log
+        console.log('Estudiante actualizado:', estudiante); // Registrar el estudiante actualizado
 
+        // Guardar el estudiante actualizado en la base de datos
         const estudianteActualizado = await estudiante.save();
         res.json(estudianteActualizado);
     } catch (error) {
-        console.error('Error al actualizar estudiante:', error); // Agregar log
-        res.status(400).json({ message: error.message });
+        console.error('Error al actualizar estudiante:', error); // Registrar el error
+        res.status(500).json({ message: 'Error interno del servidor al actualizar el estudiante' });
     }
 });
 
