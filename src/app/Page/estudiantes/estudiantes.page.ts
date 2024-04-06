@@ -23,8 +23,12 @@ export class EstudiantesPage implements OnInit {
   estudianteEncontrado: Estudiante | null = null;
   mostrarFormulario: boolean = true;
   mostrarInformacionEstudiante: boolean = false;
-
-  constructor(private formBuilder: FormBuilder, private estudianteService: EstudianteService) {}
+  customPickerOptions: any;
+  constructor(private formBuilder: FormBuilder, private estudianteService: EstudianteService) {
+    this.customPickerOptions = {
+      cssClass: 'my-custom-picker'
+    };
+  }
 
   ngOnInit(): void {
     this.estudianteForm = this.formBuilder.group({
@@ -105,8 +109,8 @@ export class EstudiantesPage implements OnInit {
   
    
 
-  eliminarEstudiante(id: string) {
-    this.estudianteService.deleteEstudiante(id).subscribe(
+  eliminarEstudiante(rut: string) {
+    this.estudianteService.deleteEstudiante(rut).subscribe(
       () => {
         console.log('Estudiante eliminado correctamente');
         this.estudianteEncontrado = null;

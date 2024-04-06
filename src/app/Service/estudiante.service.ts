@@ -29,12 +29,13 @@ export class EstudianteService {
   }
 
   // Método para actualizar un estudiante por su ID
-  updateEstudiante(id: string, estudiante: Estudiante): Observable<Estudiante> {
-    return this.http.put<Estudiante>(`${this.baseUrl}/${id}`, estudiante);
+  updateEstudiante(rut: string, estudiante: Estudiante): Observable<Estudiante> {
+    return this.http.put<Estudiante>(`${this.baseUrl}/${rut}`, estudiante);
   }
+  
 
   // Método para eliminar un estudiante por su ID
-  deleteEstudiante(id: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  deleteEstudiante(rut: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${rut}`);
   }
 }

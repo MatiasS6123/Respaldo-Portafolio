@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // Ruta para obtener un estudiante por su ID
-router.get('/:rut', async (req, res) => {
+/*router.get('/:rut', async (req, res) => {
     try {
         const estudiante = await Estudiante.findOne({ rut: req.params.rut });
         if (!estudiante) {
@@ -28,7 +28,20 @@ router.get('/:rut', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-
+*/
+router.get('/:rut', async (req, res) => {
+    try {
+        const estudiante = await Estudiante.findOne({ rut: req.params.rut }).lean(false);
+        if (!estudiante) {
+            return res.status(404).json({ message: 'Estudiante no encontrado' });
+        }
+        console.log('Estudiante encontrado:', estudiante); // Agregar log
+        res.json(estudiante);
+    } catch (error) {
+        console.error('Error al obtener estudiante por RUT:', error); // Agregar log
+        res.status(500).json({ message: error.message });
+    }
+});
 
 
 // Ruta para crear un nuevo estudiante
@@ -55,9 +68,9 @@ router.post('/', async (req, res) => {
 });
 
 // Ruta para actualizar un estudiante por su ID
-router.put('/:id', async (req, res) => {
+router.put('/:rut', async (req, res) => {
     try {
-        const estudiante = await Estudiante.findById(req.params.id);
+        const estudiante = await Estudiante.findOne({ rut: req.params.rut });
         if (!estudiante) {
             return res.status(404).json({ message: 'Estudiante no encontrado' });
         }
@@ -73,21 +86,22 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+
 // Ruta para eliminar un estudiante por su ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:rut', async (req, res) => {
     try {
-        const estudiante = await Estudiante.findById(req.params.id);
-        if (!estudiante) {
+        const result = await Estudiante.deleteOne({ rut: req.params.rut });
+        if (result.deletedCount === 0) {
             return res.status(404).json({ message: 'Estudiante no encontrado' });
         }
         
-        await estudiante.remove();
-        console.log('Estudiante eliminado:', estudiante); // Agregar log
+        console.log('Estudiante eliminado correctamente');
         res.json({ message: 'Estudiante eliminado correctamente' });
     } catch (error) {
-        console.error('Error al eliminar estudiante:', error); // Agregar log
+        console.error('Error al eliminar estudiante:', error);
         res.status(500).json({ message: error.message });
     }
 });
+
 
 module.exports = router;
