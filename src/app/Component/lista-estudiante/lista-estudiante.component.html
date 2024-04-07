@@ -1,33 +1,36 @@
-<ion-item class="ion-margin-top">
+<ion-item class="ion-margin-top" [formGroup]="buscarForm">
   <ion-label position="stacked">Buscar Estudiante por RUT:</ion-label>
-  <ion-input type="text" placeholder="Ingrese un Rut" name="buscarRut" [(ngModel)]="rutBuscar"></ion-input>
+  <ion-input type="text" placeholder="Ingrese un Rut" formControlName="rut"></ion-input>
   <ion-button (click)="buscarEstudiante()" expand="block">Buscar</ion-button>
 </ion-item>
 
-<!-- Detalles del estudiante encontrado -->
-<ion-item *ngIf="estudianteEncontrado && mostrarInformacionEstudiante" class="ion-margin-top">
-  <ion-label position="stacked">RUT:</ion-label>
-  <ion-input type="text" [(ngModel)]="estudianteEncontrado.rut" disabled></ion-input>
+<form [formGroup]="estudianteForm" *ngIf="mostrarInformacionEstudiante">
+  <!-- Detalles del estudiante encontrado -->
+  <ion-item class="ion-margin-top">
+    <ion-label position="stacked">RUT:</ion-label>
+    <ion-input type="text" formControlName="rut"></ion-input>
   
-  <ion-label position="stacked">Nombre:</ion-label>
-  <ion-input type="text" [(ngModel)]="estudianteEncontrado.nombre"></ion-input>
+    <ion-label position="stacked">Nombre:</ion-label>
+    <ion-input type="text" formControlName="nombre"></ion-input>
   
-  <ion-label position="stacked">Apellido:</ion-label>
-  <ion-input type="text" [(ngModel)]="estudianteEncontrado.apellido"></ion-input>
+    <ion-label position="stacked">Apellido:</ion-label>
+    <ion-input type="text" formControlName="apellido"></ion-input>
   
-  <ion-label position="stacked">Edad:</ion-label>
-  <ion-input type="number" [(ngModel)]="estudianteEncontrado.edad"></ion-input>
+    <ion-label position="stacked">Edad:</ion-label>
+    <ion-input type="number" formControlName="edad"></ion-input>
   
-  <ion-label position="stacked">Sexo:</ion-label>
-  <ion-input type="text" [(ngModel)]="estudianteEncontrado.sexo"></ion-input>
+    <ion-label position="stacked">Sexo:</ion-label>
+    <ion-input type="text" formControlName="sexo"></ion-input>
   
-  <ion-label position="stacked">Nacionalidad:</ion-label>
-  <ion-input type="text" [(ngModel)]="estudianteEncontrado.nacionalidad"></ion-input>
+    <ion-label position="stacked">Nacionalidad:</ion-label>
+    <ion-input type="text" formControlName="nacionalidad"></ion-input>
   
-  <!-- Utiliza la misma función para formatear la fecha -->
-  <ion-label position="stacked">Fecha de Nacimiento:</ion-label>
-  <ion-input type="date"  *ngIf="estudianteEncontrado" [ngModel]="formatFecha(estudianteEncontrado.fecha_nac) | date:'yyyy-MM-dd'" (ngModelChange)="estudianteEncontrado.fecha_nac = $event"></ion-input>
+    <!-- Fecha de Nacimiento -->
+    <ion-label position="stacked">Fecha de Nacimiento:</ion-label>
+    <ion-input type="date" formControlName="fecha_nac"></ion-input>
 
-  <ion-button color="danger" (click)="eliminarEstudiante(estudianteEncontrado.rut)">Eliminar</ion-button>
-  <ion-button color="secondary" (click)="actualizarEstudiante(estudianteEncontrado)">Guardar Cambios</ion-button>
-</ion-item>
+    <!-- Botones de acción -->
+    <ion-button color="danger" (click)="eliminarEstudiante()">Eliminar</ion-button>
+    <ion-button color="secondary" (click)="actualizarEstudiante()">Guardar Cambios</ion-button>
+  </ion-item>
+</form>

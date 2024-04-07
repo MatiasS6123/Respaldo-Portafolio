@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EstudianteService } from 'src/app/Service/estudiante.service';
 import { Estudiante } from 'src/models/Estudiante';
 
@@ -9,43 +10,51 @@ import { Estudiante } from 'src/models/Estudiante';
 })
 export class ListaEstudianteComponent implements OnInit {
 
-  rutBuscar: string = '';
+  estudianteForm!: FormGroup;
+  buscarForm!: FormGroup;
   estudianteEncontrado: Estudiante | null = null;
-  mostrarFormulario: boolean = true;
   mostrarInformacionEstudiante: boolean = false;
 
-  
-  constructor(private estudianteService: EstudianteService) { }
+  constructor(private formBuilder: FormBuilder, private estudianteService: EstudianteService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.initEstudianteForm();
+    this.initBuscarForm();
+  }
+
+  private initEstudianteForm(): void {
+    this.estudianteForm = this.formBuilder.group({
+      rut: ['', [Validators.required]], // Ejemplo de validación para un RUT chileno
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      edad: ['', [Validators.required, Validators.min(0), Validators.max(120)]], // Suponiendo una edad válida entre 0 y 120 años
+      sexo: ['', Validators.required],
+      nacionalidad: ['', Validators.required],
+      fecha_nac: ['', Validators.required] // Podrías agregar un validador de fecha personalizado si es necesario
+    });
+  }
+
+  private initBuscarForm(): void {
+    this.buscarForm = this.formBuilder.group({
+      rut: ['', [Validators.required]]
+    });
+  }
 
   buscarEstudiante() {
-    this.estudianteService.getEstudianteById(this.rutBuscar).subscribe(
+    this.estudianteService.getEstudianteById(this.buscarForm.get('rut')?.value).subscribe(
       (estudiante: any) => {
         console.log('Estudiante encontrado:', estudiante);
   
         if (estudiante) {
-          // Verificar si la fecha de nacimiento es una cadena antes de formatearla
-          if (typeof estudiante.fecha_nac === 'string' && estudiante.fecha_nac) {
-            // Formatear la fecha de nacimiento al formato 'DD/MM/YYYY'
-            const fechaPartes = estudiante.fecha_nac.split('T')[0].split('-');
-            if (fechaPartes.length === 3) {
-              const fechaFormateada = `${fechaPartes[2]}/${fechaPartes[1]}/${fechaPartes[0]}`;
-              estudiante.fecha_nac = fechaFormateada;
-            } else {
-              console.error('La fecha de nacimiento no es válida:', estudiante.fecha_nac);
-            }
-          }
-  
-          // Asignar el estudiante encontrado y mostrar la información
           this.estudianteEncontrado = estudiante;
-          this.mostrarFormulario = false;
           this.mostrarInformacionEstudiante = true;
+          // Parsear la fecha antes de asignarla al formulario
+          estudiante.fecha_nac = estudiante.fecha_nac.split('T')[0]; // Obtener solo la parte de la fecha (YYYY-MM-DD)
+          this.estudianteForm.patchValue(estudiante); // Actualizar el formulario con los datos del estudiante encontrado
         } else {
-          // Mostrar mensaje de estudiante no encontrado y volver a mostrar el formulario
-          this.mostrarFormulario = true;
-          this.mostrarInformacionEstudiante = false;
           console.error('Estudiante no encontrado');
+          this.estudianteEncontrado = null;
+          this.mostrarInformacionEstudiante = false;
         }
       },
       (error) => {
@@ -54,11 +63,19 @@ export class ListaEstudianteComponent implements OnInit {
     );
   }
 
-  eliminarEstudiante(rut: string) {
+  eliminarEstudiante() {
+    const rut = this.estudianteForm.get('rut')?.value;
+    if (!rut) {
+      console.error('No se proporcionó un RUT válido para eliminar el estudiante');
+      return;
+    }
+
     this.estudianteService.deleteEstudiante(rut).subscribe(
       () => {
         console.log('Estudiante eliminado correctamente');
         this.estudianteEncontrado = null;
+        this.mostrarInformacionEstudiante = false;
+        this.estudianteForm.reset();
       },
       (error) => {
         console.error('Error al eliminar estudiante:', error);
@@ -66,10 +83,17 @@ export class ListaEstudianteComponent implements OnInit {
     );
   }
 
-  actualizarEstudiante(estudiante: Estudiante) {
-    this.estudianteService.updateEstudiante(estudiante.rut, estudiante).subscribe(
-      (estudianteActualizado: Estudiante) => {
-        console.log('Estudiante actualizado correctamente:', estudianteActualizado);
+  actualizarEstudiante() {
+    if (this.estudianteForm.invalid) {
+      console.error('El formulario es inválido. Corrige los campos resaltados.');
+      return;
+    }
+
+    const estudianteActualizado: Estudiante = this.estudianteForm.value;
+    this.estudianteService.updateEstudiante(estudianteActualizado.rut, estudianteActualizado).subscribe(
+      (estudiante: Estudiante) => {
+        console.log('Estudiante actualizado correctamente:', estudiante);
+        this.estudianteEncontrado = estudiante;
         // Aquí puedes realizar alguna acción adicional después de actualizar el estudiante, si es necesario
       },
       (error) => {
@@ -77,24 +101,4 @@ export class ListaEstudianteComponent implements OnInit {
       }
     );
   }
-
-  
-  formatFecha(fecha: Date): string {
-    // Verificar si la fecha es válida
-    if (fecha instanceof Date && !isNaN(fecha.getTime())) {
-      // Formatear la fecha al formato 'YYYY-MM-DD'
-      const year = fecha.getFullYear();
-      const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
-      const day = fecha.getDate().toString().padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    } else {
-      return '';
-    }
-  }
-   
-  
-  
-
-  
 }
- 

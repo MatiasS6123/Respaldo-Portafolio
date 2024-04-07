@@ -95,6 +95,7 @@ router.put('/:rut', async (req, res) => {
 });
 
 
+
 // Ruta para eliminar un estudiante por su ID
 router.delete('/:rut', async (req, res) => {
     try {
