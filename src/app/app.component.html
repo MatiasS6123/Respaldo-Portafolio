@@ -37,6 +37,14 @@
           <ion-icon name="people-circle"></ion-icon>
         </ion-item>
         
+        <ion-item *ngIf="authService.isAuthenticated()" detail="true" [routerLink]="['/salida-estudiante']" routerLinkActive="router-link">
+          <ion-label>
+            Salida Estudiante
+          </ion-label>
+          <ion-icon name="people-circle"></ion-icon>
+        </ion-item>
+        
+
         <!-- Botón "Salir" para cerrar sesión -->
         <ion-item *ngIf="authService.isAuthenticated()" (click)="logout()">
           <ion-label>

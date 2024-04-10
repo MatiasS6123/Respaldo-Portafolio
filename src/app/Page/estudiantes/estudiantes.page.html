@@ -1,8 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Estudiantes</ion-title>
+    <ion-title>Registro de Estudiantes</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
+
 </ion-header>
+
+
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
@@ -57,17 +63,9 @@
       </ion-select>
     </ion-item>
 
-    <ion-item>
-      <ion-label class="date" position="floating">Fecha de Nacimiento:</ion-label>
-      <ion-datetime 
-        display-format="DD/MM/YYYY" 
-        name="fecha_nac" 
-        formControlName="fecha_nac" 
-        [(ngModel)]="estudiante.fecha_nac"
-        required>
-       
-      </ion-datetime>
-    </ion-item>
+    <ion-label position="stacked">Fecha de Nacimiento:</ion-label>
+    <ion-input type="date" formControlName="fecha_nac"></ion-input>
+
     <!-- Botón de Guardar -->
     <ion-button type="submit" expand="block">Guardar</ion-button>
   </form>

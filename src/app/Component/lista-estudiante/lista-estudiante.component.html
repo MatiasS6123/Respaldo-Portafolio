@@ -1,3 +1,14 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Busqueda de estudiantes
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+
 <ion-item class="ion-margin-top" [formGroup]="buscarForm">
   <ion-label position="stacked">Buscar Estudiante por RUT:</ion-label>
   <ion-input type="text" placeholder="Ingrese un Rut" formControlName="rut"></ion-input>
@@ -30,7 +41,9 @@
     <ion-input type="date" formControlName="fecha_nac"></ion-input>
 
     <!-- Botones de acción -->
-    <ion-button color="danger" (click)="eliminarEstudiante()">Eliminar</ion-button>
-    <ion-button color="secondary" (click)="actualizarEstudiante()">Guardar Cambios</ion-button>
+    <div class="button-container">
+      <ion-button color="danger" (click)="eliminarEstudiante()" class="action-button">Eliminar</ion-button>
+      <ion-button color="secondary" (click)="actualizarEstudiante()" class="action-button">Guardar Cambios</ion-button>
+    </div>
   </ion-item>
 </form>

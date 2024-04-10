@@ -20,7 +20,11 @@ const routes: Routes = [
     path: 'estudiantes',
     loadChildren: () => import('./Page/estudiantes/estudiantes.module').then( m => m.EstudiantesPageModule)
   },
-  {path: 'lista-estudiante',component:ListaEstudianteComponent}
+  {path: 'lista-estudiante',component:ListaEstudianteComponent},
+  {
+    path: 'salida-estudiante',
+    loadChildren: () => import('./Page/salida-estudiante/salida-estudiante.module').then( m => m.SalidaEstudiantePageModule)
+  }
 
 ];
 

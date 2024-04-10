@@ -1,0 +1,9 @@
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Distribuye los botones horizontalmente */
+  }
+  
+  .action-button {
+    flex: 1; /* Los botones ocuparán todo el espacio disponible horizontalmente */
+    margin-right: 8px; /* Espacio entre los botones */
+  }
