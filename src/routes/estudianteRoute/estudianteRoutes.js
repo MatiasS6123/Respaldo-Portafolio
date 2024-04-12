@@ -113,4 +113,16 @@ router.delete('/:rut', async (req, res) => {
 });
 
 
+router.get('/nombres', async (req, res) => {
+    try {
+        const estudiantes = await Estudiante.find({}, 'nombre');
+        console.log('Nombres de estudiantes obtenidos:', estudiantes); // Agregar log
+        const nombres = estudiantes.map(estudiante => estudiante.nombre);
+        res.json(nombres);
+    } catch (error) {
+        console.error('Error al obtener nombres de estudiantes:', error); // Agregar log
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

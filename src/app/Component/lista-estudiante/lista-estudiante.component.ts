@@ -15,6 +15,7 @@ export class ListaEstudianteComponent implements OnInit {
   buscarForm!: FormGroup;
   estudianteEncontrado: Estudiante | null = null;
   mostrarInformacionEstudiante: boolean = false;
+  edicionHabilitada: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private estudianteService: EstudianteService, private toastController:ToastController) {}
 
@@ -25,13 +26,13 @@ export class ListaEstudianteComponent implements OnInit {
 
   private initEstudianteForm(): void {
     this.estudianteForm = this.formBuilder.group({
-      rut: ['', [Validators.required]], // Ejemplo de validación para un RUT chileno
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
-      edad: ['', [Validators.required, Validators.min(0), Validators.max(120)]], // Suponiendo una edad válida entre 0 y 120 años
-      sexo: ['', Validators.required],
-      nacionalidad: ['', Validators.required],
-      fecha_nac: ['', Validators.required] // Podrías agregar un validador de fecha personalizado si es necesario
+      rut: [{value: '', disabled: true}, [Validators.required]], // Ejemplo de validación para un RUT chileno
+      nombre: [{value: '', disabled: true}, Validators.required],
+      apellido: [{value: '', disabled: true}, Validators.required],
+      edad: [{value: '', disabled: true}, [Validators.required, Validators.min(0), Validators.max(120)]], // Suponiendo una edad válida entre 0 y 120 años
+      sexo: [{value: '', disabled: true}, Validators.required],
+      nacionalidad: [{value: '', disabled: true}, Validators.required],
+      fecha_nac: [{value: '', disabled: true}, Validators.required] // Podrías agregar un validador de fecha personalizado si es necesario
     });
   }
 
@@ -52,6 +53,7 @@ export class ListaEstudianteComponent implements OnInit {
           // Parsear la fecha antes de asignarla al formulario
           estudiante.fecha_nac = estudiante.fecha_nac.split('T')[0]; // Obtener solo la parte de la fecha (YYYY-MM-DD)
           this.estudianteForm.patchValue(estudiante); // Actualizar el formulario con los datos del estudiante encontrado
+          this.estudianteForm.disable();
         } else {
           
           console.error('Estudiante no encontrado');
@@ -64,6 +66,11 @@ export class ListaEstudianteComponent implements OnInit {
         console.error('Error al buscar estudiante:', error);
       }
     );
+  }
+
+  habilitarEdicion() {
+    this.estudianteForm.enable(); 
+    this.edicionHabilitada=true;// Habilitar todos los campos del formulario
   }
 
   eliminarEstudiante() {
@@ -99,6 +106,7 @@ export class ListaEstudianteComponent implements OnInit {
         this.presentToast('Estudiante actualizado correctamente:');
         this.estudianteEncontrado = estudiante;
         // Aquí puedes realizar alguna acción adicional después de actualizar el estudiante, si es necesario
+        this.estudianteForm.disable();
       },
       (error) => {
         console.error('Error al actualizar estudiante:', error);

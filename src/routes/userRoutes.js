@@ -14,9 +14,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Ruta para crear un nuevo usuario
 router.post('/', async (req, res) => {
-    const { rut, nombre, apellido, edad, email, password } = req.body;
+    const { rut, nombre, apellido, edad,tipo_usuario, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10); // Hash de la contraseña
 
     const user = new User({
@@ -24,6 +23,7 @@ router.post('/', async (req, res) => {
         nombre: nombre,
         apellido: apellido,
         edad: edad,
+        tipo_usuario:tipo_usuario,
         email: email,
         password: hashedPassword // Guardar la contraseña cifrada
     });
@@ -37,9 +37,52 @@ router.post('/', async (req, res) => {
 });
 
 function generateAuthToken(user) {
-    return jwt.sign({ userId: user._id }, 'tu_clave_secreta', { expiresIn: '1h' });
+    return jwt.sign({ userId: user._id }, 'tu_clave_secreta', { expiresIn: '1h' }); // Definir tiempo de expiración del nuevo token (por ejemplo, 1 hora)
 }
 
+// Middleware para verificar el token de autenticación
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) {
+        return res.sendStatus(401); // Unauthorized
+    }
+
+    jwt.verify(token, 'tu_clave_secreta', (err, user) => {
+        if (err) {
+            // Verificar si el error es debido a que el token ha expirado
+            if (err.name === 'TokenExpiredError') {
+                // Generar un nuevo token con una nueva fecha de expiración
+                const newToken = jwt.sign({ userId: user ? user._id : null }, 'tu_clave_secreta', { expiresIn: '1h' });
+                
+                // Enviar el nuevo token al cliente
+                res.setHeader('Authorization', `Bearer ${newToken}`);
+                // Continuar con la ejecución de la solicitud
+                next();
+            } else {
+                return res.sendStatus(403); // Forbidden
+            }
+        } else {
+            req.user = user;
+            next();
+        }
+    });
+}
+
+// Ruta para el perfil del usuario
+router.get('/profile', authenticateToken, async (req, res) => {
+    try {
+        // Buscar al usuario por su ID almacenado en el token de autenticación
+        const user = await User.findById(req.user.userId);
+        // Devolver la información del usuario como respuesta
+        res.json(user);
+    } catch (err) {
+        // Manejar cualquier error que ocurra durante la búsqueda del usuario
+        console.error('Error al obtener el perfil del usuario:', err);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+});
 // Ruta para el login
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -79,5 +122,61 @@ router.post('/login', async (req, res) => {
     }
 });
 
+
+// Ruta para actualizar un estudiante por su ID
+router.put('/:rut', async (req, res) => {
+    try {
+        // Validar que la solicitud tenga datos para actualizar
+        if (!req.body) {
+            return res.status(400).json({ message: 'No se proporcionaron datos para actualizar' });
+        }
+
+        // Buscar el estudiante por su RUT
+        const user = await User.findOne({ rut: req.params.rut });
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        
+        // Actualizar los datos del estudiante con los datos proporcionados en la solicitud
+        Object.assign(user, req.body);
+        console.log('usuario actualizado:', user); // Registrar el estudiante actualizado
+
+        // Guardar el estudiante actualizado en la base de datos
+        const userActualizado = await user.save();
+        res.json(userActualizado);
+    } catch (error) {
+        console.error('Error al actualizar usuario:', error); // Registrar el error
+        res.status(500).json({ message: 'Error interno del servidor al actualizar el usuario' });
+    }
+});
+
+router.delete('/:rut', async (req, res) => {
+    try {
+        const result = await User.deleteOne({ rut: req.params.rut });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'usuario no encontrado' });
+        }
+        
+        console.log('usuario eliminado correctamente');
+        res.json({ message: 'usuario eliminado correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar usuario:', error);
+        res.status(500).json({ message: error.message });
+    }
+});
+router.get('/:rut', async (req, res) => {
+    try {
+        console.log('RUT recibido:', req.params.rut); // Agregar log para imprimir el RUT recibido
+        const user = await User.findOne({ rut: req.params.rut }).lean(false);
+        if (!user) {
+            return res.status(404).json({ message: 'usuario no encontrado' });
+        }
+        console.log('usuario encontrado:', user); // Agregar log
+        res.json(user);
+    } catch (error) {
+        console.error('Error al obtener usuario por RUT:', error); // Agregar log
+        res.status(500).json({ message: error.message });
+    }
+});
 
 module.exports = router;

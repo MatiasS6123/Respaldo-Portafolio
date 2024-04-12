@@ -22,5 +22,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/Prueba', { useNewUrlParser: true, us
 app.use('/api/users', require('./routes/userRoutes')); // Ejemplo de ruta para usuarios
 app.use('/api/estudiante', require('./routes/estudianteRoute/estudianteRoutes'));
 app.use('/api/salida',require('./routes/salidaRoutes/salidaRoutes'));
+app.use('/api/curso',require('./routes/gestionCursoRoutes/gestionCursoRoutes'));
 // Iniciar servidor
 app.listen(PORT, () => console.log(`Servidor backend corriendo en puerto ${PORT}`));

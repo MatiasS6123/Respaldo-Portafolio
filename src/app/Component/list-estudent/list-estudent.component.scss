@@ -1,0 +1,17 @@
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%; /* Añade esta línea para ocupar todo el ancho */
+  }
+  
+  .card {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 0 10px 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  

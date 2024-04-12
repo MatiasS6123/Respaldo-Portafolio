@@ -38,4 +38,5 @@ export class EstudianteService {
   deleteEstudiante(rut: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${rut}`);
   }
+  
 }

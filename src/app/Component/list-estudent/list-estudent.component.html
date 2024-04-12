@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>lista de estudiante</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div *ngFor="let student of students">
+  <div class="card">
+    <div class="card-header">
+      <h5> Nombre {{ student.nombre }} {{ student.apellido }}</h5>
+    </div>
+    <div class="card-body">
+      <p>RUT: {{ student.rut }}</p>
+      <p>Edad: {{ student.edad }}</p>
+      <!-- Agrega más información del estudiante según sea necesario -->
+    </div>
+  </div>
+</div>

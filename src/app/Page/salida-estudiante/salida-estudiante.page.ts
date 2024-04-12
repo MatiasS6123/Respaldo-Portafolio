@@ -18,6 +18,7 @@ export class SalidaEstudiantePage implements OnInit {
     this.salidaForm = this.fb.group({ // Inicializar el FormGroup
       nombreEstudiante: ['', Validators.required],
       quienRetira: ['', Validators.required],
+      motivo:['',Validators.required],
       foto: ['', Validators.required]
     });
   }

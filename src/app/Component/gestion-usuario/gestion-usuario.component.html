@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Búsqueda de usuarios
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item class="ion-margin-top" [formGroup]="buscarForm">
+    <ion-label position="stacked">Buscar Usuario por RUT:</ion-label>
+    <ion-input type="text" placeholder="Ingrese un Rut" formControlName="rut"></ion-input>
+    <ion-button (click)="buscarUsuario()" expand="block">Buscar</ion-button>
+  </ion-item>
+
+  <form [formGroup]="userForm" *ngIf="mostrarInformacionUsuario">
+    <!-- Detalles del estudiante encontrado -->
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">RUT:</ion-label>
+      <ion-input type="text" formControlName="rut" [disabled]="!edicionHabilitada"></ion-input>
+
+      <ion-label position="stacked">Nombre:</ion-label>
+      <ion-input type="text" formControlName="nombre" [disabled]="!edicionHabilitada"></ion-input>
+
+      <ion-label position="stacked">Apellido:</ion-label>
+      <ion-input type="text" formControlName="apellido" [disabled]="!edicionHabilitada"></ion-input>
+
+      <ion-label position="stacked">Edad:</ion-label>
+      <ion-input type="number" formControlName="edad" [disabled]="!edicionHabilitada"></ion-input>
+
+      <ion-label position="stacked">Tipo Usuario:</ion-label>
+      <ion-input type="text" formControlName="tipo_usuario" [disabled]="!edicionHabilitada"></ion-input>
+
+      <ion-label position="stacked">Email:</ion-label>
+      <ion-input type="text" formControlName="email" [disabled]="!edicionHabilitada"></ion-input>
+
+      <!-- Contraseña -->
+      <ion-label position="stacked">Contraseña:</ion-label>
+      <ion-input type="password" formControlName="password" [disabled]="!edicionHabilitada"></ion-input>
+
+      <!-- Botones de acción -->
+      <div class="button-container">
+        <ion-button color="primary" (click)="habilitarEdicion()" *ngIf="!edicionHabilitada">Modificar</ion-button>
+        <ion-button color="danger" (click)="eliminarUsuario()" class="action-button" *ngIf="edicionHabilitada">Eliminar</ion-button>
+        <ion-button color="secondary" (click)="actualizarUsuario()" class="action-button" *ngIf="edicionHabilitada">Guardar Cambios</ion-button>
+      </div>
+    </ion-item>
+  </form>
+</ion-content>

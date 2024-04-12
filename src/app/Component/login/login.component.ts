@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/Service/user.service';
 import { ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,11 @@ export class LoginComponent implements OnInit {
 
   email: string = '';
   password: string = '';
+
+  isLoggedIn: boolean = false;
+  isAdmin: boolean = false;
+  isAdminSubscription: Subscription | undefined; // Subscription para el método isAdmin()
+
 
   constructor(private userService: UserService, private router: Router, private toastController: ToastController) { }
 
@@ -32,6 +38,15 @@ export class LoginComponent implements OnInit {
         const token = response.token;
         localStorage.setItem('token', token);
         
+        this.isLoggedIn = this.userService.isAuthenticated();
+    
+    if (this.isLoggedIn) {
+      // Suscribirse al método isAdmin() y actualizar isAdmin cuando se resuelva
+        this.isAdminSubscription = this.userService.isAdmin().subscribe(isAdmin => {
+        console.log('isAdmin:', isAdmin);
+        this.isAdmin = isAdmin;
+      });
+    }
         // Redirigir a la página principal o a la página deseada
         this.router.navigate(['']); // Modifica la ruta según la configuración de tu aplicación
       },
