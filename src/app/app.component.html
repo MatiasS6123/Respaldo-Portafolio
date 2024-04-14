@@ -56,10 +56,17 @@
 
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/gestion-curso']" routerLinkActive="router-link">
           <ion-label>
+            asignar cursos 
+          </ion-label>
+          <ion-icon name="people"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/buscar-curso']" routerLinkActive="router-link">
+          <ion-label>
             busqueda de cursos 
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>
+
 
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/lista-estudiante']" routerLinkActive="router-link">
           <ion-label>
