@@ -23,5 +23,8 @@ app.use('/api/users', require('./routes/userRoutes')); // Ejemplo de ruta para u
 app.use('/api/estudiante', require('./routes/estudianteRoute/estudianteRoutes'));
 app.use('/api/salida',require('./routes/salidaRoutes/salidaRoutes'));
 app.use('/api/curso',require('./routes/gestionCursoRoutes/gestionCursoRoutes'));
+app.use('/api/asistencia',require('./routes/asistenciaRoutes/asistenciaRoutes'));
+app.use('/api/bitacora',require('./routes/bitacoraRoutes/bitacoraRoutes'));
+app.use('/api/nota',require('./routes/notaRoutes/notaRoutes'));
 // Iniciar servidor
 app.listen(PORT, () => console.log(`Servidor backend corriendo en puerto ${PORT}`));

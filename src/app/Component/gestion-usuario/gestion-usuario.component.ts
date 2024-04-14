@@ -119,4 +119,6 @@ export class GestionUsuarioComponent implements OnInit {
     });
     toast.present();
   }
+
+  
 }

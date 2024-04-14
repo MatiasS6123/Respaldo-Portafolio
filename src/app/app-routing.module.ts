@@ -8,6 +8,7 @@ import { GestionUsuarioComponent } from './Component/gestion-usuario/gestion-usu
 import { ListEstudentComponent } from './Component/list-estudent/list-estudent.component';
 import { ListaUsuarioComponent } from './Component/lista-usuario/lista-usuario.component';
 import { BuscarCursoComponent } from './Component/buscar-curso/buscar-curso.component';
+import { BitacoraComponent } from './Component/bitacora/bitacora.component';
 
 const routes: Routes = [
   {
@@ -59,6 +60,15 @@ const routes: Routes = [
   {
     path:'buscar-curso',
     component:BuscarCursoComponent
+  },
+  {
+    path:'bitacora',
+    component:BitacoraComponent
+
+  },
+  {
+    path: 'nota',
+    loadChildren: () => import('./Page/nota/nota.module').then( m => m.NotaPageModule)
   }
 
 ];

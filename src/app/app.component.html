@@ -1,7 +1,12 @@
 <ion-app>
+  
   <ion-split-pane contentId="main-content">
+   
     <ion-menu contentId="main-content" type="overlay">
-      <!-- Contenido del menú (opcional) -->
+      <ion-list>
+        <ion-list-header>Menu</ion-list-header>
+
+        <!-- Contenido del menú (opcional) -->
       <ion-menu-toggle autoHide="false">
         <!-- Mostrar elementos de registro y login solo si el usuario no está autenticado -->
         <ion-item *ngIf="!authService.isAuthenticated()" detail="true" [routerLink]="['/registro']" routerLinkActive="router-link">
@@ -26,7 +31,13 @@
         </ion-item>
         <ion-item *ngIf="authService.isAuthenticated() && !isAdmin" detail="true" [routerLink]="['/asistencia']" routerLinkActive="router-link">
           <ion-label>
-            Asistencia
+            Registro  Asistencia
+          </ion-label>
+          <ion-icon name="people-circle"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && !isAdmin" detail="true" [routerLink]="['/nota']" routerLinkActive="router-link">
+          <ion-label>
+            Ingresar notas
           </ion-label>
           <ion-icon name="people-circle"></ion-icon>
         </ion-item>
@@ -38,7 +49,14 @@
         </ion-item>
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/gestion-usuario']" routerLinkActive="router-link">
           <ion-label>
-            gestion de usuarios 
+            busqueda de usuarios 
+          </ion-label>
+          <ion-icon name="people"></ion-icon>
+        </ion-item>
+
+        <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/gestion-curso']" routerLinkActive="router-link">
+          <ion-label>
+            busqueda de cursos 
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>
@@ -49,7 +67,6 @@
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>
-
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/lista-usuario']" routerLinkActive="router-link">
           <ion-label>
             lista de usuarios 
@@ -57,9 +74,7 @@
           <ion-icon name="people"></ion-icon>
         </ion-item>
 
-
-
-        
+                
         <ion-item *ngIf="authService.isAuthenticated()" detail="true" [routerLink]="['/salida-estudiante']" routerLinkActive="router-link">
           <ion-label>
             Salida Estudiante
@@ -76,6 +91,11 @@
           <ion-icon name="log-out"></ion-icon>
         </ion-item>
       </ion-menu-toggle>
+      
+        
+        
+      </ion-list>
+      
       <ion-menu-toggle *ngIf="authService.isAuthenticated() && authService.isAdmin()"></ion-menu-toggle>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>

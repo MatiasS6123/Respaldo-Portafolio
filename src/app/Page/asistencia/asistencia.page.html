@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Asistencia</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -10,4 +13,29 @@
       <ion-title size="large">Asistencia</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div>
+    <h2>Registro de Asistencia</h2>
+    <form  [formGroup]="asistenciaForm" (ngSubmit)="guardarAsistencia()">
+      <!-- Iteramos sobre la lista de estudiantes -->
+      <div *ngFor="let estudiante of estudiantes">
+        <!-- Cada estudiante es un FormControl en el FormGroup asistenciaForm -->
+        <ion-item>
+          <ion-label>{{ estudiante.nombre }}</ion-label>
+          <!-- Utilizamos un select para registrar la asistencia -->
+          <ion-select [formControlName]="estudiante.nombre">
+            <ion-select-option value="false">Ausente</ion-select-option>
+            <ion-select-option value="true">Presente</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+      <!-- Botón para enviar el formulario -->
+      <ion-button type="submit" expand="full">Guardar Asistencia</ion-button>
+      
+      <ion-button [routerLink]="['/bitacora']" routerLinkActive="router-link" type="submit" expand="full">Guardar bitacora</ion-button>
+
+
+    </form>
+  </div>
+  
 </ion-content>

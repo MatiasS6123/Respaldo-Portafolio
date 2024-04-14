@@ -10,10 +10,11 @@ import { GestionUsuarioComponent } from './gestion-usuario/gestion-usuario.compo
 import { ListEstudentComponent } from './list-estudent/list-estudent.component';
 import { ListaUsuarioComponent } from './lista-usuario/lista-usuario.component';
 import { BuscarCursoComponent } from './buscar-curso/buscar-curso.component';
+import { BitacoraComponent } from './bitacora/bitacora.component';
 
 @NgModule({
   declarations: [RegistroComponent,LoginComponent,ListaEstudianteComponent,GestionUsuarioComponent,ListEstudentComponent,ListaUsuarioComponent,
-  BuscarCursoComponent],
+  BuscarCursoComponent,BitacoraComponent],
   imports: [
     CommonModule,
     IonicModule, // Importa IonicModule

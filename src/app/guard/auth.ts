@@ -14,6 +14,7 @@ import { UserService } from '../Service/user.service';
             if (success) {
               return true;
             } else {
+              this.userService.logout();
               this.router.navigate(['/login']); // Redirige a la página de inicio de sesión si la renovación del token falla
               return false;
             }

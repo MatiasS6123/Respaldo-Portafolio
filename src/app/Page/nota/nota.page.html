@@ -1,0 +1,34 @@
+
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        Ingresar Notas
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-item class="input-item">
+      <ion-label position="stacked" class="input-label">Asignatura</ion-label>
+      <ion-input type="text" [(ngModel)]="nota.asignatura" class="input-field"></ion-input>
+    </ion-item>
+  
+    <ion-item class="input-item">
+      <ion-label position="stacked" class="input-label">Curso</ion-label>
+      <ion-input type="text" [(ngModel)]="nota.curso" class="input-field"></ion-input>
+    </ion-item>
+  
+    <ion-list>
+      <ion-item *ngFor="let estudiante of estudiantes" class="input-item">
+        <ion-label class="input-label">{{ estudiante.nombre }}</ion-label>
+        <ion-input type="number" [(ngModel)]="notasEstudiantes[estudiante.nombre]" slot="end" class="input-field"></ion-input>
+      </ion-item>
+    </ion-list>
+  
+    <ion-button expand="block" (click)="guardarNotas()" class="save-button">Guardar</ion-button>
+  </ion-content>
+</ion-content>
