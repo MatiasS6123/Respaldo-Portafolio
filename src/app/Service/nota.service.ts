@@ -15,4 +15,23 @@ export class NotaService {
   guardarNota(nota: Nota): Observable<any> {
     return this.http.post<any>(this.baseUrl, nota);
   }
+
+  getNotas(): Observable<Nota[]> {
+    return this.http.get<Nota[]>(this.baseUrl);
+  }
+
+  // Método para obtener un estudiante por su ID
+  getNotasByCurso(curso: string): Observable<Nota> {
+    return this.http.get<Nota>(`${this.baseUrl}/${curso}`);
+  }
+
+  updateCurso(curso: string, nota: Nota): Observable<Nota> {
+    return this.http.put<Nota>(`${this.baseUrl}/${curso}`, nota);
+  }
+  
+
+  // Método para eliminar un estudiante por su ID
+  deleteNota(curso: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${curso}`);
+  }
 }
