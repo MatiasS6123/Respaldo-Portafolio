@@ -14,63 +14,45 @@ import { ToastController } from '@ionic/angular';
 export class AsistenciaPage implements OnInit {
 
   estudiantes: Estudiante[] = [];
-  asistenciaForm: FormGroup;
+  asistencia: { [nombre: string]: boolean } = {};
 
   constructor(
     private asistenciaService: AsistenciaService,
     private estudianteService: EstudianteService,
-    private formBuilder: FormBuilder,
-    private toastController:ToastController
+    private toastController: ToastController
   ) { }
 
   ngOnInit(): void {
     this.estudianteService.getEstudiantes().subscribe(estudiantes => {
       this.estudiantes = estudiantes;
-      this.buildForm();
+      this.inicializarAsistencia();
     });
   }
 
-  buildForm(): void {
-    // Creamos un objeto vacío para almacenar los FormControl de asistencia
-    const formControls: any = {};
-  
-    // Para cada estudiante, creamos un FormControl con valor inicial 'false'
+  inicializarAsistencia(): void {
     this.estudiantes.forEach(estudiante => {
-      formControls[estudiante.nombre] = [false];
+      this.asistencia[estudiante.nombre] = false;
     });
-  
-    // Construimos el FormGroup con los formControls
-    this.asistenciaForm = this.formBuilder.group(formControls);
   }
-  
-  
   guardarAsistencia(): void {
-    // Creamos un objeto de tipo Asistencia
-    const asistenciaData: Asistencia = {
-      fecha: new Date(), // Supongo que quieres la fecha actual
-      asistencia: []
+    // Crear un array de asistencia
+    const asistenciaData = {
+      fecha: new Date(),
+      asistencia: Object.entries(this.asistencia).map(([nombre, presente]) => ({ nombre, presente }))
     };
-    
-    // Recorremos los estudiantes para obtener sus nombres y su estado de asistencia
-    Object.keys(this.asistenciaForm.controls).forEach(nombre => {
-      asistenciaData.asistencia.push({ nombre, presente: this.asistenciaForm.get(nombre)?.value });
-    });
-    
-    // Enviamos los datos de asistencia al servicio
+
+    // Enviar datos al servicio
     this.asistenciaService.guardarAsistencia(asistenciaData).subscribe(
       () => {
         console.log('Asistencia guardada exitosamente');
+        this.presentToast('Asistencia guardada exitosamente');
       },
       error => {
-        
-        // Si la solicitud no es exitosa (estado 201), considerarla como exitosa
-        if (error.status === 201) {
-          this.presentToast('Asistencia guardada exitosamente');
-          this.asistenciaForm.reset();
-        } else {
-          // Si hay un error diferente, manejarlo apropiadamente
-          // Puedes agregar más lógica aquí según sea necesario
+        if(error.status === 201){
+          this.presentToast('Asistencia Guardada correctamente');
+
         }
+        
       }
     );
   }
@@ -83,5 +65,7 @@ export class AsistenciaPage implements OnInit {
     });
     toast.present();
   }
+
+
   
 }
