@@ -5,11 +5,11 @@ import { EstudianteService } from 'src/app/Service/estudiante.service';
 import { Estudiante } from 'src/models/Estudiante';
 
 @Component({
-  selector: 'app-lista-estudiante',
-  templateUrl: './lista-estudiante.component.html',
-  styleUrls: ['./lista-estudiante.component.scss'],
+  selector: 'app-buscar-estudiante',
+  templateUrl: './buscar-estudiante.component.html',
+  styleUrls: ['./buscar-estudiante.component.scss'],
 })
-export class ListaEstudianteComponent implements OnInit {
+export class BuscarEstudianteComponent  implements OnInit {
 
   estudianteForm!: FormGroup;
   buscarForm!: FormGroup;

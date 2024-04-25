@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>lista de cursos </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <ion-list *ngIf="cursos.length > 0; else noCursos">
+    <p class="subtitulo">Estos son sus cursos asignados </p>
+    
+    <ion-item *ngFor="let curso of cursos" >
+      <ion-label>nombre curso: {{curso.nombreCurso}}</ion-label>
+      <ion-button (click)="redirigirNota(curso.nombreCurso)">Ir a nota</ion-button> 
+      <ion-button (click)="redirigirAsistencia(curso.nombreCurso)">Ir a asistencia</ion-button> 
+    </ion-item>
+  </ion-list>
+  <ng-template #noCursos>
+    <p class="subtitulo">Usted no tiene cursos asignados</p>
+  </ng-template>
+</ion-content>

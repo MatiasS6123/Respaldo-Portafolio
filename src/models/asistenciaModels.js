@@ -6,6 +6,7 @@ const asistenciaSchema = new Schema({
     asistencia: [{
         nombre: { type: String, required: true },
         presente: { type: Boolean, required: true }
-      }]
+      }],
+    nombreCurso:{type:String, requerided:true}
 });
 module.exports = mongoose.model('Asistencia', asistenciaSchema);

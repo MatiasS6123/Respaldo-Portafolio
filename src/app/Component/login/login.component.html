@@ -1,6 +1,6 @@
 <!-- login.page.html -->
 
-<ion-header>
+<ion-header class="ion-text-center">
   <ion-toolbar>
     <ion-title>
       Login
@@ -8,8 +8,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <form (ngSubmit)="login()">
+<ion-content padding >
+  <p class="titulo" >Introdusca sus credenciales para iniciar session</p>
+  <form (ngSubmit)="login()" >
     <ion-item>
       <ion-label position="floating">Correo electrónico</ion-label>
       <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>

@@ -1,21 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Asistencia</ion-title>
+    <ion-title> Registro de Asistencia</ion-title>
     <ion-buttons slot="end">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <form (ngSubmit)="guardarAsistencia()">
     <ion-list>
-      <ion-item *ngFor="let estudiante of estudiantes">
-        <ion-label>{{ estudiante.nombre }}</ion-label>
-        <ion-checkbox [(ngModel)]="asistencia[estudiante.nombre]" name="{{ estudiante.nombre }}"></ion-checkbox>
-        <ion-note slot="end">{{ asistencia[estudiante.nombre] ? 'Presente' : 'Ausente' }}</ion-note>
+      <ion-item *ngFor="let estudiante of gestionCurso?.alumno">
+        <ion-label>{{ estudiante }}</ion-label>
+        <ion-checkbox [(ngModel)]="asistencia[estudiante]" name="{{ estudiante }}"></ion-checkbox>
+        <ion-note slot="end">{{ asistencia[estudiante] ? 'Presente' : 'Ausente' }}</ion-note>
       </ion-item>
     </ion-list>
 
+    
     <ion-button type="submit" expand="block">Guardar Asistencia</ion-button>
   </form>
 </ion-content>

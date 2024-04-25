@@ -1,34 +1,38 @@
 /* gestion-curso-form.component.css */
-.form-container {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  
-  input[type="text"], select {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
+
+ion-header{
+  text-align: center;
+}
+
+ion-item{
+  padding-top: 1.5rem;
+  border: solid 2px #FFFFFF;
+  border-left: none; /* Sin línea a la izquierda */
+  border-right: none;
+}
+
+ion-button{
+ 
+  align-content: center;
+  display: flex;
+  padding-top: 1.5rem;
+  text-align: center;
+}
   button[type="submit"] {
     padding: 0.5rem 1rem;
     background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    
   }
   
   button[type="submit"]:hover {
     background-color: #0056b3;
   }
-  
+
+  .parrafo{
+    text-align: center;
+  }

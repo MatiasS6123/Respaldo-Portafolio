@@ -18,8 +18,16 @@ export class ListEstudentComponent  implements OnInit {
   }
 
   getEstudents():void{
-    this.estudentService.getEstudiantes().subscribe(estudents=>
-        this.students=estudents  
+    this.estudentService.getEstudiantes().subscribe(
+      (estudents: any)=>{
+        if(estudents){
+          
+
+        this.students=estudents
+        }
+         
+      }
+       
       )
 
   }

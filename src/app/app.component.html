@@ -25,7 +25,7 @@
         <!-- Mostrar elementos de registro de estudiante, asistencia y lista de estudiantes solo si el usuario está autenticado -->
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/estudiantes']" routerLinkActive="router-link">
           <ion-label>
-            Registro de estudiante
+            Registro de Estudiante
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>
@@ -43,26 +43,26 @@
         </ion-item>
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/busqueda-estudiante']" routerLinkActive="router-link">
           <ion-label>
-            busqueda Estudiante
+            Busqueda de  Estudiante
           </ion-label>
           <ion-icon name="people-circle"></ion-icon>
         </ion-item>
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/gestion-usuario']" routerLinkActive="router-link">
           <ion-label>
-            busqueda de usuarios 
+            Busqueda de Usuarios 
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>
 
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/gestion-curso']" routerLinkActive="router-link">
           <ion-label>
-            asignar cursos 
+            Asignar cursos 
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/buscar-curso']" routerLinkActive="router-link">
           <ion-label>
-            busqueda de cursos 
+            Busqueda de Cursos 
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>
@@ -70,13 +70,13 @@
 
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/lista-estudiante']" routerLinkActive="router-link">
           <ion-label>
-            lista de estudiantes 
+            Lista de Estudiantes 
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>
         <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/lista-usuario']" routerLinkActive="router-link">
           <ion-label>
-            lista de usuarios 
+            Lista de Usuarios 
           </ion-label>
           <ion-icon name="people"></ion-icon>
         </ion-item>

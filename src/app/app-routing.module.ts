@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { RegistroComponent } from './Component/registro/registro.component';
 import { LoginComponent } from './Component/login/login.component';
-import { ListaEstudianteComponent } from './Component/lista-estudiante/lista-estudiante.component';
 import { AuthGuard } from './guard/auth';
 import { GestionUsuarioComponent } from './Component/gestion-usuario/gestion-usuario.component';
 import { ListEstudentComponent } from './Component/list-estudent/list-estudent.component';
@@ -10,6 +9,8 @@ import { ListaUsuarioComponent } from './Component/lista-usuario/lista-usuario.c
 import { BuscarCursoComponent } from './Component/buscar-curso/buscar-curso.component';
 import { BitacoraComponent } from './Component/bitacora/bitacora.component';
 import { GestionNotaComponent } from './Component/gestion-nota/gestion-nota.component';
+import { ListaCursoComponent } from './Component/lista-curso/lista-curso.component';
+import { BuscarEstudianteComponent } from './Component/buscar-estudiante/buscar-estudiante.component';
 
 const routes: Routes = [
   {
@@ -28,7 +29,7 @@ const routes: Routes = [
     loadChildren: () => import('./Page/estudiantes/estudiantes.module').then( m => m.EstudiantesPageModule),
     canActivate:[AuthGuard]
   },
-  {path: 'busqueda-estudiante',component:ListaEstudianteComponent,
+  {path: 'busqueda-estudiante',component:BuscarEstudianteComponent,
   canActivate:[AuthGuard]},
   {
     path: 'salida-estudiante',
@@ -37,7 +38,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'asistencia',
+    path: 'asistencia/:nombreCurso',
     loadChildren: () => import('./Page/asistencia/asistencia.module').then( m => m.AsistenciaPageModule),
     canActivate:[AuthGuard]
   },
@@ -68,12 +69,16 @@ const routes: Routes = [
 
   },
   {
-    path: 'nota',
+    path: 'nota/:nombreCurso',
     loadChildren: () => import('./Page/nota/nota.module').then( m => m.NotaPageModule)
   },
   {
     path:'gestion-nota',
     component:GestionNotaComponent
+  },
+  {
+    path:'lista-curso',
+    component:ListaCursoComponent
   }
 
 ];

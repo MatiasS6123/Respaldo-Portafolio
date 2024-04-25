@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const GestionCurso= require('../../models/gestionCModels')
+const User = require('../../models/userModel');
 
 router.post('/', async (req, res) => {
-    const { nombreCurso, cantidadAlumno, nombreProfesor, dias,alumno } = req.body;
+    const { nombreCurso, cantidadAlumno, nombreProfesor,rutProfesor, dias,alumno } = req.body;
 
     const nuevagestionCurso = new GestionCurso({
         nombreCurso: nombreCurso,
         cantidadAlumno: cantidadAlumno,
         nombreProfesor: nombreProfesor,
+        rutProfesor:rutProfesor,
         dias: dias,
         alumno:alumno
     });
@@ -82,6 +84,74 @@ router.get('/:nombreCurso', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+router.get('/:rutProfesor/cursos', async (req, res) => {
+    try {
+        const rutProfesor = req.params.rutProfesor;
+        console.log('Nombre del usuario:', rutProfesor); // Agregar log aquí
+        // Buscar al profesor por su rut en la colección de usuarios
+        const profesor = await User.findOne({ rut: rutProfesor });
+        console.log('Información del usuario:', profesor); // Agregar log aquí
+        if (!profesor) {
+            console.log('Profesor no encontrado'); // Agregar log aquí
+            return res.status(404).json({ message: 'Profesor no encontrado' });
+        }
+        // Buscar cursos asignados al profesor por su rut en la colección de cursos
+        const cursos = await GestionCurso.find({ rutProfesor: rutProfesor });
+        console.log('Cursos encontrados:', cursos); // Agregar log aquí
+
+        if (cursos.length === 0) {
+            console.log('No se encontraron cursos asignados para este profesor'); // Agregar log aquí
+            return res.status(404).json({ message: 'Usted no tiene cursos asignados' });
+        }
+
+        res.json(cursos);
+    } catch (err) {
+        console.error('Error:', err); // Agregar log aquí
+        res.status(500).json({ message: err.message });
+    }
+});
+
+router.get('/:_id', async (req, res) => {
+    try {
+        const _id = req.params._id;
+        console.log('Solicitud GET recibida para el curso con ID:', _id);
+
+        const curso = await GestionCurso.findById(mongoose.Types.ObjectId(_id)).exec();
+        
+        if (!curso) {
+            console.log('Curso no encontrado para el ID:', _id); // Agregar este registro
+            return res.status(404).json({ message: 'Curso no encontrado' });
+        }
+
+        console.log('Curso encontrado:', curso); // Agregar este registro
+        res.json(curso);
+    } catch (error) {
+        console.error('Error al obtener curso por ID:', error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
+router.get('/:nombreCurso', async (req, res) => {
+    try {
+        const nombreCurso = req.params.nombreCurso;
+        console.log('Solicitud GET recibida para el curso con ID:', _id);
+
+        const curso = await GestionCurso.findOne({ nombreCurso: req.params.nombreCurso }).lean(false);
+        
+        if (!curso) {
+            console.log('Curso no encontrado para el ID:', nombreCurso); // Agregar este registro
+            return res.status(404).json({ message: 'Curso no encontrado' });
+        }
+
+        console.log('Curso encontrado:', curso); // Agregar este registro
+        res.json(curso);
+    } catch (error) {
+        console.error('Error al obtener curso por ID:', error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
 
 
 module.exports = router;

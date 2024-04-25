@@ -6,6 +6,9 @@ import { Nota } from '../../../models/nota';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { ToastController } from '@ionic/angular';
+import { GestionCurso } from 'src/models/gestionC';
+import { ActivatedRoute } from '@angular/router';
+import { GestionCService } from 'src/app/Service/gestion-c.service';
 
 @Component({
   selector: 'app-nota',
@@ -14,7 +17,8 @@ import { ToastController } from '@ionic/angular';
 })
 export class NotaPage implements OnInit {
 
-  estudiantes: Estudiante[];
+  gestionCurso: GestionCurso;
+
   nota: Nota = {
     asignatura: '',
     curso: '',
@@ -24,18 +28,24 @@ export class NotaPage implements OnInit {
   notasEstudiantes: { [nombre: string]: number } [] = []; //
   constructor(
     private notaService: NotaService,
-    private estudianteService: EstudianteService,
-    private toastController:ToastController
+    private gestionC: GestionCService,
+    private toastController:ToastController,
+    private route:ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.estudianteService.getEstudiantes().subscribe(
-      estudiantes => {
-        this.estudiantes = estudiantes;
-        console.log('Estudiantes obtenidos:', this.estudiantes);
+    const nombreCurso = this.route.snapshot.paramMap.get('nombreCurso');
+    console.log('ID del curso recibido:', nombreCurso);
+
+    this.gestionC.getCursoByNombre(nombreCurso).subscribe(
+      (curso) => {
+        this.gestionCurso = curso;
+        console.log('Información del curso:', this.gestionCurso);
+        // Aquí puedes realizar cualquier otra acción necesaria con la información del curso
       },
-      error => {
-        console.error('Error al obtener estudiantes:', error);
+      (error) => {
+        console.error('Error al obtener información del curso:', error);
+        // Maneja el error adecuadamente, por ejemplo, mostrando un mensaje al usuario
       }
     );
   }
@@ -49,14 +59,12 @@ export class NotaPage implements OnInit {
     // Construir el objeto Nota
     const nuevaNota: Nota = {
       asignatura: this.nota.asignatura,
-      curso: this.nota.curso,
+      curso: this.gestionCurso.nombreCurso,
       notas: notasArray,
       fecha: this.nota.fecha
     };
   
     console.log('Nueva nota a guardar:', nuevaNota);
-  
-    console.log('Nota a enviar al backend:', nuevaNota); // Imprime nuevaNota
   
     // Llamar al servicio para guardar la nueva nota
     this.notaService.guardarNota(nuevaNota).subscribe(() => {
@@ -66,20 +74,10 @@ export class NotaPage implements OnInit {
       this.nota.curso = '';
       // Limpiar las notas de los estudiantes
       this.notasEstudiantes = []; // Limpiar el objeto de notas
-    }, error=>{
-      
-       // Si la solicitud no es exitosa (estado 201), considerarla como exitosa
-       if (error.status === 201) {
-        this.presentToast("Notas guardadas correctamente");
-        this.nota.asignatura = '';
-        this.nota.curso = '';
-        // Limpiar las notas de los estudiantes
-        this.notasEstudiantes = [];
-        } else {
-        // Si hay un error diferente, manejarlo apropiadamente
-        // Puedes agregar más lógica aquí según sea necesario
-      }
-
+    }, error => {
+      // Si hay un error diferente, manejarlo apropiadamente
+      console.error('Error al guardar la nota:', error);
+      // Puedes agregar más lógica aquí según sea necesario
     });
   }
   async presentToast(message: string) {
