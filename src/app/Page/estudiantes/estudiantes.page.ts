@@ -13,64 +13,72 @@ export class EstudiantesPage implements OnInit {
   estudianteForm!: FormGroup;
   estudiante: Estudiante = {
     rut: '',
+    numero_matricula_estudiante:'',
     nombre: '',
     apellido: '',
     edad: 0,
     sexo: '',
     nacionalidad: '',
-    fecha_nac: new Date()
+    fecha_nac: new Date(),
+    tiene_enfermedad: false,
+    tipo_enferemedad: '',
+    descripcion_enfermedad: '',
+    certificado_enfermedad: ''
   };
-  rutBuscar!: string;
-  estudianteEncontrado: Estudiante | null = null;
-  mostrarFormulario: boolean = true;
-  mostrarInformacionEstudiante: boolean = false;
-  customPickerOptions: any;
-  constructor(private formBuilder: FormBuilder, private estudianteService: EstudianteService,private toastController: ToastController) {
-    this.customPickerOptions = {
-      cssClass: 'my-custom-picker'
-    };
+  files: { [key: string]: File } = {};
+  constructor(private formBuilder: FormBuilder, private estudianteService: EstudianteService, private toastController: ToastController) {
+
   }
 
   ngOnInit(): void {
     this.estudianteForm = this.formBuilder.group({
       rut: ['', Validators.required],
+      numero_matricula_estudiante:['',Validators.required],
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
       edad: [0, Validators.required],
       sexo: ['', Validators.required],
       nacionalidad: ['', Validators.required], // Agregado el campo de nacionalidad al formulario
-      fecha_nac: [new Date().toISOString(), Validators.required]
+      fecha_nac: [new Date().toISOString(), Validators.required],
+      tiene_enfermedad: [false, Validators.required],
+      tipo_enfermedad: [''],
+      descripcion_enfermedad: [''],
+      certificado_enfermedad: ['']
     });
   }
 
   guardarEstudiante() {
     if (this.estudianteForm.valid) {
-      // Obtiene la fecha de nacimiento del formulario en formato ISO 8601
       const fechaNacimientoISO = this.estudianteForm.get('fecha_nac')?.value;
-      
-      // Asigna la fecha ISO 8601 al formulario
       this.estudianteForm.patchValue({ fecha_nac: fechaNacimientoISO });
-      
-      console.log('Estudiante a guardar:', this.estudianteForm.value);
-      this.estudiante = this.estudianteForm.value;
-      this.estudianteService.createEstudiante(this.estudiante).subscribe(
-        (res) => {
-          console.log('Estudiante guardado correctamente:', res);
-          this.presentToast("Estudiante registrado con éxito");
-          this.estudianteForm.reset(); // Reinicia el formulario después de guardar
-        },
-        (error) => {
-          console.error('Error al guardar estudiante:', error);
-          this.presentToast("Error al registrar al estudiante, verifique el RUT o la información");
-        }
-      );
+
+      // Obtén el archivo de certificado de enfermedad
+      if (this.files['certificado_enfermedad']) {
+        const file = this.files['certificado_enfermedad'];
+        console.log('Estudiante a guardar:', this.estudianteForm.value);
+        this.estudiante = this.estudianteForm.value;
+        this.estudianteService.createEstudiante(this.estudiante, file).subscribe(
+          (res) => {
+            console.log('Estudiante guardado correctamente:', res);
+            this.presentToast("Estudiante registrado con éxito");
+            this.estudianteForm.reset();
+            this.files = {}; // Reinicia los archivos después de guardar
+          },
+          (error) => {
+            console.error('Error al guardar estudiante:', error);
+            this.presentToast("Error Al guardar Estudiante Rut o Numero de matricula duplicados");
+          }
+        );
+
+      }
+
+
     } else {
       console.error('Formulario de estudiante inválido. Por favor, revise los campos.');
     }
   }
-  
 
-  
+
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -79,5 +87,10 @@ export class EstudiantesPage implements OnInit {
       position: 'bottom'
     });
     toast.present();
+  }
+  onFileChange(event, field) {
+    if (event.target.files.length > 0) {
+      this.files[field] = event.target.files[0];
+    }
   }
 }

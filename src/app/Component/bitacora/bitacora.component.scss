@@ -1,6 +1,12 @@
-/* bitacora.component.css */
-
-/* Estilos generales del formulario */
+ion-content{
+  --ion-background-color: #98FF98;
+}
+ion-title{
+  text-align: center;
+}
+ion-item{
+  color: #000000;
+}
 .bitacora-form {
     max-width: 400px;
     margin: auto;
@@ -33,7 +39,12 @@
     cursor: pointer;
     
   }
-  
+ 
+  .button-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   /* Estilos del botón al pasar el mouse */
   .bitacora-button:hover {
     background-color: #45a049;

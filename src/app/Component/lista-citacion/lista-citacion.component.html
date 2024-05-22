@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Lista de Citaciones</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <p class="parrafo">Aqui encontrara la información las Citaciones</p>
+  <ion-input class="barra-busqueda" [(ngModel)]="searchValue" (ngModelChange)="searchCitacion()" placeholder=" Buscar por nombre del curso"></ion-input>
+
+  
+  <ion-card *ngFor="let user of filteredCitacion">
+    <ion-card-header>
+      <ion-card-title>Titulo Citaci&oacute;n: {{user.titulo_citacion}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Nombre del curso: {{ user.nombre_curso }}</p>
+      <p>Nombre Profesor: {{ user.nombre_profesor }}</p>
+      <p>Rut de citaci&oacute;n: {{ user.rut_profesor }}</p>
+      <p>Lugar de citaci&oacute;n: {{ user.lugar_citacion }}</p>
+      <p>Fecha de citaci&oacute;n: {{ user.fecha_citacion | date:'dd/MM/yyyy' }}
+      </p>
+      <ion-button class="boton" color="primary" class="boton" (click)="redirigir_Buscar_citacion(user._id)">Ver mas</ion-button> 
+
+    </ion-card-content>
+
+  </ion-card>
+</ion-content>

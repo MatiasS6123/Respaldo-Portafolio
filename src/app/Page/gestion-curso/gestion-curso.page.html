@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-title>Asignar Cursos </ion-title>
     <ion-buttons slot="end">
       <ion-back-button defaultHref="/"></ion-back-button>
@@ -18,14 +18,23 @@
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Cantidad de Alumnos: </ion-label>
-      <ion-input type="number" id="cantidadAlumno" formControlName="cantidadAlumno" required></ion-input>
+      <ion-input name="cantidadAlumno" type="number"  formControlName="cantidadAlumno" required></ion-input>
 
     </ion-item>
     <ion-item>
       <ion-label>Seleccione el Nombre del Profesor</ion-label>
-      <ion-select formControlName="nombreProfesor">
+      <ion-select multiple="true" formControlName="profesor">
         <ion-select-option *ngFor="let profesor of profesores" [value]="profesor">{{ profesor.nombre }}
           {{profesor.rut}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Seleccione el nivel del curso</ion-label>
+      <ion-select formControlName="nivel_curso">
+        <ion-select-option value="Medio Mayor">Medio Mayor</ion-select-option>
+        <ion-select-option value="Medio Medio">Medio Medio</ion-select-option>
+        <ion-select-option value="Medio Menor">Medio Menor</ion-select-option>
       </ion-select>
     </ion-item>
 
@@ -37,11 +46,17 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Seleccione Nombre de Estudiantes</ion-label>
-      <ion-select multiple="true" formControlName="alumno">
-        <ion-select-option *ngFor="let alumno of alumnos" [value]="alumno">{{ alumno }}</ion-select-option>
-      </ion-select>
+      <ion-label>Buscar Estudiantes</ion-label>
+      <ion-searchbar   formControlName="searchControl"></ion-searchbar>
     </ion-item>
+
+    
+  <ion-item>
+    <ion-label>Seleccione Nombre de Estudiantes</ion-label>
+    <ion-select (ionChange)="updateSelectedAlumnos($event)" multiple="true" formControlName="alumno" >
+      <ion-select-option *ngFor="let alumno of filteredAlumnos" [value]="alumno">{{ alumno.nombre }} {{alumno.rut}}</ion-select-option>
+    </ion-select>
+  </ion-item>
 
     <ion-button type="submit" [disabled]="gestionCursoForm.invalid">Guardar</ion-button>
   </form>

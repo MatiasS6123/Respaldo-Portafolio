@@ -1,57 +1,85 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="secondary">
     <ion-title>
-      Búsqueda de cursos
+      Gesti&oacute;n  de cursos
     </ion-title>
     <ion-buttons slot="end">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/ver-lista-cursos-directora"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-item class="ion-margin-top" [formGroup]="buscarForm">
-      <ion-label position="stacked">Buscar curso por nombre:</ion-label>
-      <ion-input type="text" placeholder="Ingrese nombre del curso" formControlName="nombreCurso"></ion-input>
-      <ion-button (click)="buscarCurso()" expand="block">Buscar</ion-button>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!estado" >
+    <p class="Advertencia"> Recuerde presionar Editar para que se muestren los datos del Curso</p>
+  </div>
+  
+  <form [formGroup]="cursoForm" *ngIf="mostrarInformacionCurso">
+    <ion-item>
+      <ion-label position="stacked">Nombre del Curso</ion-label>
+      <ion-input type="text" formControlName="nombreCurso" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Cantidad de Alumnos</ion-label>
+      <ion-input type="number" formControlName="cantidadAlumno"  required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Nombre Profesor</ion-label>
+      <ion-select   formControlName="nombreProfesor">
+        <ion-select-option *ngFor="let profesor of gestionCurso?.profesor" [value]="profesor">{{ profesor.nombre }} {{profesor.rut}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Seleccione el nivel del curso</ion-label>
+      <ion-select formControlName="nivel_curso">
+        <ion-select-option value="Medio Mayor">Medio Mayor</ion-select-option>
+        <ion-select-option value="Medio Medio">Medio Medio</ion-select-option>
+        <ion-select-option value="Medio Menor">Medio Menor</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+
+                
+    <ion-item>
+      <ion-label position="stacked">Días</ion-label>
+      <ion-select  multiple="true" formControlName="dias">
+        <ion-select-option *ngFor="let dia of dias" [value]="dia">{{ dia }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Alumnos</ion-label>
+      <ion-select formControlName="alumnos" multiple="true" interface="action-sheet">
+        <ion-select-option *ngFor="let nombre of gestionCurso?.alumno" [value]="nombre">{{ nombre.nombre }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>¿Nuevos estudiantes?</ion-label>
+      <ion-checkbox formControlName="mostrarEstudiantes"></ion-checkbox>
     </ion-item>
     
-    <form [formGroup]="cursoForm" *ngIf="mostrarInformacionCurso">
-      <ion-item>
-        <ion-label position="stacked">Nombre del Curso</ion-label>
-        <ion-input type="text" formControlName="nombreCurso" [disabled]="!edicionHabilitada" required></ion-input>
-      </ion-item>
-  
-      <ion-item>
-        <ion-label position="stacked">Cantidad de Alumnos</ion-label>
-        <ion-input type="number" formControlName="cantidadAlumno" [disabled]="!edicionHabilitada" required></ion-input>
-      </ion-item>
-  
-      <ion-item>
-        <ion-label>Nombre Profesor</ion-label>
-        <ion-select  formControlName="nombreProfesor">
-          <ion-select-option *ngFor="let profesor of profesores" [value]="profesor">{{ profesor.nombre }} {{profesor.rut}}</ion-select-option>
-        </ion-select>
-      </ion-item>
-  
-                  
-      <ion-item>
-        <ion-label position="stacked">Días</ion-label>
-        <ion-select [disabled]="!edicionHabilitada" multiple="true" formControlName="dias">
-          <ion-select-option *ngFor="let dia of dias" [value]="dia">{{ dia }}</ion-select-option>
-        </ion-select>
-      </ion-item>
-  
-      <ion-item>
-        <ion-label position="stacked">Alumnos</ion-label>
-        <ion-select formControlName="alumnos" multiple="true" interface="action-sheet">
-          <ion-select-option *ngFor="let nombre of nombresEstudiantes" [value]="nombre">{{ nombre }}</ion-select-option>
-        </ion-select>
-      </ion-item>
-  
-      <div class="button-container">
-        <ion-button color="primary" (click)="habilitarEdicion()" *ngIf="!edicionHabilitada">Modificar</ion-button>
-        <ion-button color="danger" (click)="eliminarCurso()" class="action-button" *ngIf="edicionHabilitada">Eliminar</ion-button>
-        <ion-button color="secondary" (click)="actualizarCurso()" class="action-button" *ngIf="edicionHabilitada">Guardar Cambios</ion-button>
-      </div>
-    </form>
-  </ion-toolbar>
-</ion-header>
+    <ion-item *ngIf="cursoForm.get('mostrarEstudiantes').value">
+      <ion-label>Nuevos Alumnos a Agregar</ion-label>
+      <ion-select formControlName="nuevos_alumnos" multiple="true">
+        <ion-select-option *ngFor="let estudiante of getEstudiantesNoSeleccionados()" [value]="estudiante">
+          {{estudiante.nombre}} Rut: {{estudiante.rut}}
+        </ion-select-option>
+      </ion-select>
+
+    </ion-item>
+    
+
+  </form>
+  <div class="button-container">
+    <ion-button color="primary" (click)="habilitarEdicion()" *ngIf="!estado">Editar</ion-button>
+    <ion-button color="danger" (click)="eliminarCurso()" class="action-button" *ngIf="estado">Eliminar</ion-button>
+    <ion-button color="secondary" (click)="actualizarCurso()" class="action-button" *ngIf="estado">Guardar Cambios</ion-button>
+    <ion-button color="primary" (click)="desabilitarEdicion()" *ngIf="estado">Cancelar</ion-button>
+  </div>
+
+
+</ion-content>

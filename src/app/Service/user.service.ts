@@ -14,15 +14,15 @@ export class UserService {
   createUser(user: User): Observable<any> {
     return this.http.post<any>(this.baseUrl, user);
   }
-  buscarUser(rut:string):Observable<User>{
-    return this.http.get<User>(`${this.baseUrl}/${rut}`);
+  buscar_Usuario(_id:string):Observable<User>{
+    return this.http.get<User>(`${this.baseUrl}/${_id}`);
 
   }
-  modificarUser(rut:string,user:User):Observable<User>{
-    return this.http.put<User>(`${this.baseUrl}/${rut}`, user);
+  modificar_User(_id:string,user:User):Observable<User>{
+    return this.http.put<User>(`${this.baseUrl}/${_id}/modificar`, user);
   }
-  eliminarUser(rut:string):Observable<any>{
-    return this.http.delete(`${this.baseUrl}/${rut}`);
+  eliminar_User(_id:string):Observable<any>{
+    return this.http.delete(`${this.baseUrl}/${_id}/eliminar`);
   }
 
   getUser(): Observable<User[]> {
@@ -54,14 +54,12 @@ export class UserService {
   }
   
 
-  isAdmin(): Observable<boolean> {
-    // Verifica si el usuario actualmente autenticado es administrador
+  checkRole(): Observable<string> {
+    // Verifica el rol del usuario actualmente autenticado
     return this.getUserInfo().pipe(
       map(user => {
-        console.log('Tipo de usuario:', user.tipo_usuario );
-        const isAdmin = user.tipo_usuario === 'administrador';
-        console.log('¿Es administrador?', isAdmin);
-        return isAdmin;
+        console.log('Tipo de usuario:', user.tipo_usuario);
+        return user.tipo_usuario;
       })
     );
   }

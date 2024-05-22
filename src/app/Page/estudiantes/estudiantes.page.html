@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-title>Registro de Estudiantes</ion-title>
     <ion-buttons slot="end">
       <ion-back-button defaultHref="/"></ion-back-button>
@@ -18,7 +18,7 @@
   </ion-header>
 
   <!-- Formulario para ingresar, buscar, eliminar y modificar estudiante -->
-  <form [formGroup]="estudianteForm" (ngSubmit)="guardarEstudiante()" *ngIf="mostrarFormulario">
+  <form [formGroup]="estudianteForm" (ngSubmit)="guardarEstudiante()" >
     <h1 class="titulo">Bienvenido</h1>
     <p class="parrafo">Porfavor complete los campos para completar el registro</p>
     <!-- Campo RUT -->
@@ -26,6 +26,13 @@
       <ion-label position="floating">RUT:</ion-label>
       <ion-input type="text" formControlName="rut" required></ion-input>
     </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Numero de matricula:</ion-label>
+      <ion-input type="text" formControlName="numero_matricula_estudiante" required></ion-input>
+    </ion-item>
+
+
 
     <!-- Campo Nombre -->
     <ion-item>
@@ -69,6 +76,27 @@
       <ion-label position="stacked">Fecha de Nacimiento:</ion-label>
       <ion-input type="date" formControlName="fecha_nac"></ion-input>
 
+    </ion-item>
+    <ion-item>
+      <ion-label>¿Tiene alguna enfermedad?</ion-label>
+      <ion-checkbox formControlName="tiene_enfermedad" [checked]="estudianteForm.get('tiene_enfermedad').value">
+        
+      </ion-checkbox>
+      <ion-note slot="end">{{ estudianteForm.get('tiene_enfermedad').value ? 'Sí' : 'No' }}</ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="estudianteForm.get('tiene_enfermedad').value">
+      <ion-label>Tipo de Enfermedad:</ion-label>
+      <ion-input type="text" formControlName="tipo_enfermedad"></ion-input>
+    </ion-item>
+    
+    <ion-item *ngIf="estudianteForm.get('tiene_enfermedad').value">
+      <ion-label>Descripción de la Enfermedad:</ion-label>
+      <ion-textarea formControlName="descripcion_enfermedad"></ion-textarea>
+    </ion-item>
+    <ion-item *ngIf="estudianteForm.get('tiene_enfermedad').value">
+      <ion-label>Certificado de Enfermedad:</ion-label>
+      <ion-input type="file" (change)="onFileChange($event, 'certificado_enfermedad')" formControlName="certificado_enfermedad"></ion-input>
     </ion-item>
     
     <!-- Botón de Guardar -->

@@ -1,8 +1,8 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Registro de Asistencia</ion-title>
+  <ion-toolbar color="secondary">
+    <ion-title> Registro Asistencia del curso {{gestionCurso?.nombreCurso}}</ion-title>
     <ion-buttons slot="end">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/lista-curso"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -10,14 +10,40 @@
 <ion-content>
   <form (ngSubmit)="guardarAsistencia()">
     <ion-list>
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Curso</ion-label>
+        <ion-input type="text" [value]="gestionCurso?.nombreCurso" class="input-field"></ion-input>
+      </ion-item>
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre Asignatura: </ion-label>
+        <ion-select [(ngModel)]="nombre_asignatura" name="nombre_asignatura"  class="input-field" >
+          <ion-select-option value="Lenguaje">Lenguaje</ion-select-option>
+          <ion-select-option value="Matematica">Matematica</ion-select-option>
+          <ion-select-option value="Historia">Historia</ion-select-option>
+          <ion-select-option value="Ciencias Sociales">Ciencias Sociales</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre Profesor: </ion-label>
+        <ion-input name="nombreProfesor" type="text" [(ngModel)]="nombreProfesor" [value]="nombreProfesor" class="input-field"></ion-input>
+      </ion-item>
+      
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Rut Profesor: </ion-label>
+        <ion-input name="rutProfesor" type="text" [(ngModel)]="rutProfesor" [value]="rutProfesor" class="input-field"></ion-input>
+      </ion-item>
+      
       <ion-item *ngFor="let estudiante of gestionCurso?.alumno">
-        <ion-label>{{ estudiante }}</ion-label>
-        <ion-checkbox [(ngModel)]="asistencia[estudiante]" name="{{ estudiante }}"></ion-checkbox>
-        <ion-note slot="end">{{ asistencia[estudiante] ? 'Presente' : 'Ausente' }}</ion-note>
+        <ion-label>{{ estudiante.nombre }}</ion-label>
+        <ion-checkbox (ionChange)="actualizarAsistencia(estudiante.rut)" [(ngModel)]="asistencia[estudiante.rut]" name="{{ estudiante }}" ></ion-checkbox>
+        <ion-note slot="end">{{ asistencia[estudiante.rut] ? 'Presente' : 'Ausente' }}</ion-note>
       </ion-item>
     </ion-list>
 
-    
-    <ion-button type="submit" expand="block">Guardar Asistencia</ion-button>
+    <div class="container">
+      <ion-button color="primary" (click)="redirigirBitacora(gestionCurso?.nombreCurso)">Registrar bitacora</ion-button> 
+    </div>
+    <ion-button color="primary" type="submit" expand="block">Guardar Asistencia</ion-button>
   </form>
 </ion-content>

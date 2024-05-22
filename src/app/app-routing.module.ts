@@ -11,6 +11,19 @@ import { BitacoraComponent } from './Component/bitacora/bitacora.component';
 import { GestionNotaComponent } from './Component/gestion-nota/gestion-nota.component';
 import { ListaCursoComponent } from './Component/lista-curso/lista-curso.component';
 import { BuscarEstudianteComponent } from './Component/buscar-estudiante/buscar-estudiante.component';
+import { GestionApoderadoComponent } from './Component/gestion-apoderado/gestion-apoderado.component';
+import { ListaApoderadoComponent } from './Component/lista-apoderado/lista-apoderado.component';
+import { ListaAsistenciaComponent } from './Component/lista-asistencia/lista-asistencia.component';
+import { ListaAnotacionComponent } from './Component/lista-anotacion/lista-anotacion.component';
+import { ListaPlanificacionComponent } from './Component/lista-planificacion/lista-planificacion.component';
+import { GestionPlanificacionComponent } from './Component/gestion-planificacion/gestion-planificacion.component';
+import { ListaCitacionApoderadoComponent } from './Component/lista-citacion-apoderado/lista-citacion-apoderado.component';
+import { ListaCitacionComponent } from './Component/lista-citacion/lista-citacion.component';
+import { GestionCitacionComponent } from './Component/gestion-citacion/gestion-citacion.component';
+import { GestionAnotacionComponent } from './Component/gestion-anotacion/gestion-anotacion.component';
+import { ListaAnotacionProfesorComponent } from './Component/lista-anotacion-profesor/lista-anotacion-profesor.component';
+import { ListaCursosDirectoraComponent } from './Component/lista-cursos-directora/lista-cursos-directora.component';
+import { ListaNotasApoderadoComponent } from './Component/lista-notas-apoderado/lista-notas-apoderado.component';
 
 const routes: Routes = [
   {
@@ -29,7 +42,7 @@ const routes: Routes = [
     loadChildren: () => import('./Page/estudiantes/estudiantes.module').then( m => m.EstudiantesPageModule),
     canActivate:[AuthGuard]
   },
-  {path: 'busqueda-estudiante',component:BuscarEstudianteComponent,
+  {path: 'gestion-estudiante/:_id',component:BuscarEstudianteComponent,
   canActivate:[AuthGuard]},
   {
     path: 'salida-estudiante',
@@ -43,7 +56,17 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path:'gestion-usuario',
+    path: 'ver-asistencia',
+    component:ListaAsistenciaComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path: 'ver-anotacion',
+    component:ListaAnotacionComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'gestion-usuario/:_id',
     component:GestionUsuarioComponent,
     canActivate:[AuthGuard  ]
   },
@@ -56,15 +79,21 @@ const routes: Routes = [
     component:ListaUsuarioComponent
   },
   {
-    path: 'gestion-curso',
+    path: 'asignar-curso',
     loadChildren: () => import('./Page/gestion-curso/gestion-curso.module').then( m => m.GestionCursoPageModule)
   },
+  
   {
-    path:'buscar-curso',
+    path:'ver-lista-cursos-directora',
+    component:ListaCursosDirectoraComponent
+  },
+
+  {
+    path:'gestion-curso/:_id',
     component:BuscarCursoComponent
   },
   {
-    path:'bitacora',
+    path:'bitacora/:nombreCurso',
     component:BitacoraComponent
 
   },
@@ -77,8 +106,73 @@ const routes: Routes = [
     component:GestionNotaComponent
   },
   {
+    path:'lista-apoderado-notas',
+    component:ListaNotasApoderadoComponent
+  },
+  {
     path:'lista-curso',
     component:ListaCursoComponent
+  },
+  {
+    path:'gestion-apoderado/:_id',
+    component:GestionApoderadoComponent
+  },
+  ,
+  {
+    path:'lista-apoderado',
+    component:ListaApoderadoComponent
+  },
+  {
+    path: 'anotacion/:nombreCurso',
+    loadChildren: () => import('./Page/anotacion/anotacion.module').then( m => m.AnotacionPageModule)
+  },
+  {
+    path: 'citacion/:nombreCurso',
+    loadChildren: () => import('./Page/citacion/citacion.module').then( m => m.CitacionPageModule)
+  },
+  {
+    path: 'ver-citacion-apoderado',
+    component:ListaCitacionApoderadoComponent  
+  },
+  {
+    path: 'lista-citacion',
+    component:ListaCitacionComponent  
+  },
+  {
+    path: 'registro-apoderado',
+    loadChildren: () => import('./Page/registro-apoderado/registro-apoderado.module').then( m => m.RegistroApoderadoPageModule)
+  },
+  {
+    path: 'planificar-clase',
+    loadChildren: () => import('./Page/planificar-clase/planificar-clase.module').then( m => m.PlanificarClasePageModule)
+  }
+  ,{
+    path:'lista-planificacion',
+    component:ListaPlanificacionComponent
+  }
+  ,{
+    path:'ver-anotacion-apoderado',
+    component:ListaAnotacionComponent
+  }
+  ,{
+    path:'lista-anotacion-profesor',
+    component:ListaAnotacionProfesorComponent
+  }
+  ,{
+    path:'gestion-planificacion/:_id',
+    component:GestionPlanificacionComponent
+  }
+  ,{
+    path:'gestion-citacion/:_id',
+    component:GestionCitacionComponent
+  }
+  ,{
+    path:'gestion-anotacion/:_id',
+    component:GestionAnotacionComponent
+  },
+  {
+    path: 'registro-ingreso',
+    loadChildren: () => import('./Page/registro-ingreso/registro-ingreso.module').then( m => m.RegistroIngresoPageModule)
   }
 
 ];

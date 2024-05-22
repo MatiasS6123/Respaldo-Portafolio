@@ -10,14 +10,17 @@ import { Nota } from 'src/models/nota';
 })
 export class GestionNotaComponent {
 
-  notaForm: Nota = {
+  notaForm:Nota = {
+    _id: '', // Añadido el campo _id
+    nombreCurso: '', // Añadido el campo nombreCurso
     asignatura: '',
-    curso: '',
+    nombreProfesor: '', // Añadido el campo nombreProfesor
+    rutProfesor: '', // Añadido el campo rutProfesor
     notas: [],
     fecha: new Date()
   };
   buscarForm: any = {
-    Curso: ''
+    nombreCurso: ''
   };
   notaEncontrado: Nota | null = null;
   mostrarInformacionNota: boolean = false;
@@ -26,7 +29,7 @@ export class GestionNotaComponent {
   constructor(private notaService: NotaService, private toastController: ToastController) { }
 
   buscarNota() {
-    this.notaService.getNotasByCurso(this.buscarForm.Curso).subscribe(
+    this.notaService.getNotasByCurso(this.buscarForm.nombreCurso).subscribe(
       (nota: Nota) => {
         console.log("nota encontrada", nota)
 
@@ -59,7 +62,7 @@ export class GestionNotaComponent {
   }
 
   actualizarNota() {
-    this.notaService.updateCurso(this.notaForm.curso, this.notaForm).subscribe(
+    this.notaService.updateCurso(this.notaForm.nombreCurso, this.notaForm).subscribe(
       (curso: Nota) => {
         console.log('Curso actualizado:', curso);
         this.presentToast('Curso actualizado correctamente');
@@ -75,7 +78,7 @@ export class GestionNotaComponent {
   }
 
   eliminarNota() {
-    const nombreCurso = this.notaForm.curso;
+    const nombreCurso = this.notaForm.nombreCurso;
     if (!nombreCurso) {
       this.presentToast('No se proporcionó un nombre válido para eliminar el curso');
       return;

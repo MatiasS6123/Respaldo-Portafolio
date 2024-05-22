@@ -23,29 +23,31 @@ export class GestionCService {
 
   // Método para obtener un estudiante por su ID
   getCursoByNombre(nombreCuso: string): Observable<GestionCurso> {
-    return this.http.get<GestionCurso>(`${this.baseUrl}/${nombreCuso}`);
+    return this.http.get<GestionCurso>(`${this.baseUrl}/${nombreCuso}/curso`);
   }
 
-  updateCurso(nombreProfesor: string, curso: GestionCurso): Observable<GestionCurso> {
-    return this.http.put<GestionCurso>(`${this.baseUrl}/${nombreProfesor}`, curso);
+  updateCurso(_id: string, curso: GestionCurso): Observable<GestionCurso> {
+    return this.http.put<GestionCurso>(`${this.baseUrl}/${_id}/actualizar`, curso);
   }
   
 
   // Método para eliminar un estudiante por su ID
-  deleteCurso(nombreProfesor: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${nombreProfesor}`);
+  deleteCurso(_id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${_id}/eliminar`);
   }
 
   getCursosAsignados(rutProfesor: string): Observable<GestionCurso[]> {
     return this.http.get<GestionCurso[]>(`${this.baseUrl}/${rutProfesor}/cursos`);
   }
-
-  private getAuthHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
+  get_All_Cursos(): Observable<GestionCurso[]> {
+    return this.http.get<GestionCurso[]>(`${this.baseUrl}/cursos`);
+  }
+  getCursoByID(_id: string): Observable<GestionCurso> {
+    return this.http.get<GestionCurso>(`${this.baseUrl}/${_id}/buscar/curso`);
   }
 
+  
+ 
   
   getCursoById(_id: string): Observable<GestionCurso> {
     const url = `${this.baseUrl}/${_id}`; // Construir la URL con el ID del curso

@@ -1,11 +1,42 @@
-.card-container {
+ion-content{
+  --ion-background-color: #98FF98;
+}
+
+ion-title{
+  text-align: center;
+  
+}
+ion-card{
+  width: auto;
+  border: 2.5px solid #000000;
+  color: #000000;
+  background-color: #98FF98;
+}
+ion-card-title{
+  color: #000000;
+}
+
+  .barra-busqueda{
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    width: 100%; /* Añade esta línea para ocupar todo el ancho */
-  }
-  
+    margin: auto;
+    border: 2px solid #000000;
+    color: #000000; 
+}
+
+.boton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  margin: auto; 
+}
+.parrafo{
+  text-align: center;
+  color: #000000;
+}  
   .card {
     width: 200px;
     height: 200px;

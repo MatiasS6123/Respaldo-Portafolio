@@ -1,0 +1,30 @@
+ion-content{
+    --ion-background-color: #98FF98;
+}
+
+ion-title{
+    text-align: center;
+}
+ion-item{
+    color: #000000;
+}
+ion-input{
+    color: #000000;
+    --ion-item-background:rgb(255, 255, 255);
+
+}
+/* Cambiar el color del icono asociado al ion-input de tipo fecha */
+
+
+
+.button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+   
+}
+.Advertencia{
+    color: #000000;
+    text-align: center;
+}

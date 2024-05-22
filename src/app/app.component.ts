@@ -10,35 +10,39 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   isLoggedIn: boolean = false;
-  isAdmin: boolean = false;
-  isAdminSubscription: Subscription | undefined; // Subscription para el método isAdmin()
+  userRole: string;
+  roleSubscription: Subscription | undefined; // Subscription para el método checkRole()
 
-  constructor(public authService: UserService, private router:Router) { }
+  constructor(public authService: UserService, private router: Router) { }
 
   ngOnInit() {
     // Verificar el estado de autenticación al inicializar el componente
     this.isLoggedIn = this.authService.isAuthenticated();
-    
+
     if (this.isLoggedIn) {
-      // Suscribirse al método isAdmin() y actualizar isAdmin cuando se resuelva
-      this.isAdminSubscription = this.authService.isAdmin().subscribe(isAdmin => {
-        console.log('isAdmin:', isAdmin);
-        this.isAdmin = isAdmin;
+      // Suscribirse al método checkRole() y actualizar userRole cuando se resuelva
+      this.roleSubscription = this.authService.checkRole().subscribe(role => {
+        console.log('Rol del usuario:', role);
+        this.userRole = role;
       });
     }
   }
 
   ngOnDestroy() {
     // Limpiar la suscripción para evitar posibles pérdidas de memoria
-    if (this.isAdminSubscription) {
-      this.isAdminSubscription.unsubscribe();
+    if (this.roleSubscription) {
+      this.roleSubscription.unsubscribe();
     }
   }
 
   logout(): void {
     this.authService.logout();
     this.isLoggedIn = false;
-    this.isAdmin = false;
-    this.router.navigate(['/login']);
+    this.userRole = '';
+    this.router.navigate(['/login']).then(() => {
+      // Después de redirigir, recarga la página
+      window.location.reload();
+    });
   }
+
 }

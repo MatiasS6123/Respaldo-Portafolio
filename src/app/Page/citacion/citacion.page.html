@@ -1,0 +1,72 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-title>Registrar Citaci&oacute;n  </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/lista-curso"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (ngSubmit)="guardarCitacion()">
+
+    <ion-item>
+      <ion-label position="stacked">Ingrese titulo de la citacion</ion-label>
+      <ion-input type="text" name="titulo_citacion" [(ngModel)]="citacion.titulo_citacion"></ion-input>
+    </ion-item>
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre del Curso</ion-label>
+        <ion-input type="text" name="nombreCurso" [value]="gestionCurso?.nombreCurso" class="input-field"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Seleccione a los estudiantes a citar</ion-label>
+        <ion-select multiple="true" name="estudiante" [(ngModel)]="citacion.estudiante">
+
+          <ion-select-option  *ngFor="let estudiante of gestionCurso?.alumno" [value]="{nombre: estudiante.nombre, rut: estudiante.rut}" >
+            {{estudiante.nombre}} ({{estudiante.rut}})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    
+    <ion-item>
+      <ion-label position="stacked">Rut Pofesor</ion-label>
+      <ion-input type="text"  name="rut_profesor" [(ngModel)]="rut_profesor" value="rut_profesor"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Nombre Pofesor</ion-label>
+      <ion-input type="text"  name="nombre_profesor" [(ngModel)]="nombre_profesor" value="nombre_profesor"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Lugar de la citación</ion-label>
+      <ion-input type="text" name="lugar_citacion" [(ngModel)]="citacion.lugar_citacion" ></ion-input>
+    </ion-item>
+
+    
+    <ion-item>
+      <ion-label position="stacked">Fecha de la citación</ion-label>
+      <ion-input type="date" name="fecha_citacion" [(ngModel)]="citacion.fecha_citacion" ></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="stacked">Estado de Citaci&aacute;n</ion-label>
+      <ion-select name="estado_citacion" [(ngModel)]="citacion.estado_citacion" >
+        <ion-select-option value="En Proceso">En Proceso</ion-select-option>
+        <ion-select-option value="Iniciada">Iniciada</ion-select-option>
+        <ion-select-option value="Finalizada">Finalizada</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">descripción de la citación</ion-label>
+      <ion-textarea rows="5" name="descripcion_citacion" [(ngModel)]="citacion.descripcion_citacion" placeholder=" Escriba algo.... " ></ion-textarea>
+    </ion-item>
+
+
+    
+      
+    <ion-button class="boton" type="submit" color="secondary">Guardar citacion</ion-button>
+
+  </form>
+</ion-content>

@@ -16,5 +16,8 @@ export class AsistenciaService {
   guardarAsistencia(asistencia: Asistencia): Observable<any> {
     return this.http.post<any>(this.baseUrl, asistencia);
   }
+  obtener_Asistencia(rut_apoderado: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/${rut_apoderado}/asistencia`);
+  }
 
 }

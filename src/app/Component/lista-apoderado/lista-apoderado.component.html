@@ -1,0 +1,39 @@
+<ion-header>
+
+  <ion-toolbar color="secondary">
+    <ion-title>Lista de Apoderados</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <p class="titulo">Aqui podra ver a todos los Apoderados registrados</p>
+  <ion-input class="barra-busqueda" [(ngModel)]="searchValue" (ngModelChange)="searchUser()" placeholder=" Buscar por RUT"></ion-input>
+  <ion-list *ngIf="apoderados.length > 0; else noApoderado">
+    <ion-card  *ngFor="let apo of filteredApoderado">
+      <ion-card-header>
+        <ion-card-title>Nombre: {{apo.nombre_apoderado}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>rut: {{apo.rut_apoderado}}</p>
+        <p>edad: {{apo.edad_apoderado}}</p>
+        <p>sexo: {{apo.sexo_apoderado}}</p>
+        <p>parentesco: {{apo.parentesco}}</p>
+        <p>numro de contacto: {{apo.numero_contacto_apoderado}}</p>
+        <p>email de contacto: {{apo.email_contacto_apoderado}}</p>
+        
+        <ion-button class="boton" color="primary" class="boton" (click)="redirigir_Buscar_Apoderado(apo._id)">Ver mas</ion-button>
+      </ion-card-content>
+        
+
+  
+    </ion-card>
+</ion-list>
+  <ng-template #noApoderado>
+    <p class="subtitulo">Usted no tiene cursos asignados</p>
+  </ng-template>
+
+</ion-content>

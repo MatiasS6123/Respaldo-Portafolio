@@ -1,6 +1,15 @@
+.nologeado{
+  --ion-background-color: #98FF98;
+
+}
+
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}
 ion-menu-button {
   color: var(--ion-color-primary);
 }
+
 
 #container {
   text-align: center;
@@ -29,4 +38,8 @@ ion-menu-button {
 
 ion-header{
   text-align: center;
+}
+.contenido{
+  --ion-background-color: #98FF98;
+
 }

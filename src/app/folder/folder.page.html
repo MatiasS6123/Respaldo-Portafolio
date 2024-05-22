@@ -1,5 +1,5 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header [translucent]="true" *ngIf="isLoggedIn; else loggedOutHeader">
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -7,7 +7,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  
-  
+<ng-template #loggedOutHeader>
+  <!-- Aquí va el header cuando el usuario no está logueado -->
+  <ion-header [translucent]="true">
+    <ion-toolbar color="secondary">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Bienvenido</ion-title>
+    </ion-toolbar>
+    
+  </ion-header>
+</ng-template>
+
+<ion-content class="contenido" [fullscreen]="true" *ngIf="isLoggedIn; else loggedOutContent">
+  <!-- Aquí va el contenido cuando el usuario está logueado -->
 </ion-content>
+
+<ng-template  #loggedOutContent>
+  <!-- Aquí va el contenido cuando el usuario no está logueado -->
+  <ion-content class="nologeado">
+
+  </ion-content>
+</ng-template>

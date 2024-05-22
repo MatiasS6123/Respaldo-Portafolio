@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-title>Ver anotaciones  </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="anotaciones.length > 0; else noAnotaciones">
+    <p class="subtitulo">Bienvenido aquí podra ver las anotaciones generadas por el profesor</p>
+    
+    <ion-item *ngFor="let anotacion of anotaciones">
+      <ion-card *ngFor="let alumno of anotacion.nombre_alumnos">
+        <ion-card-header>
+          <ion-card-title>{{alumno.nombre}}</ion-card-title>
+        </ion-card-header>
+       
+        <ion-card-content>
+          <p>Fecha: {{anotacion.fecha_anotacion | date:'dd/MM/yyyy'}} </p>
+          <p>Rut: {{alumno.rut}}</p>
+          <p>Tipo de Anotación: {{anotacion.tipo_anotacion}}</p>
+          <p>Asigntura: {{anotacion.nombre_asignatura}}</p>
+          <p>Descripción: {{anotacion.descripcion_anotacion}}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>    
+  </ion-list>
+  <ng-template #noAnotaciones>
+    <p class="subtitulo">Su pupilo no registra anotaciones hasta el momento</p>
+  </ng-template>
+</ion-content>

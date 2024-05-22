@@ -1,0 +1,22 @@
+ion-content{
+    --ion-background-color: #98FF98;
+}
+
+ion-title{
+    text-align: center;
+}
+ion-item{
+    color: #000000;
+}
+ion-input{
+    color: #000000;
+}
+
+.boton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    margin: auto; 
+    padding-top: 0.5rem;
+}

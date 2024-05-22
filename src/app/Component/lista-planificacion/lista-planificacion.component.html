@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-title>Ver Planificaciones  </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="planificaciones.length > 0; else noPlanificacion">
+ 
+    <p class="subtitulo">Bienvenido aquí podra la planificacion de sus cursos </p>
+    
+    <ion-item *ngFor="let planificaci of planificaciones" class="item">
+
+      <ion-card >
+
+        <ion-card-header>
+          <ion-card-title>{{planificaci.tema_planificacion}}</ion-card-title>
+        </ion-card-header>
+       
+        <ion-card-content class="prueba">
+           <p>fecha inicio: {{planificaci.fecha_inicio_planificacion | date:'dd/MM/yyyy'}}</p>
+           <p>fecha de termino {{planificaci.fecha_termino_planificacion | date:'dd/MM/yyyy'}}</p>
+           <ion-button color="primary" class="boton" (click)="redirigir_Gestion_Planificacion(planificaci._id)">Ver mas</ion-button> 
+        </ion-card-content>
+          
+      </ion-card>
+    </ion-item>    
+  </ion-list>
+  <ng-template #noPlanificacion>
+    <p class="subtitulo">Usted no registra planificaciones por el momento</p>
+  </ng-template>
+</ion-content>

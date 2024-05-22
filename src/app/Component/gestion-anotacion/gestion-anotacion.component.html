@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>
+      Gesti&oacute;n de Anotaci&oacute;n
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/lista-anotacion-profesor"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!estado" >
+    <p class="Advertencia"> Recuerde presionar Editar para que se muestren los datos de la Anotaci&oacute;n</p>
+  </div>
+  
+  <form [formGroup]="anotacionForm" *ngIf="mostrarInformacionAnotacion">
+    <ion-item>
+      <ion-label position="stacked">Tipo Anotaci&oacute;n </ion-label>
+      <ion-select  formControlName="tipo_anotacion">
+        <ion-select-option value="Positiva">Positiva</ion-select-option>
+        <ion-select-option value="Negativa">Negativa</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="stacked">Nombre Curso</ion-label>
+      <ion-input type="text" formControlName="nombre_curso"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Nombre Asignatura</ion-label>
+      <ion-select formControlName="nombre_asignatura">
+        <ion-select-option value="Lenguaje">Lenguaje</ion-select-option>
+          <ion-select-option value="Matematica">Matematica</ion-select-option>
+          <ion-select-option value="Historia">Historia</ion-select-option>
+          <ion-select-option value="Ciencias Sociales">Ciencias Sociales</ion-select-option>
+          
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="stacked">Fecha de Anotaci&oacute;n:</ion-label>
+      <ion-input type="date" formControlName="fecha_anotacion" ></ion-input>
+  
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Nombre Profesor</ion-label>
+      <ion-input type="text" formControlName="nombre_profesor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Rut Profesor</ion-label>
+      <ion-input type="text" formControlName="rut_profesor"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Alumnos a Anotar</ion-label>
+      <ion-select formControlName="nombre_alumnos" multiple="true">
+        <ion-select-option *ngFor="let alumno of anotacion?.nombre_alumnos" [value]="alumno">{{alumno.nombre}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>¿Nuevos estudiantes a Anotar?</ion-label>
+      <ion-checkbox class="nuevos" formControlName="mostrarEstudiantes"></ion-checkbox>
+    </ion-item>
+    
+    <ion-item *ngIf="anotacionForm.get('mostrarEstudiantes').value">
+      <ion-label>Nuevos Alumnos a Anotar</ion-label>
+      <ion-select formControlName="nuevo_nombre_alumnos" multiple="true">
+        <ion-select-option *ngFor="let estudiante of getEstudiantesNoSeleccionados()" [value]="estudiante">
+          {{estudiante.nombre}} Rut: {{estudiante.rut}}
+        </ion-select-option>
+      </ion-select>
+
+    </ion-item>
+    
+
+    <ion-item>
+      <ion-label position="stacked">Descripci&oacute;n de la anotaci&oacute;n: </ion-label>
+      <ion-textarea formControlName="descripcion_anotacion" row="4"></ion-textarea>
+    </ion-item>
+
+
+
+  </form>
+  <div class="button-container">
+    <ion-button color="primary" (click)="habilitar_Edicion()" *ngIf="!estado">Editar</ion-button>
+    <ion-button color="secondary" (click)="modificar_Anotacion()" *ngIf="estado" >Guardar</ion-button>
+    <ion-button color="danger" (click)="eliminar_Anotacion()" *ngIf="estado" >Eliminar</ion-button>
+    <ion-button color="primary" (click)="cancelar_Edicion()" *ngIf="estado" >Cancelar</ion-button>
+  </div>
+
+</ion-content>

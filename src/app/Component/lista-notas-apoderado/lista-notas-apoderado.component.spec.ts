@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { GestionNotaComponent } from './gestion-nota.component';
+import { ListaNotasApoderadoComponent } from './lista-notas-apoderado.component';
 
-describe('GestionNotaComponent', () => {
-  let component: GestionNotaComponent;
-  let fixture: ComponentFixture<GestionNotaComponent>;
+describe('ListaNotasApoderadoComponent', () => {
+  let component: ListaNotasApoderadoComponent;
+  let fixture: ComponentFixture<ListaNotasApoderadoComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GestionNotaComponent ],
+      declarations: [ ListaNotasApoderadoComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(GestionNotaComponent);
+    fixture = TestBed.createComponent(ListaNotasApoderadoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

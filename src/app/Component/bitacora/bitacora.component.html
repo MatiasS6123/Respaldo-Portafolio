@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Ingresar Entrada de Bitácora</ion-title>
+  <ion-toolbar color="secondary">
+    <ion-title>Registro de Bitácora</ion-title>
     <ion-buttons slot="end">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
@@ -14,16 +14,41 @@
     </ion-toolbar>
   </ion-header>
 
-  <form [formGroup]="bitacoraForm" (ngSubmit)="guardarBitacora()">
-    <ion-item>
-      <ion-label position="floating">Nombre de la Clase</ion-label>
-      <ion-input formControlName="nombreCurso" type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Descripción</ion-label>
-      <ion-textarea formControlName="descripcion" rows="4"></ion-textarea>
-    </ion-item>
-    <ion-button type="submit" expand="block" [disabled]="bitacoraForm.invalid">Guardar Entrada</ion-button>
-    
+  <form (ngSubmit)="registrar_bitacora()"  >
+    <ion-list>
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre del Curso</ion-label>
+        <ion-input type="text" [value]="gestionCurso?.nombreCurso" class="input-field" ></ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre Asignatura</ion-label>
+        <ion-select [(ngModel)]="bitacora.nombreAsignatura" name="nombre_asignatura"  class="input-field" >
+          <ion-select-option value="Lenguaje">Lenguaje</ion-select-option>
+          <ion-select-option value="Matematica">Matematica</ion-select-option>
+          <ion-select-option value="Historia">Historia</ion-select-option>
+          <ion-select-option value="Ciencias Sociales">Ciencias Sociales</ion-select-option>
+        </ion-select>        
+      </ion-item>
+
+
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Rut Profesor: </ion-label>
+        <ion-input type="text" [value]="rut_profesor" class="input-field"></ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre Profesor: </ion-label>
+        <ion-input type="text" [value]="nombre_profesor" class="input-field"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Descripción de Bitacora</ion-label>
+        <ion-textarea name="descripcion_bitacora" [(ngModel)]="bitacora.descripcion" placeholder="Escribe algo..." rows="6"></ion-textarea>
+      </ion-item>
+
+    </ion-list>
+    <div class="button-container">
+      <ion-button type="submit">Guardar Bitacora</ion-button>
+    </div>
   </form>
 </ion-content>

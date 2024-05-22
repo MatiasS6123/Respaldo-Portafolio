@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Lista de Cursos</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p class="parrafo">Aqui encontrara la información de todos los Cursos</p>
+  <ion-input class="barra-busqueda" [(ngModel)]="searchValue" (ngModelChange)="searchCurso()" placeholder=" Buscar por Nombre del Curso"></ion-input>
+
+  <ion-card *ngFor="let user of filteredCursos">
+    <ion-card-header>
+      <ion-card-title>Nombre del curso: {{user.nombreCurso}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Cantidad Alumnos: {{ user.cantidadAlumno }}</p>
+      <p>Nivel del curso: {{ user.nivel_curso }}</p>
+      <ion-button class="boton" color="primary" class="boton" (click)="redirigir_Gestion_Curso(user._id)">Ver mas</ion-button> 
+
+    </ion-card-content>
+
+  </ion-card>
+</ion-content>

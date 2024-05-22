@@ -1,0 +1,46 @@
+ion-content{
+    --ion-background-color: #98FF98;
+}
+
+ion-item{
+    color: #000000;
+
+}
+ion-input{
+    color: #000000;
+}
+ion-title{
+    text-align: center;
+}
+.button-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nota-item{    border: 1px solid #000000; /* Ajusta el color y el grosor del borde según tus preferencias */
+    border: 1px solid #ccc; /* Ajusta el color y el grosor del borde según tus preferencias */
+    width: 30px; /* Ajusta el ancho del cuadro de nota según tus preferencias */
+    height: 30px;   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px; /* */
+    padding: 5px; /* Espacio interno */
+    margin: 5px;
+    background-color: #ffffff;
+}
+
+.titulo{
+    text-align: center;
+    padding-left:15rem ;
+    color: #000000;
+}
+label{
+    display: flex;
+    align-content:first baseline;
+}
+.input-item{
+
+    color: #000000;
+}

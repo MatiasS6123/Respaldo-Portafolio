@@ -1,9 +1,13 @@
 export interface Nota{
+    _id?:string;
+    nombreCurso: string;
     asignatura: string;
-    curso: string;
+    nombreProfesor:string;
+    rutProfesor:string;
     notas: {
         nombre: string;
-        nota: number;
+        rut:string;
+        nota: number [];
     }[];
     fecha: Date;
 }

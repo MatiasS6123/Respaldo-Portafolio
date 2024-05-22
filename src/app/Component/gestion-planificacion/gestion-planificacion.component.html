@@ -1,0 +1,131 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-title> Gesti&oacute;n de  Planificaciones</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/lista-planificacion"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="!activado" >
+    <p class="Advertencia"> Recuerde presionar Editar para que se muestren los datos de la Planificaci&oacute;n</p>
+  </div>
+  
+  <form [formGroup]="planificarClaseForm" *ngIf="mostrarInformacionPlanificacion" >
+    <ion-item>
+      <ion-label position="stacked">Titulo Planificacion</ion-label>
+      <ion-input type="text" formControlName="tema_planificacion"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Fecha inicio Planificacion</ion-label>
+      <ion-input type="date" formControlName="fecha_inicio_planificacion"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Fecha Finalizacion Planificacion</ion-label>
+      <ion-input type="date" formControlName="fecha_termino_planificacion"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label position="stacked">Nombre Profesor</ion-label>
+      <ion-input  type="text" formControlName="nombre_profesor"></ion-input>
+    </ion-item>
+
+    
+    <ion-item>
+      <ion-label position="stacked">Rut Profesor</ion-label>
+      <ion-input  type="text" formControlName="rut_profesor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Cursos</ion-label>
+      <ion-select formControlName="cursos" [compareWith]="compareWithFn" multiple="true">
+        <ion-select-option *ngFor="let curso of planificacion?.cursos" [value]="curso">{{curso.nombreCurso}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+        
+    <ion-item>
+      <ion-label position="stacked">Objetivo Aprendisaje</ion-label>
+      <ion-input type="text" formControlName="objetivo_aprendisaje"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Ambito Aprendisaje</ion-label>
+      <ion-input type="text" formControlName="ambito_aprendisaje"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Nucleo Aprendisaje</ion-label>
+      <ion-input type="text" formControlName="nucleo_aprendisaje"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Indicador de exito</ion-label>
+      <ion-input type="text" formControlName="indicador_exito_aprendisaje"></ion-input>
+    </ion-item>
+
+    
+    <ion-item>
+      <ion-label position="stacked">Cantidad Actividades</ion-label>
+      <ion-input type="number" formControlName="cantidad_actividades"></ion-input>
+    </ion-item>
+
+    <div formArrayName="actividades">
+      <div *ngFor="let actividad of actividades.controls; let i = index" [formGroupName]="i">
+        <ion-item-group>
+          <ion-item-divider (click)="actividad.get('detallesVisibles').setValue(!actividad.get('detallesVisibles').value)">
+            <ion-label>Actividad {{ i + 1 }}</ion-label>
+          </ion-item-divider>
+          <div *ngIf="actividad.get('detallesVisibles').value">
+            <ion-item>
+              <ion-label position="stacked">Nombre Actividad {{ i + 1 }}</ion-label>
+              <ion-input type="text" formControlName="nombre_actividad"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Descripción Actividad</ion-label>
+              <ion-input type="text" formControlName="descripcion_actividad"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Ambito Actividad</ion-label>
+              <ion-input type="text" formControlName="ambito_actividad"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Nucleo Actividad</ion-label>
+              <ion-input type="text" formControlName="nucleo_actividad"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Objetivo Especifico Actividad</ion-label>
+              <ion-input type="text" formControlName="objetivo_especifico_actividad"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Rubrica Evaluacion Actividad</ion-label>
+              <ion-input type="text" formControlName="rubrica_evaluacion_actividad"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Evaluación Actividad</ion-label>
+              <ion-select formControlName="evaluacion_actividad">
+                <ion-select-option value="L">Logrado</ion-select-option>
+                <ion-select-option value="PL">Parcialmente Logrado</ion-select-option>
+                <ion-select-option value="NT">No Logrado</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <!-- Agrega más campos aquí para el resto de la información de la actividad -->
+          </div>
+          <!-- Agrega más campos aquí para el resto de la información de la actividad -->
+        </ion-item-group>
+      </div>
+    </div>
+    
+
+    
+  </form>
+  <div class="button-container">
+    <ion-button color="primary" (click)="desabilitar_Edicion()" *ngIf="activado"  >Cancelar</ion-button>
+    <ion-button color="primary" (click)="habilitarEdicion()" *ngIf="!activado"  >Editar</ion-button>
+    <ion-button color="secondary" (click)="modificar_Planificacion()" *ngIf="activado"  >Modificar</ion-button>
+    <ion-button color="danger" (click)="eliminar_Planificacion()" *ngIf="activado"  >Eliminar</ion-button>
+  </div>
+</ion-content>
+

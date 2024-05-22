@@ -7,6 +7,6 @@ const userSchema = new mongoose.Schema({
     edad: { type: Number, required: true },
     tipo_usuario: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true } // Cambiado de "contraseña" a "password"
+    password: { type: String, required: false } // Cambiado de "contraseña" a "password"
 });
 module.exports = mongoose.model('User', userSchema);

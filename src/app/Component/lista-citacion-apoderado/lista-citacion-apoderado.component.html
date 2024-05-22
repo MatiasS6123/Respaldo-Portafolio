@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-title>Ver Citación  </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="citaciones.length > 0; else noCitacion">
+ 
+    <p class="subtitulo">Bienvenido aquí podra ver las citaciones realizadas por el profesor </p>
+    
+    <ion-item *ngFor="let citacion of citaciones">
+
+      <ion-card *ngFor="let cita of citacion.estudiante">
+
+        <ion-card-header>
+          <ion-card-title>Titulo Citaci&oacute;n: {{citacion.titulo_citacion}}</ion-card-title>
+        </ion-card-header>
+       
+        <ion-card-content>
+          <p>Nombre Estudiante: {{cita.nombre}}</p>
+          <p>Rut Estudiante: {{cita.rut}}</p>
+          <p>Lugar Citaci&oacute;n: {{citacion.lugar_citacion}}</p>
+          <p>Fecha de citaci&oacute;n: {{citacion.fecha_citacion | date:'dd/MM/yyyy'}}</p>
+          <p>Estado de la Citaci&oacute;n: {{citacion.estado_citacion}}</p>
+          <p>Descripcion Citaci&oacute;n: {{citacion.descripcion_citacion }}</p>
+        </ion-card-content>
+          
+      </ion-card>
+    </ion-item>    
+  </ion-list>
+  <ng-template #noCitacion>
+    <p class="subtitulo">Su pupilo no registra citaciones hasta el momento</p>
+  </ng-template>
+</ion-content>

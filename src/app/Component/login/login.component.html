@@ -1,26 +1,42 @@
-<!-- login.page.html -->
 
 <ion-header class="ion-text-center">
-  <ion-toolbar>
-    <ion-title>
-      Login
-    </ion-title>
+  <ion-toolbar color="secondary">
+    <ion-title>Login</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding >
-  <p class="titulo" >Introdusca sus credenciales para iniciar session</p>
-  <form (ngSubmit)="login()" >
-    <ion-item>
-      <ion-label position="floating">Correo electrónico</ion-label>
-      <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
-    </ion-item>
+
+  <div class="separacion">
+
+  </div>
+  <div class="contenido">
+    
+  <h1 class="titulo" >Iniciar sessi&oacute;n</h1>
+  <form class="form" (ngSubmit)="login()">
+    <div class="login-form">
+      <ion-item>
+        <ion-label position="floating">Correo electrónico</ion-label>
+        <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
+      </ion-item>
+    </div>
     
     
-    <ion-button expand="block" type="submit">Iniciar sesión</ion-button>
+    <div class="button-container">
+      <ion-button  color="primary" type="submit">Iniciar sesión</ion-button>
+      
+      
+    </div>
+    <a class="link" href="/registro">¿Olvidaste la contraseña?</a>
   </form>
+
+  </div>
 </ion-content>

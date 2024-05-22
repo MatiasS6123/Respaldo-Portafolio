@@ -1,12 +1,37 @@
-
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+ion-content{
+  --ion-background-color: #98FF98;
+}
 ion-header{
     text-align: center;
+    background-color:#4169E1
 }
 
 ion-item{
-    padding-bottom: 1.5rem;
+    padding-bottom: .4rem;
+    --ion-item-background:#ffffff;
+    color: #000000;
 }
+ion-button{
+    width: 60%;
+  }
 
 .titulo{
     text-align: center;
+    color: #000000;
 }
+
+.button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .separacion{
+    width: 100%; /* Ancho del 80% del contenedor padre */
+    max-width: 600px; /* Ancho máximo de 600px */
+    height: 160px; /* Altura de 20px */
+    margin-bottom: 2rem; /* Centrar horizontalmente */
+    background-color: rgb(171, 167, 162);
+  }

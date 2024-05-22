@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-title>Lista de Usuarios</ion-title>
     <ion-buttons slot="end">
       <ion-back-button defaultHref="/"></ion-back-button>
@@ -10,16 +10,18 @@
 <ion-content>
 
   <p class="parrafo">Aqui encontrara la información de todos los Usuarios</p>
+  <ion-input class="barra-busqueda" [(ngModel)]="searchValue" (ngModelChange)="searchUser()" placeholder=" Buscar por RUT"></ion-input>
 
-  <ion-card *ngFor="let user of users">
+  <ion-card *ngFor="let user of filteredUsers">
     <ion-card-header>
-      <ion-card-title>{{user.nombre}}</ion-card-title>
+      <ion-card-title>Nombre usuario: {{user.nombre}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <p>RUT: {{ user.rut }}</p>
       <p>Edad: {{ user.edad }}</p>
       <p>Rol: {{ user.tipo_usuario }}</p>
       <p>Email: {{ user.email }}</p>
+      <ion-button class="boton" color="primary" class="boton" (click)="redirigir_Buscar_usuario(user._id)">Ver mas</ion-button> 
 
     </ion-card-content>
 

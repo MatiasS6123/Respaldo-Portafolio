@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Lista de Notas</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="notasEstudiantes.length > 0; else noNotas">
+    <p class="subtitulo">Bienvenido, aquí podrá verificar las notas de su pupilo</p>
+
+    <ion-item *ngFor="let nota of notas">
+      <ion-card *ngFor="let estudiante of notasEstudiantes">
+        <ion-card-header>
+          <ion-card-title>Nombre Asignatura: {{nota.asignatura}}</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-list>
+                <h2>{{ estudiante.nombre }}</h2><br>
+                <p>RUT: {{ estudiante.rut }}</p><br>
+                <p>Notas: {{ estudiante.notas.join(', ') }}</p>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noNotas>
+    <p class="subtitulo">Su pupilo no tiene notas registradas hasta el momento</p>
+  </ng-template>
+</ion-content>

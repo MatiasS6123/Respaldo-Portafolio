@@ -1,28 +1,24 @@
-ion-datetime {
-  font-size: 14px; /* Ajusta el tamaño del texto según sea necesario */
-  /* También puedes ajustar otros estilos según sea necesario, como el tamaño del contenedor, márgenes, etc. */
-  width: 23rem; /* Ancho del componente */
-  height: 300PX; /* Alto del componente */
-  padding-top: 1rem;
+ion-content{
+  --ion-background-color: #98FF98;
 }
-
+ion-title{
+  text-align: center;
+}
 ion-item{
   padding-top:1.5rem ;
-  border: solid 2px #FFFFFF;
   border-left: none; /* Sin línea a la izquierda */
   border-right: none;
-}
-.date{
-  padding-bottom: 1rem;
-  width: 23rem;
+  color: #000000;
 }
 
 .titulo{
 text-align: center;
+color: #000000;
 }
 
 .parrafo{
 text-align: center;
+color: #000000;
 }
 
 

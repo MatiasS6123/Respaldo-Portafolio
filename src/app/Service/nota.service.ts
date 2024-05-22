@@ -21,8 +21,8 @@ export class NotaService {
   }
 
   // Método para obtener un estudiante por su ID
-  getNotasByCurso(curso: string): Observable<Nota> {
-    return this.http.get<Nota>(`${this.baseUrl}/${curso}`);
+  getNotasByCurso(nombreCurso: string): Observable<Nota> {
+    return this.http.get<Nota>(`${this.baseUrl}/${nombreCurso}`);
   }
 
   updateCurso(curso: string, nota: Nota): Observable<Nota> {
@@ -33,5 +33,8 @@ export class NotaService {
   // Método para eliminar un estudiante por su ID
   deleteNota(curso: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${curso}`);
+  }
+  obtener_Nota_Apoderado(rut_apoderado: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/${rut_apoderado}/notas`);
   }
 }

@@ -1,57 +1,70 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Registro de usuario</ion-title>
+  <ion-toolbar  color="secondary" >
+    <ion-title>Registro </ion-title>
 
-    <ion-buttons slot="end">
+    <ion-buttons  slot="end">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="background" padding >
-  <p class="titulo">Complete la siguiente información para completar el registro</p>
-  <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
-    <ion-item>
-      <ion-label position="floating">RUT</ion-label>
-      <ion-input type="text" formControlName="rut"></ion-input>
-    </ion-item>
+  <div class="separacion">
 
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input type="text" formControlName="nombre"></ion-input>
-    </ion-item>
+  </div>
+  
+  
+  <div class="registroform">
+    <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+      <h1 class="titulo">Registro de Usuarios</h1>
+      <ion-item>
+        <ion-label position="floating">RUT</ion-label>
+        <ion-input placeholder="12345678-9" type="text" formControlName="rut"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input placeholder="Mario " type="text" formControlName="nombre"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Apellido</ion-label>
+        <ion-input placeholder="Perés" type="text" formControlName="apellido"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Edad</ion-label>
+        <ion-input placeholder="26" type="number" formControlName="edad"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Rol Usuario:</ion-label>
+        <ion-select  formControlName="tipo_usuario" required>
+          <ion-select-option value="administrador">Administrador</ion-select-option>
+          <ion-select-option value="directora">Directora</ion-select-option>
+          <ion-select-option value="secretaria">Secretaria</ion-select-option>
+          <ion-select-option value="profesor">Profesor</ion-select-option>
+          <ion-select-option value="Jefa Utp">Jefa Utp</ion-select-option>
+        </ion-select>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input placeholder="marioperez@gmail.com" type="email" formControlName="email"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input placeholder="" type="password" formControlName="password"></ion-input> <!-- Cambiado de "contraseña" a "password" -->
+      </ion-item>
+  
+      <div class="button-container">
+        <ion-button  color="primary" class="registro" type="submit" [disabled]="!registerForm.valid">Registrarse</ion-button>
+      </div>
+      
+    </form>
+   
+  </div>
 
-    <ion-item>
-      <ion-label position="floating">Apellido</ion-label>
-      <ion-input type="text" formControlName="apellido"></ion-input>
-    </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Edad</ion-label>
-      <ion-input type="number" formControlName="edad"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Rol Usuario:</ion-label>
-      <ion-select formControlName="tipo_usuario" required>
-        <ion-select-option value="administrador">Administrador</ion-select-option>
-        <ion-select-option value="directora">Directora</ion-select-option>
-        <ion-select-option value="secretaria">Secretaria</ion-select-option>
-        <ion-select-option value="profesor">Profesor</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" formControlName="email"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input> <!-- Cambiado de "contraseña" a "password" -->
-    </ion-item>
-
-    <ion-button type="submit" expand="block" [disabled]="!registerForm.valid">Registrar</ion-button>
-  </form>
- 
 </ion-content>

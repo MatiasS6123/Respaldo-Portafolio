@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-title>Rgistro Anotaciones del Curso   {{gestionCurso?.nombreCurso}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/lista-curso"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <form (ngSubmit)="guardar_anotacion()" >
+    <ion-list class="lista-anotacion">
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre del Curso</ion-label>
+        <ion-input type="text" name="nombreCurso" [value]="gestionCurso?.nombreCurso" class="input-field"></ion-input>
+      </ion-item>
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Tipo de Anotacion</ion-label>
+        <ion-select name="tipo_anotacion" [(ngModel)]="anotacion.tipo_anotacion" class="input-field">
+          <ion-select-option value="Positiva">Positiva</ion-select-option>
+          <ion-select-option value="Negativa">Negativa</ion-select-option>
+          <!-- Agrega más opciones de anotación según sea necesario -->
+        </ion-select>
+      </ion-item>
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre de Asignatura</ion-label>
+        <ion-select name="nombre_asignatura" [(ngModel)]="anotacion.nombre_asignatura" class="input-field">
+          <ion-select-option value="Lenguaje">Lenguaje</ion-select-option>
+          <ion-select-option value="Matematica">Matematica</ion-select-option>
+          <ion-select-option value="Historia">Historia</ion-select-option>
+          <ion-select-option value="Ciencias Sociales">Ciencias Sociales</ion-select-option>
+          <!-- Agrega más opciones de anotación según sea necesario -->
+        </ion-select>
+      </ion-item>
+
+      
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre Profesor: </ion-label>
+        <ion-input name="nombreProfesor" type="text" [(ngModel)]="nombreProfesor" [value]="nombreProfesor" class="input-field"></ion-input>
+      </ion-item>
+      
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Rut Profesor: </ion-label>
+        <ion-input name="rutProfesor" type="text" [(ngModel)]="rutProfesor" [value]="rutProfesor" class="input-field"></ion-input>
+      </ion-item>
+      
+      
+
+      <ion-item class="input-item">
+        <ion-label position="stacked" class="input-label">Nombre de Alumnos</ion-label>
+        <ion-select multiple="true" name="nombre_alumnos"  [(ngModel)]="anotacion.nombre_alumnos"   class="input-field">
+          <ion-select-option  *ngFor="let estudiante of gestionCurso?.alumno" [value]="{nombre: estudiante.nombre, rut: estudiante.rut}"
+          >
+            {{estudiante.nombre}} ({{estudiante.rut}})
+          </ion-select-option>
+          <!-- Agrega más opciones de anotación según sea necesario -->
+        </ion-select>
+      </ion-item>
+
+    
+      <ion-item>
+        <ion-label position="stacked">Descripción de Anotacion</ion-label>
+        <ion-textarea name="descripcion_anotacion" [(ngModel)]="anotacion.descripcion_anotacion" placeholder="Escribe algo..." rows="6"></ion-textarea>
+      </ion-item>
+
+  
+      
+    </ion-list>
+    <div class="container-button">
+      <ion-button type="submit">Guardar Anotación</ion-button>
+    </div>
+  </form>
+
+</ion-content>

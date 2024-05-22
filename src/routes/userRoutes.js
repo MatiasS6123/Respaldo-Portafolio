@@ -4,6 +4,8 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs'); // Agregada la importación de bcrypt
 
+
+
 // Ruta para obtener todos los usuarios
 router.get('/', async (req, res) => {
     try {
@@ -123,8 +125,8 @@ router.post('/login', async (req, res) => {
 });
 
 
-// Ruta para actualizar un estudiante por su ID
-router.put('/:rut', async (req, res) => {
+// Ruta para actualizar un usuariio por su Rut
+router.put('/:_id/modificar', async (req, res) => {
     try {
         // Validar que la solicitud tenga datos para actualizar
         if (!req.body) {
@@ -132,7 +134,7 @@ router.put('/:rut', async (req, res) => {
         }
 
         // Buscar el estudiante por su RUT
-        const user = await User.findOne({ rut: req.params.rut });
+        const user = await User.findOne({ _id: req.params._id });
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
@@ -150,9 +152,11 @@ router.put('/:rut', async (req, res) => {
     }
 });
 
-router.delete('/:rut', async (req, res) => {
+
+//elimina a los usuarios por rut 
+router.delete('/:_id/eliminar', async (req, res) => {
     try {
-        const result = await User.deleteOne({ rut: req.params.rut });
+        const result = await User.deleteOne({ _id: req.params._id });
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: 'usuario no encontrado' });
         }
@@ -166,6 +170,8 @@ router.delete('/:rut', async (req, res) => {
 });
 
 
+
+//Trae a todos los usuarios que tengan el rol de profesor
 router.get('/profesores', async (req, res) => {
     try {
       // Registra un log de inicio de la consulta
@@ -184,6 +190,7 @@ router.get('/profesores', async (req, res) => {
       res.status(500).json({ message: 'Error al obtener los profesores' });
     }
   });
+
 
 module.exports = router;
 

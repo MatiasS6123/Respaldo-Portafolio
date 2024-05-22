@@ -12,7 +12,16 @@ export class SalidaService {
 
   constructor(private http:HttpClient) { }
 
-  GuardarSalida(SalidaEstudiante: SalidaEstudiante): Observable<SalidaEstudiante> {
-    return this.http.post<SalidaEstudiante>(this.baseUrl, SalidaEstudiante);
-  }
+  GuardarSalida(SalidaEstudiante: SalidaEstudiante, fotoSalida: File, fotoCedula: File): Observable<SalidaEstudiante> {
+    const formData = new FormData();
+    Object.keys(SalidaEstudiante).forEach(key => {
+      formData.append(key, SalidaEstudiante[key]);
+    });
+    formData.append('foto_salida', fotoSalida);
+    formData.append('foto_cedula_quien_retira', fotoCedula);
+
+    // Asegúrate de que estás enviando el objeto FormData sin convertirlo a JSON
+    return this.http.post<SalidaEstudiante>(this.baseUrl, formData);
+}
+
 }

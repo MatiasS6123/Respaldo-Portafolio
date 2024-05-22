@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-title>lista de cursos </ion-title>
     <ion-buttons slot="end">
       <ion-back-button defaultHref="/"></ion-back-button>
@@ -14,8 +14,11 @@
     
     <ion-item *ngFor="let curso of cursos" >
       <ion-label>nombre curso: {{curso.nombreCurso}}</ion-label>
-      <ion-button (click)="redirigirNota(curso.nombreCurso)">Ir a nota</ion-button> 
-      <ion-button (click)="redirigirAsistencia(curso.nombreCurso)">Ir a asistencia</ion-button> 
+      <ion-button (click)="redirigirAsistencia(curso.nombreCurso)">Ir a asistencia
+      </ion-button>
+      <ion-button (click)="redirigirNota(curso.nombreCurso)">Ir a Notas</ion-button>  
+      <ion-button (click)="redirigirAnotacion(curso.nombreCurso)">Ir a Anotación</ion-button>
+      <ion-button (click)="redirigirCitacion(curso.nombreCurso)">Ir a citación</ion-button> 
     </ion-item>
   </ion-list>
   <ng-template #noCursos>

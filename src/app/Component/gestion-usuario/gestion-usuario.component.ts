@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { NavController, ToastController } from '@ionic/angular';
 import { UserService } from 'src/app/Service/user.service';
 import { User } from 'src/models/User';
 
@@ -12,16 +13,30 @@ import { User } from 'src/models/User';
 export class GestionUsuarioComponent implements OnInit {
 
   userForm!: FormGroup;
-  buscarForm!: FormGroup;
-  usuarioEncontrado: User | null = null;
   mostrarInformacionUsuario: boolean = false;
   edicionHabilitada: boolean = false; // Variable para habilitar o deshabilitar la edición
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private toastController: ToastController) { }
+  usuario:User;
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private toastController: ToastController,
+    private route:ActivatedRoute,private navCtr:NavController
+  ) {
+    this.initEstudianteForm();
+
+   }
 
   ngOnInit() {
-    this.initEstudianteForm();
-    this.initBuscarForm();
+    const _id=this.route.snapshot.paramMap.get('_id');
+    this.userService.buscar_Usuario(_id).subscribe(
+      (usuario)=>{
+        this.usuario=usuario;
+        console.log(_id)
+        this.patchValue();
+        this.edicionHabilitada=false;
+        this.mostrarInformacionUsuario=false;
+      }
+    )
+
+  
   }
 
   private initEstudianteForm(): void {
@@ -36,54 +51,43 @@ export class GestionUsuarioComponent implements OnInit {
     });
   }
 
-  private initBuscarForm(): void {
-    this.buscarForm = this.formBuilder.group({
-      rut: ['', [Validators.required]]
-    });
-  }
+  
+  patchValue() {
+    this.userForm.patchValue({
+      rut:this.usuario.rut,
+      nombre:this.usuario.nombre,
+      apellido:this.usuario.apellido,
+      edad:this.usuario.edad,
+      tipo_usuario:this.usuario.tipo_usuario,
+      email:this.usuario.email
 
-  buscarUsuario() {
-    this.userService.buscarUser(this.buscarForm.get('rut')?.value).subscribe(
-      (usuario: any) => {
-        console.log('Usuario encontrado:', usuario);
 
-        if (usuario) {
-          this.usuarioEncontrado = usuario;
-          this.mostrarInformacionUsuario = true;
-          this.userForm.patchValue(usuario); // Asignar los datos del usuario al formulario
-          this.userForm.disable(); // Deshabilitar todos los campos del formulario
-        } else {
-          console.error('Usuario no encontrado');
-          this.usuarioEncontrado = null;
-          this.mostrarInformacionUsuario = false;
-        }
-      },
-      (error) => {
-        this.presentToast("Rut inválido o no encontrado")
-        console.error('Error al buscar usuario:', error);
-      }
-    );
+    })
+    
   }
 
   habilitarEdicion() {
     this.userForm.enable(); 
     this.edicionHabilitada=true;// Habilitar todos los campos del formulario
+    this.mostrarInformacionUsuario=true;
+  }
+  desabilitarEdicion(){
+    this.userForm.disable();
+    this.edicionHabilitada=false;
+    this.mostrarInformacionUsuario=false;
   }
 
   eliminarUsuario() {
-    const rut = this.userForm.get('rut')?.value;
-    if (!rut) {
-      this.presentToast('No se proporcionó un RUT válido para eliminar el estudiante');
-      return;
-    }
+    
 
-    this.userService.eliminarUser(rut).subscribe(
+    const _id = this.usuario._id;
+    this.userService.eliminar_User(_id).subscribe(
       () => {
-        this.presentToast('Usuario eliminado correctamente');
-        this.usuarioEncontrado = null;
-        this.mostrarInformacionUsuario = false;
-        this.userForm.reset();
-      },
+        this.presentToast("Anotación eliminada con exito").then(() => {
+          setTimeout(() => {
+            this.navCtr.navigateBack(['/lista-usuario']);
+          }, 2000); // Espera 2 segundos antes de navegar hacia atrás
+        });      },
       (error) => {
         this.presentToast("Error al eliminar usuario")
         console.error('Error al eliminar usuario:', error);
@@ -92,16 +96,13 @@ export class GestionUsuarioComponent implements OnInit {
   }
 
   actualizarUsuario() {
-    if (this.userForm.invalid) {
-      this.presentToast('El formulario es inválido. Corrige los campos resaltados.');
-      return;
-    }
-
+   
+    const _id= this.usuario._id;
     const usuarioActualizado: User = this.userForm.value;
-    this.userService.modificarUser(usuarioActualizado.rut, usuarioActualizado).subscribe(
+    this.userService.modificar_User(_id, usuarioActualizado).subscribe(
       (usuario: User) => {
         this.presentToast('Usuario actualizado correctamente:');
-        this.usuarioEncontrado = usuario;
+        
         // Puedes realizar alguna acción adicional después de actualizar el usuario, si es necesario
         this.userForm.disable();
       },

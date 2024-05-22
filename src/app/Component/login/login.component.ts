@@ -15,14 +15,16 @@ export class LoginComponent implements OnInit {
   password: string = '';
 
   isLoggedIn: boolean = false;
-  isAdmin: boolean = false;
-  isAdminSubscription: Subscription | undefined; // Subscription para el método isAdmin()
+  userRole: string;
+  roleSubscription: Subscription | undefined; // Subscription para el método checkRole()
 
 
   constructor(private userService: UserService, private router: Router, private toastController: ToastController) { }
 
-  ngOnInit() {}
-
+  ngOnInit() {
+    
+  }
+  
   login() {
     // Verificar si se han proporcionado correo electrónico y contraseña
     if (!this.email || !this.password) {
@@ -42,15 +44,17 @@ export class LoginComponent implements OnInit {
     
     if (this.isLoggedIn) {
       // Suscribirse al método isAdmin() y actualizar isAdmin cuando se resuelva
-        this.isAdminSubscription = this.userService.isAdmin().subscribe(isAdmin => {
+        this.roleSubscription = this.userService.checkRole().subscribe(isAdmin => {
         console.log('isAdmin:', isAdmin);
-        this.isAdmin = isAdmin;
+        this.userRole = isAdmin;
       });
     }
         // Redirigir a la página principal o a la página deseada
         this.router.navigate(['/']).then(() => {
           // Después de redirigir, recarga la página
+          localStorage.setItem('toastMessage', "Sesion Iniciada correctamente");
           window.location.reload();
+          
         })
       },
       (error) => {

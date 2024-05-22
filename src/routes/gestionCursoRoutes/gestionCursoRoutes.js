@@ -4,13 +4,14 @@ const GestionCurso= require('../../models/gestionCModels')
 const User = require('../../models/userModel');
 
 router.post('/', async (req, res) => {
-    const { nombreCurso, cantidadAlumno, nombreProfesor,rutProfesor, dias,alumno } = req.body;
+    const { nombreCurso, cantidadAlumno, profesor,nivel_curso, dias,alumno } = req.body;
 
     const nuevagestionCurso = new GestionCurso({
+        
         nombreCurso: nombreCurso,
         cantidadAlumno: cantidadAlumno,
-        nombreProfesor: nombreProfesor,
-        rutProfesor:rutProfesor,
+        profesor:profesor,
+        nivel_curso:nivel_curso,
         dias: dias,
         alumno:alumno
     });
@@ -27,7 +28,7 @@ router.post('/', async (req, res) => {
     }
 });
 // Ruta para actualizar un estudiante por su ID
-router.put('/:nombreCurso', async (req, res) => {
+router.put('/:_id/actualizar', async (req, res) => {
     try {
         // Validar que la solicitud tenga datos para actualizar
         if (!req.body) {
@@ -35,14 +36,14 @@ router.put('/:nombreCurso', async (req, res) => {
         }
 
         // Buscar el estudiante por su RUT
-        const curso = await GestionCurso.findOne({ nombreCurso: req.params.nombreCurso });
+        const curso = await GestionCurso.findOne({ _id: req.params._id });
         if (!curso) {
             return res.status(404).json({ message: 'curso no encontrado' });
         }
         
         // Actualizar los datos del estudiante con los datos proporcionados en la solicitud
         Object.assign(curso, req.body);
-        console.log('Estudiante actualizado:', curso); // Registrar el estudiante actualizado
+        console.log('Curso actualizado:', curso); // Registrar el estudiante actualizado
 
         // Guardar el estudiante actualizado en la base de datos
         const cursoActualizado = await curso.save();
@@ -56,11 +57,11 @@ router.put('/:nombreCurso', async (req, res) => {
 
 
 // Ruta para eliminar un estudiante por su ID
-router.delete('/:nombreCurso', async (req, res) => {
+router.delete('/:_id/eliminar', async (req, res) => {
     try {
-        const result = await GestionCurso.deleteOne({ nombreCurso: req.params.nombreCurso });
+        const result = await GestionCurso.deleteOne({ _id: req.params._id });
         if (result.deletedCount === 0) {
-            return res.status(404).json({ message: 'Estudiante no encontrado' });
+            return res.status(404).json({ message: 'Curso no encontrado' });
         }
         
         console.log('curso eliminado correctamente');
@@ -71,9 +72,9 @@ router.delete('/:nombreCurso', async (req, res) => {
     }
 });
 
-router.get('/:nombreCurso', async (req, res) => {
+router.get('/cursos', async (req, res) => {
     try {
-        const curso = await GestionCurso.findOne({ nombreCurso: req.params.nombreCurso }).lean(false);
+        const curso = await GestionCurso.find();
         if (!curso) {
             return res.status(404).json({ message: 'curso no encontrado' });
         }
@@ -96,7 +97,7 @@ router.get('/:rutProfesor/cursos', async (req, res) => {
             return res.status(404).json({ message: 'Profesor no encontrado' });
         }
         // Buscar cursos asignados al profesor por su rut en la colección de cursos
-        const cursos = await GestionCurso.find({ rutProfesor: rutProfesor });
+        const cursos = await GestionCurso.find({ 'profesor.rut': rutProfesor });
         console.log('Cursos encontrados:', cursos); // Agregar log aquí
 
         if (cursos.length === 0) {
@@ -111,15 +112,16 @@ router.get('/:rutProfesor/cursos', async (req, res) => {
     }
 });
 
-router.get('/:_id', async (req, res) => {
-    try {
-        const _id = req.params._id;
-        console.log('Solicitud GET recibida para el curso con ID:', _id);
 
-        const curso = await GestionCurso.findById(mongoose.Types.ObjectId(_id)).exec();
+router.get('/:nombreCurso/curso', async (req, res) => {
+    try {
+        const nombreCurso = req.params.nombreCurso;
+        console.log('Solicitud GET recibida para el curso con ID:', nombreCurso);
+
+        const curso = await GestionCurso.findOne({ nombreCurso: req.params.nombreCurso }).lean(false);
         
         if (!curso) {
-            console.log('Curso no encontrado para el ID:', _id); // Agregar este registro
+            console.log('Curso no encontrado para el ID:', nombreCurso); // Agregar este registro
             return res.status(404).json({ message: 'Curso no encontrado' });
         }
 
@@ -131,16 +133,15 @@ router.get('/:_id', async (req, res) => {
     }
 });
 
-
-router.get('/:nombreCurso', async (req, res) => {
+router.get('/:_id/buscar/curso', async (req, res) => {
     try {
-        const nombreCurso = req.params.nombreCurso;
+        const _id = req.params._id;
         console.log('Solicitud GET recibida para el curso con ID:', _id);
 
-        const curso = await GestionCurso.findOne({ nombreCurso: req.params.nombreCurso }).lean(false);
+        const curso = await GestionCurso.findOne({ _id: req.params._id }).lean(false);
         
         if (!curso) {
-            console.log('Curso no encontrado para el ID:', nombreCurso); // Agregar este registro
+            console.log('Curso no encontrado para el ID:', _id); // Agregar este registro
             return res.status(404).json({ message: 'Curso no encontrado' });
         }
 

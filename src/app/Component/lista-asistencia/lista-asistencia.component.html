@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-title>Ver asistencia  </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="asistencias.length > 0; else noAsistencia">
+ 
+    <p class="subtitulo">Bienvenido aquí podra verificar la asistencia de su pupilo </p>
+    
+    <ion-item *ngFor="let asistencia of asistencias">
+
+      <ion-card *ngFor="let asist of asistencia.asistencia">
+
+        <ion-card-header>
+          <ion-card-title>{{asist.nombre}}</ion-card-title>
+        </ion-card-header>
+       
+        <ion-card-content>
+          <p>Fecha: {{asistencia.fecha | date:'dd/MM/yyyy'}} </p>
+          <p>Rut: {{asist.rut}}</p>
+          <p>Presente: {{asist.presente ? 'Sí' : 'No'}}</p>
+       
+        </ion-card-content>
+          
+      </ion-card>
+    </ion-item>    
+  </ion-list>
+  <ng-template #noAsistencia>
+    <p class="subtitulo">Su pupilo no registra asistencias hasta el momento</p>
+  </ng-template>
+</ion-content>

@@ -1,14 +1,21 @@
 /* gestion-curso-form.component.css */
+ion-content{
+  --ion-background-color: #98FF98;
+}
 
+ion-searchbar{
+  color: hsl(0, 0%, 0%);
+  border: 1px solid #000000;
+}
 ion-header{
   text-align: center;
 }
 
 ion-item{
   padding-top: 1.5rem;
-  border: solid 2px #FFFFFF;
   border-left: none; /* Sin línea a la izquierda */
   border-right: none;
+  color: #000000;
 }
 
 ion-button{
@@ -35,4 +42,5 @@ ion-button{
 
   .parrafo{
     text-align: center;
+    color: #000000;
   }

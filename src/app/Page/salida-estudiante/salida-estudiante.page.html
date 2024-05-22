@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-title>Salida de Estudiante</ion-title>
     <ion-buttons slot="end">
       <ion-back-button defaultHref="/"></ion-back-button>
@@ -8,29 +8,31 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Salida de Estudiante</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+ 
   <form [formGroup]="salidaForm" (ngSubmit)="guardarSalidaEstudiante()">
     <ion-item>
       <ion-label position="floating">Nombre del Estudiante</ion-label>
-      <ion-input formControlName="nombreEstudiante" type="text"></ion-input>
+      <ion-input formControlName="nombre_estudiante" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Quién retira</ion-label>
-      <ion-input formControlName="quienRetira" type="text"></ion-input>
+      <ion-input formControlName="quien_retira" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Motivo del retiro</ion-label>
-      <ion-input formControlName="motivo" type="text"></ion-input>
+      <ion-input formControlName="motivo_retiro" type="text"></ion-input>
     </ion-item>
     <ion-item lines="none" >
       <ion-label class="foto-item"  position="floating">Foto</ion-label>
-      <ion-input formControlName="foto" type="file"></ion-input>
+      <ion-input formControlName="foto_salida" (change)="onFileChange($event, 'foto_salida')" type="file"></ion-input>
     </ion-item>
-    <ion-button type="submit" expand="block" [disabled]="salidaForm.invalid">Guardar</ion-button>
+    <ion-item lines="none" >
+      <ion-label class="foto-item"  position="floating">Foto Cedula</ion-label>
+      <ion-input formControlName="foto_cedula_quien_retira" (change)="onFileChange($event, 'foto_cedula_quien_retira')" type="file"></ion-input>
+    </ion-item>
+    <div class="button-container">
+      <ion-button color="secondary" type="submit" >Guardar</ion-button>
+    </div>
+
   </form>
 </ion-content>

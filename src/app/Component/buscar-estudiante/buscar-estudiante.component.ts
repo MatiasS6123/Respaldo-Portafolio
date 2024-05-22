@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { EstudianteService } from 'src/app/Service/estudiante.service';
 import { Estudiante } from 'src/models/Estudiante';
 
@@ -11,87 +12,121 @@ import { Estudiante } from 'src/models/Estudiante';
 })
 export class BuscarEstudianteComponent  implements OnInit {
 
+  estudiante:Estudiante;
   estudianteForm!: FormGroup;
-  buscarForm!: FormGroup;
-  estudianteEncontrado: Estudiante | null = null;
-  mostrarInformacionEstudiante: boolean = false;
   edicionHabilitada: boolean = false;
-
-  constructor(private formBuilder: FormBuilder, private estudianteService: EstudianteService, private toastController:ToastController) {}
+  mostrarInformacionEstudiante: boolean = false;
+  imageUrl: string;
+  selectedFile: File;
+  files: { [key: string]: File } = {};
+  constructor(private formBuilder: FormBuilder, private estudianteService: EstudianteService, private toastController:ToastController,
+    private alertController: AlertController,
+    private route:ActivatedRoute,private navCtrl: NavController
+  ) {
+    this.initEstudianteForm();
+  }
 
   ngOnInit() {
-    this.initEstudianteForm();
-    this.initBuscarForm();
+    const _id = this.route.snapshot.paramMap.get('_id');
+    this.estudianteForm.disable();
+    this.estudianteService.getEstudianteById(_id).subscribe(
+      (estudiante) => {
+        this.estudiante = estudiante;
+        console.log(estudiante);
+
+        // Asegúrate de que estudiante no sea null o undefined
+        if (this.estudiante) {
+          // Usa una nueva propiedad para la URL completa del certificado
+          if (this.estudiante.certificado_enfermedad) {
+            this.imageUrl = `${window.location.protocol}//${window.location.host}/${this.estudiante.certificado_enfermedad}`;
+          } else {
+            this.imageUrl = ''; // o cualquier valor por defecto
+          }
+
+          this.patchValue();
+          this.mostrarInformacionEstudiante=false;
+          this.edicionHabilitada=false;
+        } else {
+          console.error('Estudiante no encontrado');
+        }
+      },
+      (error) => {
+        console.error('Error al obtener estudiante:', error);
+      }
+    );
   }
 
   private initEstudianteForm(): void {
     this.estudianteForm = this.formBuilder.group({
       rut: [{value: '', disabled: true}, [Validators.required]], // Ejemplo de validación para un RUT chileno
+      numero_matricula_estudiante:[{value:'',disable:true},[Validators.required]],
       nombre: [{value: '', disabled: true}, Validators.required],
       apellido: [{value: '', disabled: true}, Validators.required],
       edad: [{value: '', disabled: true}, [Validators.required, Validators.min(0), Validators.max(120)]], // Suponiendo una edad válida entre 0 y 120 años
       sexo: [{value: '', disabled: true}, Validators.required],
       nacionalidad: [{value: '', disabled: true}, Validators.required],
-      fecha_nac: [{value: '', disabled: true}, Validators.required] // Podrías agregar un validador de fecha personalizado si es necesario
+      fecha_nac: [{value: '', disabled: true}, Validators.required], // Podrías agregar un validador de fecha personalizado si es necesario
+      tiene_enfermedad: [{value:false, disable:true}],
+      tipo_enfermedad: [{value: '', disabled: true}],
+      descripcion_enfermedad: [{value: '', disabled: true}],
+      certificado_enfermedad: [{value: '', disabled: true}]
     });
+
   }
 
-  private initBuscarForm(): void {
-    this.buscarForm = this.formBuilder.group({
-      rut: ['', [Validators.required]]
-    });
-  }
-
-  buscarEstudiante() {
-    this.estudianteService.getEstudianteById(this.buscarForm.get('rut')?.value).subscribe(
-      (estudiante: any) => {
-        console.log('Estudiante encontrado:', estudiante);
   
-        if (estudiante) {
-          this.estudianteEncontrado = estudiante;
-          this.mostrarInformacionEstudiante = true;
-          // Parsear la fecha antes de asignarla al formulario
-          estudiante.fecha_nac = estudiante.fecha_nac.split('T')[0]; // Obtener solo la parte de la fecha (YYYY-MM-DD)
-          this.estudianteForm.patchValue(estudiante); // Actualizar el formulario con los datos del estudiante encontrado
-          this.estudianteForm.disable();
-        } else {
-          
-          console.error('Estudiante no encontrado');
-          this.estudianteEncontrado = null;
-          this.mostrarInformacionEstudiante = false;
-        }
-      },
-      (error) => {
-        this.presentToast("Rut invalido o no existe")
-        console.error('Error al buscar estudiante:', error);
-      }
-    );
-  }
+  patchValue() {
+    const date=this.formatDate(this.estudiante.fecha_nac);
+    this.estudianteForm.patchValue({
+      rut:this.estudiante.rut,
+      numero_matricula_estudiante:this.estudiante.numero_matricula_estudiante,
+      nombre:this.estudiante.nombre,
+      apellido:this.estudiante.apellido,
+      edad:this.estudiante.edad,
+      sexo:this.estudiante.sexo,
+      nacionalidad:this.estudiante.nacionalidad,
+      fecha_nac:date,
+      tiene_enfermedad:this.estudiante.tiene_enfermedad,
+      tipo_enfermedad:this.estudiante.tiene_enfermedad,
+      descripcion_enfermedad:this.estudiante.descripcion_enfermedad
+    })
+}
+
 
   habilitarEdicion() {
     this.estudianteForm.enable(); 
     this.edicionHabilitada=true;// Habilitar todos los campos del formulario
+    this.mostrarInformacionEstudiante=true;
+  }
+  cancelarEdicion(){
+    this.estudianteForm.disable();
+    this.edicionHabilitada=false;
+    this.mostrarInformacionEstudiante=false;
   }
 
-  eliminarEstudiante() {
-    const rut = this.estudianteForm.get('rut')?.value;
-    if (!rut) {
-      this.presentToast('No se proporcionó un RUT válido para eliminar el estudiante');
-      return;
-    }
+  async eliminarEstudiante() {
+    const _id =this.estudiante._id;
 
-    this.estudianteService.deleteEstudiante(rut).subscribe(
-      () => {
-        this.presentToast('Estudiante eliminado correctamente');
-        this.estudianteEncontrado = null;
-        this.mostrarInformacionEstudiante = false;
-        this.estudianteForm.reset();
-      },
-      (error) => {
-        this.presentToast("Error al eliminar estudiante")
-        console.error('Error al eliminar estudiante:', error);
+    const result= await this.presentConfirm();
+    if(result)
+      {
+        this.estudianteService.delete_Estudiante(_id).subscribe(
+          () => {
+            this.presentToast("Anotación eliminada con exito").then(() => {
+              setTimeout(() => {
+                this.navCtrl.navigateBack(['/lista-estudiante']);
+              }, 2000); // Espera 2 segundos antes de navegar hacia atrás
+            });
+          },
+          (error) => {
+            this.presentToast("Error al eliminar estudiante")
+            console.error('Error al eliminar estudiante:', error);
+          }
+        );
       }
-    );
+
+    
+    
   }
 
   actualizarEstudiante() {
@@ -101,17 +136,28 @@ export class BuscarEstudianteComponent  implements OnInit {
     }
 
     const estudianteActualizado: Estudiante = this.estudianteForm.value;
-    this.estudianteService.updateEstudiante(estudianteActualizado.rut, estudianteActualizado).subscribe(
-      (estudiante: Estudiante) => {
-        this.presentToast('Estudiante actualizado correctamente:');
-        this.estudianteEncontrado = estudiante;
-        // Aquí puedes realizar alguna acción adicional después de actualizar el estudiante, si es necesario
-        this.estudianteForm.disable();
-      },
-      (error) => {
-        console.error('Error al actualizar estudiante:', error);
-      }
-    );
+    const _id = this.estudiante._id;
+
+    if (this.selectedFile) {
+      this.estudianteService.update_Estudiante(_id, estudianteActualizado, this.selectedFile).subscribe(
+        (estudiante: Estudiante) => {
+          this.presentToast("Datos actualizados");
+        },
+        (error) => {
+          console.error('Error al actualizar estudiante:', error);
+        }
+      );
+    } else {
+      this.estudianteService.update_Estudiante(_id, estudianteActualizado).subscribe(
+        (estudiante: Estudiante) => {
+          this.presentToast("Datos actualizados");
+          this.mostrarInformacionEstudiante=false;
+        },
+        (error) => {
+          console.error('Error al actualizar estudiante:', error);
+        }
+      );
+    }
   }
 
   async presentToast(message: string) {
@@ -122,4 +168,56 @@ export class BuscarEstudianteComponent  implements OnInit {
     });
     toast.present();
   }
+  async presentConfirm(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        header: 'Confirmación',
+        message: '¿Estás seguro de que quieres eliminar esta planificacion?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancelado');
+              resolve(false);
+            }
+          }, {
+            text: 'Eliminar',
+            handler: () => {
+              console.log('Eliminado');
+              // Aquí puedes poner el código para eliminar el elemento
+              resolve(true);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    });
+  }
+  
+
+  formatDate(date) {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+  
+    if (month.length < 2) {
+      month = '0' + month;
+    }
+    if (day.length < 2) {
+      day = '0' + day;
+    }
+  
+    return [year, month, day].join('-');
+  }
+  onFileSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files[0]) {
+      this.selectedFile = fileInput.files[0];
+    }
+  
+  }
+
 }

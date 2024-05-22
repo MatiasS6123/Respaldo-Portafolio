@@ -4,7 +4,7 @@ const router = express.Router();
 const Bitacora = require('../../models/bitacoraModel');
 
 router.post('/', async (req, res) => {
-    const { nombreCurso, descripcion, fecha } = req.body;
+    const {_id, nombreCurso,nombreAsignatura,nombreProfesor,rutProfesor,  fecha,descripcion, } = req.body;
 
     // Intenta parsear la cadena de fecha
     const parsedFecha = Date.parse(fecha);
@@ -16,8 +16,11 @@ router.post('/', async (req, res) => {
 
     const nuevaBitacora = new Bitacora({
         nombreCurso: nombreCurso, // Cambiar nombreCurso a nombreClase
-        descripcion: descripcion, // Mantener la misma nomenclatura
-        fecha: new Date(parsedFecha) // Utiliza la fecha parseada
+        nombreAsignatura:nombreAsignatura,
+        nombreProfesor:nombreProfesor,
+        rutProfesor:rutProfesor, 
+        fecha: new Date(parsedFecha), // Utiliza la fecha parseada
+        descripcion: descripcion // Mantener la misma nomenclatura
     });
 
     console.log('Bitacora a guardar:', nuevaBitacora);

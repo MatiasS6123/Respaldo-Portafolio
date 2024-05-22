@@ -1,0 +1,35 @@
+ion-content{
+    --ion-background-color: #98FF98;
+}
+ion-title{
+    text-align: center;
+}
+ion-card{
+    width: 100%;
+    border: 2.5px solid #000000;
+    color: #000000;
+    background-color: #98FF98;
+  }
+ion-card-title{
+    color: #000000;
+}
+
+ion-item{
+    color: #000000;
+}
+
+.button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    margin: auto; 
+}
+.Certificado{
+    display: flex;
+    align-items: first baseline;
+}
+.Advertencia{
+    color: #000000;
+    text-align: center;
+}

@@ -1,15 +1,20 @@
+ion-content{
+    --ion-background-color: #98FF98;
+
+}
 ion-header{
     text-align: center;
 }
 
 ion-item{
     padding-bottom: 1.5rem;
-    border: solid 2px #FFFFFF;
     border-left: none; /* Sin línea a la izquierda */
     border-right: none;
+    color: #000000;
 }
 
 .subtitulo{
     text-align: center;
+    color: #000000;
 }
 

@@ -1,15 +1,15 @@
 <ion-app>
   
-  <ion-split-pane contentId="main-content">
+  <ion-split-pane  contentId="main-content">
    
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-list>
-        <ion-list-header>Menu</ion-list-header>
+    <ion-menu color="secondary"  contentId="main-content" type="overlay">
+      <ion-list >
+        <ion-list-header>Men&uacute;</ion-list-header>
 
         <!-- Contenido del menú (opcional) -->
-      <ion-menu-toggle autoHide="false">
+      <ion-menu-toggle  autoHide="false">
         <!-- Mostrar elementos de registro y login solo si el usuario no está autenticado -->
-        <ion-item *ngIf="!authService.isAuthenticated()" detail="true" [routerLink]="['/registro']" routerLinkActive="router-link">
+        <ion-item  *ngIf="!authService.isAuthenticated()" detail="true" [routerLink]="['/registro']" routerLinkActive="router-link">
           <ion-label>
             Registro
           </ion-label>
@@ -19,73 +19,134 @@
           <ion-label>
             Login
           </ion-label>
-          <ion-icon name="people-circle"></ion-icon>
+          <ion-icon name="person"></ion-icon>
         </ion-item>
 
         <!-- Mostrar elementos de registro de estudiante, asistencia y lista de estudiantes solo si el usuario está autenticado -->
-        <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/estudiantes']" routerLinkActive="router-link">
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'administrador'" detail="true" [routerLink]="['/estudiantes']" routerLinkActive="router-link">
           <ion-label>
             Registro de Estudiante
           </ion-label>
-          <ion-icon name="people"></ion-icon>
+          <ion-icon name="school"></ion-icon>
         </ion-item>
-        <ion-item *ngIf="authService.isAuthenticated() && !isAdmin" detail="true" [routerLink]="['/asistencia']" routerLinkActive="router-link">
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'secretaria'" detail="true" [routerLink]="['/registro-apoderado']" routerLinkActive="router-link">
           <ion-label>
-            Registro  Asistencia
+            Registro de Apoderado
           </ion-label>
-          <ion-icon name="people-circle"></ion-icon>
+          <ion-icon name="person-add"></ion-icon>
         </ion-item>
-        <ion-item *ngIf="authService.isAuthenticated() && !isAdmin" detail="true" [routerLink]="['/nota']" routerLinkActive="router-link">
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'secretaria'" detail="true" [routerLink]="['/lista-apoderado']" routerLinkActive="router-link">
           <ion-label>
-            Ingresar notas
+            Lista de apoderados
           </ion-label>
-          <ion-icon name="people-circle"></ion-icon>
+          <ion-icon name="folder"></ion-icon>
         </ion-item>
-        <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/busqueda-estudiante']" routerLinkActive="router-link">
+        
+        
+
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'profesor'" detail="true" [routerLink]="['/lista-curso']" routerLinkActive="router-link">
           <ion-label>
-            Busqueda de  Estudiante
+            Lista de Cursos
           </ion-label>
-          <ion-icon name="people-circle"></ion-icon>
+          
+          <ion-icon name="folder"></ion-icon>
         </ion-item>
-        <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/gestion-usuario']" routerLinkActive="router-link">
+        
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'profesor'" detail="true" [routerLink]="['/planificar-clase']" routerLinkActive="router-link">
           <ion-label>
-            Busqueda de Usuarios 
+            Planificar Clase
           </ion-label>
-          <ion-icon name="people"></ion-icon>
+          
+          <ion-icon name="clipboard"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'profesor'" detail="true" [routerLink]="['/lista-planificacion']" routerLinkActive="router-link">
+          <ion-label>
+            Lista planificaci&oacute;n de Clases
+          </ion-label>
+          
+          <ion-icon name="folder"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'profesor'" detail="true" [routerLink]="['/lista-anotacion-profesor']" routerLinkActive="router-link">
+          <ion-label>
+            Lista de Anotaciones de Estudiantes
+          </ion-label>
+          
+          <ion-icon name="folder"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'profesor'" detail="true" [routerLink]="['/lista-citacion']" routerLinkActive="router-link">
+          <ion-label>
+            Lista de Citaciones de Estudiantes
+          </ion-label>
+          
+          <ion-icon name="folder"></ion-icon>
         </ion-item>
 
-        <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/gestion-curso']" routerLinkActive="router-link">
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'directora'" detail="true" [routerLink]="['/ver-lista-cursos-directora']" routerLinkActive="router-link">
           <ion-label>
-            Asignar cursos 
+            Lista de asignaci&oacute;n Cursos
           </ion-label>
-          <ion-icon name="people"></ion-icon>
+          
+          <ion-icon name="folder"></ion-icon>
         </ion-item>
-        <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/buscar-curso']" routerLinkActive="router-link">
+        
+        
+        
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'administrador' || userRole === 'directora'" detail="true" [routerLink]="['/lista-estudiante']" routerLinkActive="router-link">
           <ion-label>
-            Busqueda de Cursos 
+            Lista de  Estudiante
           </ion-label>
-          <ion-icon name="people"></ion-icon>
+          <ion-icon name="folder"></ion-icon>
         </ion-item>
 
-
-        <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/lista-estudiante']" routerLinkActive="router-link">
-          <ion-label>
-            Lista de Estudiantes 
-          </ion-label>
-          <ion-icon name="people"></ion-icon>
-        </ion-item>
-        <ion-item *ngIf="authService.isAuthenticated() && isAdmin" detail="true" [routerLink]="['/lista-usuario']" routerLinkActive="router-link">
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'administrador' || userRole === 'directora'" detail="true" [routerLink]="['/lista-usuario']" routerLinkActive="router-link">
           <ion-label>
             Lista de Usuarios 
           </ion-label>
-          <ion-icon name="people"></ion-icon>
+          <ion-icon name="folder"></ion-icon>
+        </ion-item>
+
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'directora' || userRole === 'administrador'" detail="true" [routerLink]="['/asignar-curso']" routerLinkActive="router-link">
+          <ion-label>
+            Asignar cursos 
+          </ion-label>
+          <ion-icon name="create"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'apoderado' " detail="true" [routerLink]="['/ver-asistencia']" routerLinkActive="router-link">
+          <ion-label>
+            Ver Asistencia 
+          </ion-label>
+          <ion-icon name="book"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'apoderado' " detail="true" [routerLink]="['/ver-anotacion']" routerLinkActive="router-link">
+          <ion-label>
+            Ver Anotaciónes 
+          </ion-label>
+          <ion-icon name="book"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'apoderado' " detail="true" [routerLink]="['/ver-citacion-apoderado']" routerLinkActive="router-link">
+          <ion-label>
+            Ver Citaciones 
+          </ion-label>
+          <ion-icon name="book"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'apoderado' " detail="true" [routerLink]="['/lista-apoderado-notas']" routerLinkActive="router-link">
+          <ion-label>
+            Ver Notas 
+          </ion-label>
+          <ion-icon name="book"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'administrador' || userRole === 'directora'" detail="true" [routerLink]="['/ver-lista-cursos-directora']" routerLinkActive="router-link">
+          <ion-label>
+            Lista de Cursos administrador 
+          </ion-label>
+          <ion-icon name="folder"></ion-icon>
         </ion-item>
 
                 
-        <ion-item *ngIf="authService.isAuthenticated()" detail="true" [routerLink]="['/salida-estudiante']" routerLinkActive="router-link">
-          <ion-label>
+        <ion-item *ngIf="authService.isAuthenticated() && userRole === 'secretaria'" detail="true" [routerLink]="['/salida-estudiante']" routerLinkActive="router-link">
+          <ion-label >
             Salida Estudiante
-          </ion-label>
+          </ion-label> 
           <ion-icon name="people-circle"></ion-icon>
         </ion-item>
         
@@ -95,7 +156,7 @@
           <ion-label>
             Salir
           </ion-label>
-          <ion-icon name="log-out"></ion-icon>
+          <ion-icon class="salida" name="log-out"></ion-icon>
         </ion-item>
       </ion-menu-toggle>
       
@@ -103,7 +164,7 @@
         
       </ion-list>
       
-      <ion-menu-toggle *ngIf="authService.isAuthenticated() && authService.isAdmin()"></ion-menu-toggle>
+      <ion-menu-toggle ></ion-menu-toggle>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>

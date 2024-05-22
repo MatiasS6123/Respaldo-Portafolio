@@ -11,7 +11,7 @@ import { GestionCurso } from 'src/models/gestionC';
   templateUrl: './lista-curso.component.html',
   styleUrls: ['./lista-curso.component.scss'],
 })
-export class ListaCursoComponent  implements OnInit {
+export class ListaCursoComponent implements OnInit {
 
   cursos: GestionCurso[] = [];
   profesores: User[] = [];
@@ -32,6 +32,7 @@ export class ListaCursoComponent  implements OnInit {
         this.gestionCService.getCursosAsignados(usuario.rut).subscribe(
           (curso) => {
             this.cursos = curso;
+            console.log(curso)
           },
           (error) => {
             if (error instanceof HttpErrorResponse && error.status === 404) {
@@ -48,12 +49,24 @@ export class ListaCursoComponent  implements OnInit {
   redirigirAsistencia(nombreCurso: string) {
     // Navegar a la página de asistencia con el ID del curso como parámetro
     this.router.navigate(['/asistencia', nombreCurso]);
-}
+  }
 
-redirigirNota(nombreCurso: string) {
-  // Navegar a la página de asistencia con el ID del curso como parámetro
-  this.router.navigate(['/nota', nombreCurso]);
-}
+  redirigirNota(nombreCurso: string) {
+    // Navegar a la página de asistencia con el ID del curso como parámetro
+    this.router.navigate(['/nota', nombreCurso]);
+  }
+
+
+  
+  redirigirAnotacion(nombreCurso: string) {
+    // Navegar a la página de asistencia con el ID del curso como parámetro
+    this.router.navigate(['/anotacion', nombreCurso]);
+  }
+  redirigirCitacion(nombreCurso: string) {
+    // Navegar a la página de asistencia con el ID del curso como parámetro
+    this.router.navigate(['/citacion', nombreCurso]);
+  }
+
 
 }
 

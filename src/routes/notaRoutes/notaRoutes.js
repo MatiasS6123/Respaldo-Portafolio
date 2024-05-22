@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Nota = require('../../models/notaModel');
-
+const Apoderado= require('../../models/apoderadoModels')
 router.post('/', async (req, res) => {
     try {
         const nuevaNota = req.body;
@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:curso', async (req, res) => {
+router.put('/:nombreCurso', async (req, res) => {
     try {
         // Validar que la solicitud tenga datos para actualizar
         if (!req.body) {
@@ -28,7 +28,7 @@ router.put('/:curso', async (req, res) => {
         }
 
         // Buscar el nota por su Curso
-        const curso = await Nota.findOne({ curso: req.params.curso });
+        const curso = await Nota.findOne({ nombreCurso: req.params.nombreCurso });
         if (!curso) {
             return res.status(404).json({ message: 'nota no encontrado' });
         }
@@ -64,9 +64,9 @@ router.delete('/:curso', async (req, res) => {
     }
 });
 
-router.get('/:curso', async (req, res) => {
+router.get('/:nombreCurso', async (req, res) => {
     try {
-        const curso = await Nota.findOne({ curso: req.params.curso }).lean(false);
+        const curso = await Nota.findOne({ nombreCurso: req.params.nombreCurso }).lean(false);
         if (!curso) {
             return res.status(404).json({ message: 'nota no encontrado' });
         }
@@ -75,6 +75,45 @@ router.get('/:curso', async (req, res) => {
     } catch (error) {
         console.error('Error al obtener curso por nombre:', error); // Agregar log
         res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/:rut_apoderado/notas', async (req, res) => {
+    try {
+        const rut_apoderado = req.params.rut_apoderado;
+        
+        // Buscar al apoderado por su rut en la colección de apoderados
+        const apoderado = await Apoderado.findOne({ rut_apoderado: rut_apoderado });
+
+        if (!apoderado) {
+            return res.status(404).json({ message: 'Apoderado no encontrado' });
+        }
+
+        // Obtener el rut del alumno del apoderado
+        const rut_alumno = apoderado.rut_estudiante;
+
+        console.log("Rut del alumno:", rut_alumno); 
+
+        // Buscar las notas del alumno asociado al apoderado
+        const notas = await Nota.find();
+
+        // Filtrar los objetos de notas que coinciden con el rut del alumno
+        const notasAlumno = notas.map(doc => {
+            return {
+                ...doc._doc,
+                notas: doc.notas.filter(nota => nota.rut === rut_alumno)
+            };
+        }).filter(doc => doc.notas.length > 0); // Solo incluir documentos con al menos una nota
+
+        if (!notasAlumno || notasAlumno.length === 0) {
+            return res.status(404).json({ message: 'Notas del alumno no encontradas' });
+        }
+
+        // Si se encuentran las notas del alumno, devolverlas como respuesta
+        return res.status(200).json(notasAlumno);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error interno del servidor' });
     }
 });
 

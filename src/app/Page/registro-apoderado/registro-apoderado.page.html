@@ -1,0 +1,70 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="secondary">
+    <ion-title>Registro de Estudiantes</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="apoderadoFom" (ngSubmit)="guardarApoderado()">
+    <ion-item>
+      <ion-label position="stacked">Rut Apoderado</ion-label>
+      <ion-input type="text" formControlName="rut_apoderado"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Nombre apoderado</ion-label>
+      <ion-input type="text" formControlName="nombre_apoderado"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Apellido apoderado</ion-label>
+      <ion-input type="text" formControlName="apellido_apoderado"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Edad apoderado</ion-label>
+      <ion-input type="number" formControlName="edad_apoderado"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Sexo apoderado</ion-label>
+      <ion-select  formControlName="sexo_apoderado">
+        <ion-select-option value="masculino">Masculino</ion-select-option>
+        <ion-select-option value="femenino">Femenino</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Parentesco apoderado</ion-label>
+      <ion-input type="text" formControlName="parentesco"> </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Numero contacto</ion-label>
+      <ion-input type="text" formControlName="numero_contacto_apoderado"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Email contacto</ion-label>
+      <ion-input type="email" formControlName="email_contacto_apoderado"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Seleccione al estudiante</ion-label>
+      <ion-select formControlName="rut_alumno">
+        <ion-select-option *ngFor="let estudiante  of alumnos" [value]="{ nombre: estudiante.nombre_estudiante, rut: estudiante.rut_estudiante }">
+          {{ estudiante.nombre_estudiante }}
+          {{estudiante.rut_estudiante}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <div class="button-container">
+      <ion-button type="submit" [disabled]="apoderadoFom.invalid">Guardar</ion-button>
+    </div>
+
+
+  </form>
+  
+</ion-content>

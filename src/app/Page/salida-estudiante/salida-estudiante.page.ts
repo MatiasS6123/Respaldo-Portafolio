@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { SalidaService } from 'src/app/Service/salida.service';
+import { SalidaEstudiante } from 'src/models/salidaEstudiante';
 
 @Component({
   selector: 'app-salida-estudiante',
@@ -10,16 +11,26 @@ import { SalidaService } from 'src/app/Service/salida.service';
 })
 export class SalidaEstudiantePage implements OnInit {
 
-  salidaForm: FormGroup; // Declarar el FormGroup
+  salida:SalidaEstudiante={
+    quien_retira:'',
+    motivo_retiro:'',
+    fecha_salida: new Date,
+    nombre_estudiante:'',
+    foto_cedula_quien_retira:'',
+    foto_salida:''
 
+  }
+  salidaForm: FormGroup; // Declarar el FormGroup
+  files: { [key: string]: File } = {};
   constructor(private fb: FormBuilder, private salidaEstudianteService: SalidaService,
     private toastController: ToastController) {
     
     this.salidaForm = this.fb.group({ // Inicializar el FormGroup
-      nombreEstudiante: ['', Validators.required],
-      quienRetira: ['', Validators.required],
-      motivo:['',Validators.required],
-      foto: ['', Validators.required]
+      nombre_estudiante: ['', Validators.required],
+      quien_retira: ['', Validators.required],
+      motivo_retiro:['',Validators.required],
+      foto_salida: ['', Validators.required],
+      foto_cedula_quien_retira: ['', Validators.required]
     });
   }
 
@@ -31,21 +42,22 @@ export class SalidaEstudiantePage implements OnInit {
 
   guardarSalidaEstudiante() {
     if (this.salidaForm.valid) {
-      // Obtiene la fecha actual y la formatea al formato 'dd/mm/yyyy'
-      const fechaActual = new Date().toISOString().split('T')[0].split('-').reverse().join('/');
-
-      // Agrega la fecha al objeto de salida de estudiante
+      const fechaActual = new Date().toISOString().split('T')[0];
+  
       const salidaEstudianteData = {
         ...this.salidaForm.value,
-        fecha: fechaActual
+        fecha_salida: fechaActual
       };
 
-      this.salidaEstudianteService.GuardarSalida(salidaEstudianteData)
+      console.log("Datos a guardar",salidaEstudianteData)
+  
+      this.salidaEstudianteService.GuardarSalida(salidaEstudianteData, this.files['foto_salida'], this.files['foto_cedula_quien_retira'])
         .subscribe(
           (res) => {
             console.log('Salida de estudiante guardada correctamente:', res);
             this.presentToast('Registro guardado con extio');
-            this.salidaForm.reset(); // Reinicia el formulario después de guardar
+            this.salidaForm.reset();
+            this.files = {}; // Reinicia los archivos después de guardar
           },
           (error) => {
             this.presentToast('Error al registrar verifique los datos');
@@ -55,6 +67,7 @@ export class SalidaEstudiantePage implements OnInit {
       console.error('Formulario de salida de estudiante inválido. Por favor, revise los campos.');
     }
   }
+  
 
 
   async presentToast(message: string) {
@@ -65,6 +78,12 @@ export class SalidaEstudiantePage implements OnInit {
     });
     toast.present();
   }
+  onFileChange(event, field) {
+    if (event.target.files.length > 0) {
+      this.files[field] = event.target.files[0];
+    }
+  }
+
 
 
 }

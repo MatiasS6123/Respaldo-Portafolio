@@ -1,3 +1,26 @@
+ion-content{
+    --ion-background-color: #98FF98;
+  }
+  ion-title{
+    text-align: center;
+  }
+  ion-item{
+    padding-top:.1rem ;
+    border-left: none; /* Sin línea a la izquierda */
+    border-right: none;
+    border-top: none;
+    border-bottom: .1rem solid;
+    color: #000000;
+
+  }
+  
+  
 .foto-item{
-    margin-bottom: 1.5rem;
+    margin-bottom: .5rem;
+}
+.button-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
 }

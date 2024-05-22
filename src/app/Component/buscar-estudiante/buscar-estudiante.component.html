@@ -1,50 +1,113 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="secondary">
     <ion-title>
-      Busqueda de estudiantes
+      Gesti&oacute;n  de Estudiantes
     </ion-title>
     <ion-buttons slot="end">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/lista-estudiante"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar>
 
-<ion-item class="ion-margin-top" [formGroup]="buscarForm">
-  <ion-label position="stacked">Buscar Estudiante por RUT:</ion-label>
-  <ion-input type="text" placeholder="Ingrese un Rut" formControlName="rut"></ion-input>
-  <ion-button (click)="buscarEstudiante()" expand="block">Buscar</ion-button>
-</ion-item>
 
-<form [formGroup]="estudianteForm" *ngIf="mostrarInformacionEstudiante">
-  <!-- Detalles del estudiante encontrado -->
-  <ion-item class="ion-margin-top">
-    <ion-label position="stacked">RUT:</ion-label>
-    <ion-input type="text" formControlName="rut" [disabled]="!edicionHabilitada"></ion-input>
-  
-    <ion-label position="stacked">Nombre:</ion-label>
-    <ion-input type="text" formControlName="nombre" [disabled]="!edicionHabilitada"></ion-input>
-  
-    <ion-label position="stacked">Apellido:</ion-label>
-    <ion-input type="text" formControlName="apellido" [disabled]="!edicionHabilitada"></ion-input>
-  
-    <ion-label position="stacked">Edad:</ion-label>
-    <ion-input type="number" formControlName="edad" [disabled]="!edicionHabilitada"></ion-input>
-  
-    <ion-label position="stacked">Sexo:</ion-label>
-    <ion-input type="text" formControlName="sexo" [disabled]="!edicionHabilitada"></ion-input>
-  
-    <ion-label position="stacked">Nacionalidad:</ion-label>
-    <ion-input type="text" formControlName="nacionalidad" [disabled]="!edicionHabilitada"></ion-input>
-  
-    <!-- Fecha de Nacimiento -->
-    <ion-label position="stacked">Fecha de Nacimiento:</ion-label>
-    <ion-input type="date" formControlName="fecha_nac" [disabled]="!edicionHabilitada"></ion-input>
+</ion-header>
 
-    <!-- Botones de acción -->
-    <div class="button-container">
-      <ion-button color="primary" (click)="habilitarEdicion()" *ngIf="!edicionHabilitada">Modificar</ion-button>
-      <ion-button color="danger" (click)="eliminarEstudiante()" class="action-button" *ngIf="edicionHabilitada">Eliminar</ion-button>
-      <ion-button color="secondary" (click)="actualizarEstudiante()" class="action-button" *ngIf="edicionHabilitada">Guardar Cambios</ion-button>
-    </div>
-  </ion-item>
-</form>
+  
+<ion-content>
+  <div *ngIf="!edicionHabilitada">
+    <p class="Advertencia" >Recuerde presionar Editar para que se muestren los datos del Estudiante</p>
+  </div>
+  <form [formGroup]="estudianteForm" *ngIf="mostrarInformacionEstudiante" >
+    <!-- Detalles del estudiante encontrado -->
+      
+     
+      
+      <ion-item>
+        <ion-label position="stacked">RUT:</ion-label>
+        <ion-input type="text" formControlName="rut"></ion-input>
+    
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Numero de matricula:</ion-label>
+        <ion-input type="text" formControlName="numero_matricula_estudiante" ></ion-input>
+    
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Nombre:</ion-label>
+        <ion-input type="text" formControlName="nombre" ></ion-input>
+      
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">Apellido:</ion-label>
+        <ion-input type="text" formControlName="apellido" ></ion-input>
+    
+      </ion-item>
+      
+      <ion-item>
+        
+      <ion-label position="stacked">Edad:</ion-label>
+      <ion-input type="number" formControlName="edad" ></ion-input>
+    
+      </ion-item>
+    
+      <ion-item>
+        <ion-label position="stacked">Sexo:</ion-label>
+        <ion-input type="text" formControlName="sexo" ></ion-input>
+      
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="stacked">Nacionalidad:</ion-label>
+        <ion-input type="text" formControlName="nacionalidad" ></ion-input>
+  
+      </ion-item>
+        
+     
+      <!-- Fecha de Nacimiento -->
+     
+      <ion-item>
+        <ion-label position="stacked">Fecha de Nacimiento:</ion-label>
+        <ion-input type="date" formControlName="fecha_nac"></ion-input>
+    
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>¿Tiene alguna enfermedad?</ion-label>
+        <ion-checkbox formControlName="tiene_enfermedad" [checked]="estudianteForm.get('tiene_enfermedad').value">
+          
+        </ion-checkbox>
+        <ion-note slot="end">{{ estudianteForm.get('tiene_enfermedad').value ? 'Sí' : 'No' }}</ion-note>
+      </ion-item>
+  
+      <ion-item *ngIf="estudianteForm.get('tiene_enfermedad').value">
+        <ion-label>Tipo de Enfermedad:</ion-label>
+        <ion-input type="text" formControlName="tipo_enfermedad"></ion-input>
+      </ion-item>
+      
+      <ion-item *ngIf="estudianteForm.get('tiene_enfermedad').value">
+        <ion-label>Descripción de la Enfermedad:</ion-label>
+        <ion-textarea formControlName="descripcion_enfermedad"></ion-textarea>
+      </ion-item>
+      
+  
+      <ion-item *ngIf="imageUrl" class="Certificado">
+        <ion-label position="stacked">Certificado:</ion-label>
+        <a [href]="imageUrl" download="CertificadoEnfermedad.jpg">Descargar Certificado de Enfermedad</a>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Actualizar Certificado de Enfermedad:</ion-label>
+        <input type="file" (change)="onFileSelected($event)">
+      </ion-item>
+      
+      <!-- Botones de acción -->
+          
+  </form>
+  <div class="button-container">
+    <ion-button color="primary" (click)="habilitarEdicion()" *ngIf="!edicionHabilitada">Editar</ion-button>
+    <ion-button color="primary" (click)="cancelarEdicion()" *ngIf="edicionHabilitada">Cancelar</ion-button>
+    <ion-button color="danger" (click)="eliminarEstudiante()" class="action-button" *ngIf="edicionHabilitada">Eliminar</ion-button>
+    <ion-button color="secondary" (click)="actualizarEstudiante()" class="action-button" *ngIf="edicionHabilitada">Guardar Cambios</ion-button>
+  </div>
+
+  
+</ion-content>

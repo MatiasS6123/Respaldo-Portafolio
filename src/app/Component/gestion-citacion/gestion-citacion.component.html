@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>
+      Gesti&oacute;n de Citacion
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/lista-citacion"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!estado" >
+    <p class="Advertencia"> Recuerde presionar Editar para que se muestren los datos de la Citaci&oacute;n</p>
+  </div>
+  
+  <form [formGroup]="gestionCitacionForm" *ngIf="mostrarInformacionCitacion">
+    <ion-item>
+      <ion-label position="stacked">Titulo Citacion</ion-label>
+      <ion-input type="text" formControlName="titulo_citacion"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Nombre del Curso</ion-label>
+      <ion-input type="text" formControlName="nombre_curso"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Alumnos a Citar</ion-label>
+      <ion-select formControlName="estudiante" multiple="true">
+        <ion-select-option *ngFor="let alumno of citacion?.estudiante" [value]="alumno">{{alumno.nombre}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    
+    <ion-item>
+      <ion-label>¿Nuevos estudiantes?</ion-label>
+      <ion-checkbox class="nuevos" formControlName="mostrar_estudiante"></ion-checkbox>
+    </ion-item>
+    
+    <ion-item *ngIf="gestionCitacionForm.get('mostrar_estudiante').value">
+      <ion-label>Nuevos Alumnos a Citar</ion-label>
+      <ion-select formControlName="nuevo_estudiante" multiple="true">
+        <ion-select-option *ngFor="let estudiante of getEstudiantesNoSeleccionados()" [value]="estudiante">
+          {{estudiante.nombre}} Rut: {{estudiante.rut}}
+        </ion-select-option>
+      </ion-select>
+
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Nombre del Profesor</ion-label>
+      <ion-input type="text" formControlName="nombre_profesor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Rut del Profesor</ion-label>
+      <ion-input type="text" formControlName="rut_profesor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Lugar de Citaci&oacute;n</ion-label>
+      <ion-input type="text" formControlName="lugar_citacion"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Fecha de Citaci&aacute;n</ion-label>
+      <ion-input type="date" formControlName="fecha_citacion"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Estado de Citaci&aacute;n</ion-label>
+      <ion-select formControlName="estado_citacion">
+        <ion-select-option value="En Proceso">En Proceso</ion-select-option>
+        <ion-select-option value="Iniciada">Iniciada</ion-select-option>
+        <ion-select-option value="Finalizada">Finalizada</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Descripcion de Citaci&aacute;n</ion-label>
+      <ion-textarea formControlName="descripcion_citacion" row="4"></ion-textarea>
+    </ion-item>
+
+
+    
+
+
+  </form>
+  <div class="button-container">
+    <ion-button color="primary" (click)="habilitar_Edicion()" *ngIf="!estado">Editar</ion-button>
+    <ion-button color="secondary" (click)="modificar_Citacion()" *ngIf="estado" >Guardar</ion-button>
+    <ion-button color="danger" (click)="eliminar_Citacion()" *ngIf="estado" >Eliminar</ion-button>
+    <ion-button (click)="cancelar_Edicion()" *ngIf="estado" >Cancelar</ion-button>
+  </div>
+</ion-content>
