@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Generar Reporte de Alumno</ion-title>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/lista-reportes-profesor"></ion-back-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!activado" >
+    <p class="Advertencia"> Recuerde presionar Editar para que se muestren los datos del reporte</p>
+  </div>
+  
+  <form [formGroup]="reporteForm" *ngIf="mostrarInformacionReporte">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información del Alumno</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label class="input-label" position="stacked">Nombre del Alumno</ion-label>
+          <ion-label class="input-field">{{reporteForm.get('nombre_alumno').value}}</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="input-label" position="stacked">RUT del Alumno</ion-label>
+          <ion-label class="input-field">{{reporteForm.get('rut_alumno').value}}</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="input-label" position="stacked">Fecha de Nacimiento</ion-label>
+          <ion-label class="input-field">{{reporteForm.get('fecha_nacimiento').value | date:'dd/MM/yyyy'}}</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="input-label" position="stacked">Edad del Alumno</ion-label>
+          <ion-label class="input-field">{{reporteForm.get('edad_alumno').value}}</ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-item>
+      <ion-label class="input-label" position="floating">Semestre</ion-label>
+      <ion-select class="input-field" placeholder="Seleccione Semestre" formControlName="semestre">
+        <ion-select-option value="Primero">Primero</ion-select-option>
+        <ion-select-option value="Segundo">Segundo</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <div>
+      <ion-item button (click)="toggleSection('ambito1')">
+        <ion-label class="titulo-ambito input-label">Ámbito: Desarrollo Personal y Social 
+          <ion-icon [ngClass]="{'arrow-down': !sections.ambito1, 'arrow-up': sections.ambito1}" name="arrow-down-outline"></ion-icon>
+        </ion-label>
+      </ion-item>
+      <div *ngIf="sections.ambito1" formGroupName="ambito1" class="input-field-ambito-content">
+        <ion-item class="input-field-ambito-content-field-fortaleza">
+          <ion-label class="input-label" position="floating">Aspecto Positivo</ion-label>
+          <ion-input class="input-field-fortaleza" formControlName="aspecto_positivo1"></ion-input>
+        </ion-item>
+        <br>
+        <ion-item class="input-field-ambito-content-field-debilidad">
+          <ion-label position="floating" class="input-label">Aspecto de Mejora</ion-label>
+          <ion-input  class="input-field-debilidad" formControlName="aspecto_mejora1"></ion-input>
+        </ion-item>
+      </div>
+    </div>
+
+    <div>
+      <ion-item button (click)="toggleSection('ambito2')">
+        <ion-label class="input-label titulo-ambito">Ámbito: Comunicación Integral 
+          <ion-icon [ngClass]="{'arrow-down': !sections.ambito2, 'arrow-up': sections.ambito2}" name="arrow-down-outline"></ion-icon>
+        </ion-label>
+      </ion-item>
+      <div *ngIf="sections.ambito2" formGroupName="ambito2" class="input-field-ambito-content">
+        <ion-item class="input-field-ambito-content-field-fortaleza">
+          <ion-label position="floating" class="input-label">Aspecto Positivo</ion-label>
+          <ion-input class="input-field-fortaleza"  formControlName="aspecto_positivo2"></ion-input>
+        </ion-item>
+        <br>
+        <ion-item class="input-field-ambito-content-field-debilidad">
+          <ion-label position="floating" class="input-label">Aspecto de Mejora</ion-label>
+          <ion-input class="input-field-debilidad" formControlName="aspecto_mejora2"></ion-input>
+        </ion-item>
+      </div>
+    </div>
+
+    <div>
+      <ion-item button (click)="toggleSection('ambito3')">
+        <ion-label class="input-label titulo-ambito">Ámbito: Interacción y Comprensión del Entorno 
+          <ion-icon [ngClass]="{'arrow-down': !sections.ambito3, 'arrow-up': sections.ambito3}" name="arrow-down-outline"></ion-icon>
+        </ion-label>
+      </ion-item>
+      <div *ngIf="sections.ambito3" formGroupName="ambito3" class="input-field-ambito-content">
+        <ion-item class="input-field-ambito-content-field-fortaleza">
+          <ion-label position="floating" class="input-label">Aspecto Positivo</ion-label>
+          <ion-input class="input-field-fortaleza" formControlName="aspecto_positivo3"></ion-input>
+        </ion-item>
+        <br>
+        <ion-item class="input-field-ambito-content-field-debilidad">
+          <ion-label position="floating" class="input-label">Aspecto de Mejora</ion-label>
+          <ion-input class="input-field-debilidad" formControlName="aspecto_mejora3"></ion-input>
+        </ion-item>
+      </div>
+    </div>
+    <ion-item >
+      <ion-label class="input-label" position="floating">Observación Final</ion-label>
+      <ion-textarea class="input-field" formControlName="observacion_final"></ion-textarea>
+    </ion-item>        
+  </form>
+  <div class="button-container">
+    <ion-button color="secondary"  (click)="modificar_Reporte()" *ngIf="mostrarInformacionReporte">Guardar</ion-button>
+    <ion-button (click)="habilitar_Edicion()" *ngIf="!mostrarInformacionReporte">Editar</ion-button>
+    <ion-button color="danger" (click)="eliminar_Reporte()" *ngIf="mostrarInformacionReporte">Eliminar</ion-button>
+    <ion-button (click)="deshabilitar_Edicion()" *ngIf="mostrarInformacionReporte">Cancelar</ion-button>
+
+  </div>
+</ion-content>

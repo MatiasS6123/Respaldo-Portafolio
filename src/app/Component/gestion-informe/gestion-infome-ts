@@ -1,0 +1,222 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
+import { ReporteService } from 'src/app/Service/reporte.service';
+import { Reporte } from 'src/models/reporteAlumno';
+
+@Component({
+  selector: 'app-gestion-informe-profesor',
+  templateUrl: './gestion-informe-profesor.component.html',
+  styleUrls: ['./gestion-informe-profesor.component.scss'],
+})
+export class GestionInformeProfesorComponent  implements OnInit {
+
+  reporte:Reporte;
+  activado:boolean=false
+  reporteForm:FormGroup;
+  mostrarInformacionReporte:boolean=false;
+  sections = {
+    ambito1: false,
+    ambito2: false,
+    ambito3: false
+  };
+  constructor(private route:ActivatedRoute,
+    private reporteService:ReporteService,
+    private navCtr:NavController,
+    private alertContrller:AlertController,
+    private toastController:ToastController,
+    private formBuilder:FormBuilder ) { 
+      this.FormGroupInit();
+    }
+    private FormGroupInit() {
+      this.reporteForm = this.formBuilder.group({
+        nombre_alumno: ['', Validators.required],
+        rut_alumno: ['', Validators.required],
+        fecha_nacimiento: [new Date, Validators.required],
+        edad_alumno: [0, Validators.required],
+        semestre: ['', Validators.required],
+        ambito1: this.formBuilder.group({
+          aspecto_positivo1: ['', Validators.required],
+          aspecto_mejora1: ['', Validators.required]
+        }),
+        ambito2: this.formBuilder.group({
+          aspecto_positivo2: ['', Validators.required],
+          aspecto_mejora2: ['', Validators.required]
+        }),
+        ambito3: this.formBuilder.group({
+          aspecto_positivo3: ['', Validators.required],
+          aspecto_mejora3: ['', Validators.required]
+        }),
+        observacion_final: ['', Validators.required]
+  
+  
+      })
+    }
+
+  ngOnInit() {
+    const _id = this.route.snapshot.paramMap.get('_id');
+    console.log("ID recibido", _id)
+    this.reporteService.obtener_Reporte_ID(_id).subscribe(
+      (reporte)=>{
+        this.reporte=reporte;
+        this.mostrarInformacionReporte=false;
+        this.activado=false;
+        console.log("Datos Reporte",reporte)
+        this.patchValue();
+
+      }
+    )
+  }
+  
+
+  patchValue(){
+    const fechaNacimiento = new Date(this.reporte.fecha_nacimiento);
+    const formattedDate = fechaNacimiento.toISOString().split('T')[0];
+    this.reporteForm.patchValue({
+      nombre_alumno:this.reporte.nombre_alumno,
+      rut_alumno:this.reporte.rut_alumno,
+      fecha_nacimiento:formattedDate,
+      edad_alumno:this.reporte.edad_alumno,
+      semestre:this.reporte.semestre,
+      observacion_final: this.reporte.observacion_final
+
+    })
+    this.reporteForm.get('ambito1').patchValue({
+      aspecto_positivo1: this.reporte.ambito1[0].aspecto_positivo1,
+      aspecto_mejora1: this.reporte.ambito1[0].aspecto_mejora1
+    });
+    this.reporteForm.get('ambito2').patchValue({
+      aspecto_positivo2: this.reporte.ambito2[0].aspecto_positivo2,
+      aspecto_mejora2: this.reporte.ambito2[0].aspecto_mejora2
+    });
+    this.reporteForm.get('ambito3').patchValue({
+      aspecto_positivo3: this.reporte.ambito3[0].aspecto_positivo3,
+      aspecto_mejora3: this.reporte.ambito3[0].aspecto_mejora3
+    });
+
+  }
+
+  habilitar_Edicion(){
+    
+    this.mostrarInformacionReporte=true;
+    this.reporteForm.enable();
+    this.activado=true;
+  }
+  deshabilitar_Edicion(){
+    this.mostrarInformacionReporte=false;
+    this.reporteForm.disable();
+    this.activado=false;
+  }
+  modificar_Reporte(){
+    if(this.reporteForm.valid) {
+      const _id =this.reporte._id
+        const nuevaData: Reporte = {
+          nombre_alumno: this.reporteForm.get('nombre_alumno').value,
+          rut_alumno: this.reporteForm.get('rut_alumno').value,
+          fecha_nacimiento: this.reporteForm.get('fecha_nacimiento').value,
+          edad_alumno: this.reporteForm.get('edad_alumno').value,
+          nombre_profesor: this.reporte.nombre_profesor,
+          rut_profesor: this.reporte.rut_profesor,
+          semestre: this.reporteForm.get('semestre').value,
+          ambito1: [{
+            nombre_ambito1: 'Desarrollo Personal y Social',
+            aspecto_positivo1: this.reporteForm.get('ambito1').get('aspecto_positivo1').value,
+            aspecto_mejora1: this.reporteForm.get('ambito1').get('aspecto_mejora1').value
+          }],
+          ambito2: [{
+            nombre_ambito2: 'Comunicación Integral',
+            aspecto_positivo2: this.reporteForm.get('ambito2').get('aspecto_positivo2').value,
+            aspecto_mejora2: this.reporteForm.get('ambito2').get('aspecto_mejora2').value
+          }],
+          ambito3: [{
+            nombre_ambito3: 'Interacción y Comprensión del Entorno',
+            aspecto_positivo3: this.reporteForm.get('ambito3').get('aspecto_positivo3').value,
+            aspecto_mejora3: this.reporteForm.get('ambito3').get('aspecto_mejora3').value
+          }],
+          observacion_final: this.reporteForm.get('observacion_final').value
+        };
+
+        console.log("nuevo Data ",nuevaData)
+        this.reporteService.modificar_Reporte(_id,nuevaData).subscribe(
+          ()=>{
+            this.presentToast("Datos actualizados con exito");
+            this.activado=false;
+            this.mostrarInformacionReporte=false;
+          },
+          error => {
+            if (error.status === 201) {
+              this.presentToast("Reporte Actualizado Correctamente");
+            } else {
+              this.presentToast("Error al Actualizar Reporte Fallo del servidor");
+            }
+          }
+        )
+
+        
+    } else {
+      this.presentToast("Por favor, complete todos los campos requeridos.");
+    }
+  }
+  async eliminar_Reporte(){
+    const _id = this.reporte._id;
+    const resultado=await this.presentConfirm();
+    if(resultado){
+      this.reporteService.eliminar_Reporte(_id).subscribe(
+        ()=>{
+          this.presentToast("Reporte eliminado con exito").then(() => {
+            setTimeout(() => {
+              this.navCtr.navigateBack(['/lista-reportes-profesor']);
+            }, 2000); // Espera 2 segundos antes de navegar hacia atrás
+          });
+        }
+      )
+    }
+
+  }
+  
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
+  }
+  async presentConfirm(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const alert = await this.alertContrller.create({
+        header: 'Confirmación',
+        message: '¿Estás seguro de que quieres eliminar este Informe?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancelado');
+              resolve(false);
+            }
+          }, {
+            text: 'Eliminar',
+            cssClass: 'my-alert-button-delete',
+            handler: () => {
+              console.log('Eliminado');
+              // Aquí puedes poner el código para eliminar el elemento
+              resolve(true);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    });
+  }
+  
+  toggleSection(section: string) {
+    this.sections[section] = !this.sections[section];
+  }
+}
+  
+
+

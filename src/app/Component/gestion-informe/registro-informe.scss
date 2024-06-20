@@ -1,0 +1,99 @@
+ion-content{
+    --ion-background-color:  #f0f8ff;
+}
+ion-title{
+    text-align: center;
+}
+  
+ion-card{
+    background-color:  #f0f8ff;
+    border:1px solid #2c3e50;
+    border-radius: 8px;
+    
+}
+ion-card-title{
+    color: #2c3e50;
+}
+ion-button {
+    --background: #3498db; /* Azul */
+    --background-activated: #2980b9; /* Azul más oscuro */
+    --background-focused: #2980b9;
+    --background-hover: #2980b9;
+    --color: #ffffff; /* Blanco */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+    border-radius: 8px; /* Bordes redondeados */
+  }
+
+.input-label {
+    color: #2c3e50; /* Azul oscuro */
+}
+  
+.input-field {
+    color: #2c3e50; /* Azul oscuro */
+}
+
+.input-field-ambito-content{
+    margin-left: 3.5rem;
+    width: 75%;
+  }
+.input-field-ambito-content-field-fortaleza{
+    color: hsl(210, 29%, 24%); /* Azul oscuro */
+    border: 2px solid #2c3e50;
+    border-bottom: none;
+    border-radius: 8px;
+    margin-top: 8px;
+    --background: #d4edda; /* Verde claro */
+    --ion-item-background: #d4edda; /* Asegura que el fondo del ion-item sea verde claro */
+    color: #155724; /* Texto verde */
+}
+.input-field-ambito-content-field-debilidad{
+    color: hsl(210, 29%, 24%); /* Azul oscuro */
+    border: 2px solid #2c3e50;
+    border-bottom: none;
+    border-radius: 8px;
+    margin-top: 8px;
+    --background: #fff3cd; /* Naranjo claro */
+    --ion-item-background: #fff3cd; /* Asegura que el fondo del ion-item sea naranjo claro */
+    color: #856404; /* Texto naranjo */
+}
+
+
+.titulo-ambito{
+    text-align: justify;
+}
+.button-container{
+    display: flex;
+    justify-content: center;
+}
+.ion-buscar-label{
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #2c3e50;
+
+}
+
+.barra-busqueda{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff; /* Blanco */
+    border: 1px solid #dcdcdc; /* Gris claro */
+    border-radius: 8px; /* Bordes redondeados */
+    margin: auto;
+    padding: 10px;
+    color: #2c3e50; /* Azul oscuro */
+}  
+
+.arrow-down {
+    transform: rotate(0deg);
+}
+  
+.arrow-up {
+    transform: rotate(180deg);
+}
+.Advertencia{
+    text-align: center;
+    color: #2c3e50;
+    font-size: 1.5rem;
+}
